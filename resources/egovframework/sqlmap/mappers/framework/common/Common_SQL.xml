@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.futechsoft.framework.common.mapper.CommonMapper">
+
+
+
+
+	<select id="selectCommonCodeList" parameterType="ftMap"  resultType="ftMap">
+	       	SELECT
+		            dtl_cd code,
+		            dtl_cd_nm "value"
+		    FROM    tb_hz200
+		    WHERE   up_cd_seq = #{upCdSeq}
+		    AND     NVL(use_yn,'Y') = 'Y'
+
+		    ORDER BY srt_ord
+	 </select>
+
+
+	 <insert id="insertUserAuth" parameterType="ftMap">
+	       	INSERT INTO tb_user_auth (
+						       	user_auth_seq,
+								user_no,
+								auth_seq,
+								rgstp_no,
+								rgst_dttm
+
+								)
+								values(
+									(SELECT nvl(MAX(user_auth_seq),0)+1 from tb_user_auth),
+									#{userNo},
+									(SELECT auth_seq FROM TB_AUTH where auth_cd=#{authCd} AND use_yn='Y'),
+									#{userNo},
+									sysdate
+								)
+
+
+	 </insert>
+
+	 <delete id="deleteUserAuth" parameterType="ftMap">
+	       	delete tb_user_auth where user_no =#{userNo} and  auth_seq=(SELECT auth_seq FROM TB_AUTH where auth_cd=#{authCd} AND use_yn='Y')
+	 </delete>
+	 
+	 
+	
+
+
+</mapper>

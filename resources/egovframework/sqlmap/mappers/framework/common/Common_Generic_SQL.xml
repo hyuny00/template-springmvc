@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.futechsoft.framework.common.mapper.GenericMapper">
+
+	  <insert id="insertByMaxPk" parameterType="com.futechsoft.framework.common.sqlHelper.InsertParam">
+
+	    <selectKey keyProperty="id" resultType="int" order="BEFORE">
+	    	SELECT nvl(MAX(${keyColumn} ),0)+1 from ${tableName}
+	    </selectKey>
+         	insert into ${tableName}
+         	(
+         		${keyColumn},
+	         	<foreach  collection="tblMap"  index="index" item="value"  open=""  separator=" , "  close="">
+			       <if test="keyColumn != index">
+ 						${index}
+					</if>
+			    </foreach>
+			    , rgst_dttm
+         	)
+         	values
+         	(
+         	  #{id},
+	         	<foreach  collection="tblMap"  index="index" item="value"  open=""  separator=" , "  close="">
+		         	<if test="keyColumn != index">
+	 						#{value}
+					</if>
+			    </foreach>
+			    , sysdate
+         	)
+    </insert>
+
+
+    <insert id="insert"  parameterType="com.futechsoft.framework.common.sqlHelper.InsertParam">
+         	insert into ${tableName}
+         	(
+	         	<foreach  collection="tblMap"  index="index" item="value"  open=""  separator=" , "  close="">
+					${index}
+			    </foreach>
+			     , rgst_dttm
+         	)
+         	values
+         	(
+	         	<foreach  collection="tblMap"  index="index" item="value"  open=""  separator=" , "  close="">
+					#{value}
+			    </foreach>
+			     , sysdate
+         	)
+    </insert>
+
+
+    <select id="getColumnList"  resultType="ftMap">
+    		 show columns from ${tableName}
+    </select>
+
+
+ 	<!--큐브리드
+ 	 <select id="getColumnList"  resultType="ftMap">
+    		 select attr_name field from db_attribute where class_name = lower(#{tableName})
+    </select>
+    -->
+
+    <!--오라클
+ 	 <select id="getColumnList"  resultType="ftMap">
+    		 select column_name field from user_cons_columns where  table_name = upper(#{tableName})
+    </select>
+    -->
+
+</mapper>

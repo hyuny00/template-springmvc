@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.futechsoft.framework.file.mapper.FileMapper">
+
+
+	<select id="selectFileList" parameterType="ftMap"  resultType="ftMap">
+	       SELECT
+				file_id,
+				doc_id,
+				file_nm,
+				file_size,
+				del_yn,
+				file_ord,
+				'N' temp
+			FROM TB_FILE WHERE doc_id=#{docId} AND del_yn='N' ORDER BY file_ord
+	 </select>
+
+
+	 <select id="selectFileInfo" parameterType="ftMap"   resultType="com.futechsoft.framework.file.vo.FileInfoVo">
+	       SELECT
+				file_id,
+				doc_id,
+				file_nm,
+				file_size,
+				file_path,
+				del_yn,
+				rgstp_no,
+				file_ord,
+				file_auth,
+				tbl_col_nm,
+				tbl_nm
+			FROM TB_FILE WHERE file_id=#{fileId} AND del_yn='N'
+	 </select>
+
+
+ 	<update id="updateMergeDocId" parameterType="ftMap" >
+	      UPDATE TB_FILE SET DOC_ID= #{mergeDocId}  WHERE DOC_ID= #{tempDocId}
+	 </update>
+
+
+	<update id="updateThumbNnailFileInfo" parameterType="com.futechsoft.framework.file.vo.FileInfoVo" >
+	      UPDATE TB_FILE SET file_path= #{filePath}, file_size=#{fileSize}   WHERE file_id= #{fileId}
+	 </update>
+	 
+	 
+	 	 <select id="selectFile" parameterType="ftMap"  resultType="ftMap">
+	       SELECT
+				file_id,
+				doc_id,
+				file_nm,
+				file_size,
+				file_path, 
+				del_yn,
+				RGR_ID,
+				file_ord,
+				file_auth,
+				tbl_col_nm,
+				tbl_nm
+			FROM TB_FILE WHERE docu_id=#{docId} AND decode(del_ayn, null, 'N', del_ayn) = 'N' ORDER BY fl_odr
+	 </select>
+
+
+	 <insert id="insertFileInfo" parameterType="ftMap" >
+			INSERT INTO TB_FILE (
+				   file_id,
+				   doc_id,
+				   file_nm,
+				   file_size,
+				   file_path,
+				   file_ord,
+				   file_auth,
+				   TBL_NM,
+				   TBL_COL_NM,
+				   DEL_YN,
+				   RGR_ID,
+				   REG_DTM,
+				   UTUR_ID,
+				   UPDT_DTM
+				   )
+			VALUES (
+					#{fileId} ,
+				   #{docId} ,
+				   #{fileNm} ,
+				   #{fileSize} ,
+				   #{filePath} ,
+				   #{fileOrd} ,
+				   #{fileAuth} ,
+				   #{tblNm} ,
+				   #{tblColNm} ,
+				   #{delyn} ,
+				   #{regNo} ,
+				   sysdate ,
+				   #{regNo} ,
+				   sysdate
+				    )
+	 </insert>
+
+
+	  <update id="updateFileOrd" parameterType="ftMap">
+    	UPDATE
+    		TB_FILE
+    	SET
+    		file_ord = #{fileOrd}
+    	WHERE
+    		file_id = #{fileId}
+    </update>
+
+
+      <update id="deleteDoc" parameterType="ftMap">
+    	DELETE
+    		TB_FILE
+    	WHERE
+    		doc_id = #{docId}
+    </update>
+
+      <update id="deleteFile" parameterType="ftMap">
+    	DELETE
+    		TB_FILE
+    	WHERE
+    		file_id = #{fileId}
+    </update>
+	 
+</mapper>

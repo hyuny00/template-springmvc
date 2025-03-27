@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.2"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <deployment>
+        <exclusions>
+        <!--	<module name="org.apache.log4j" />
+        	<module name="org.apache.commons.loging" /> -->
+        	<module name="org.slf4j" />
+        	<module name="org.slf4j.ext" />
+        	<module name="org.slf4j.impl" />
+        	<module name="org.slf4j.jcl-over-slf4j" />
+
+        	<module name="org.apache.cxf" />
+            <module name="org.apache.cxf.impl" />
+
+
+        </exclusions>
+        <!--
+        <dependencies>
+            <module name="org.apache.cxf" />
+            <module name="org.apache.cxf.impl" />
+            <module name="javax.xml.bind.api" />
+             <module name="javax.xml.ws.api" />
+        </dependencies>
+        -->
+
+
+        <exclude-subsystems>
+       		 <subsystem name="webservices" />
+        	 <subsystem name="jaxrs" />
+        </exclude-subsystems>
+
+
+
+    </deployment>
+</jboss-deployment-structure>

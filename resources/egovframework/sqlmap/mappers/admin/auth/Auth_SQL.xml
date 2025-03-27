@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.futechsoft.admin.auth.mapper.AuthMapper">
+
+
+
+	<select id="getAuthList" parameterType="ftMap"
+		resultType="com.futechsoft.admin.auth.vo.Auth">
+		<![CDATA[
+
+		    SELECT
+		  		AUTH_SEQ, UP_AUTH_SEQ, AUTH_CD, AUTH_NM, AUTH_TYPE_CD, USE_YN,
+		       (SELECT COUNT(AUTH_SEQ) FROM TB_AUTH   WHERE  UP_AUTH_SEQ  =  A.AUTH_SEQ
+		   ]]>
+		<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
+			AND USE_YN = #{useYn}
+		</if>
+		         <![CDATA[
+		       ) SUB_AUTH_CNT,
+		       (SELECT AUTH_NM FROM  TB_AUTH    WHERE   AUTH_SEQ  =  A.UP_AUTH_SEQ) UP_AUTH_NM
+            FROM TB_AUTH A
+            WHERE UP_AUTH_SEQ = #{authSeq}
+
+          ]]>
+		<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
+			AND USE_YN = #{useYn}
+		</if>
+
+	</select>
+
+
+
+	<select id="getAuthCdList"
+		resultType="com.futechsoft.admin.auth.vo.Auth">
+		<![CDATA[
+	        SELECT
+				AUTH_SEQ, AUTH_CD
+	        FROM  TB_AUTH WHERE AUTH_TYPE_CD='030' AND USE_YN= 'Y'
+		]]>
+	</select>
+
+
+
+	<select id="getAuthMenuList"
+		resultType="com.futechsoft.admin.auth.vo.AuthMenu">
+		<![CDATA[
+		   SELECT
+				a.menu_type_cd, a.menu_nm, b.auth_seq, a.menu_seq, b.auth_menu_seq, c.auth_cd, a.up_menu_seq, a.menu_url, a.open_yn,
+
+				decode(b.menu_seq, null,'N','Y') selectYn,
+
+				(
+					SELECT COUNT(a.MENU_SEQ) FROM
+							 ( SELECT up_menu_seq FROM tb_menu a LEFT OUTER JOIN tb_auth_menu b
+										 on a.menu_seq= b.menu_seq WHERE b.auth_seq is null
+							 )  m
+			 	WHERE m.up_menu_seq  =  a.menu_seq) noAuthCount,
+
+				(SELECT COUNT(MENU_SEQ) FROM TB_MENU   WHERE UP_MENU_SEQ  =  A.MENU_SEQ  AND USE_YN = 'Y') subMenuCnt
+	        FROM tb_menu a left outer join   tb_auth_menu  b on a.menu_seq= b.menu_seq and b.auth_seq =  #{authSeq}  left outer join     tb_auth c on b.auth_seq=c.auth_seq  AND c.USE_YN = 'Y'
+	        where  a.use_yn= 'Y'
+	]]>
+	</select>
+
+
+
+	<select id="getPathList" parameterType="ftMap"
+		resultType="com.futechsoft.admin.auth.vo.Path">
+		<![CDATA[
+		    SELECT
+	  			PATH_SEQ,
+	  			UP_PATH_SEQ,
+	  			PATH,
+	  			PATH_NM,
+	       		(SELECT COUNT(PATH_SEQ) FROM TB_PATH   WHERE  UP_PATH_SEQ  =  A.PATH_SEQ) SUB_CNT,
+          		(SELECT PATH FROM  TB_PATH    WHERE   PATH_SEQ  =  A.UP_PATH_SEQ) UP_PATH
+            FROM TB_PATH A
+            WHERE UP_PATH_SEQ = #{pathSeq}
+ 			ORDER BY PATH_ORD
+		]]>
+	</select>
+
+
+	<select id="getPathAuthList"
+		resultType="com.futechsoft.admin.auth.vo.PathAuth">
+		<![CDATA[
+	         SELECT
+					A.AUTH_SEQ, A.AUTH_NM,   A.UP_AUTH_SEQ, A.AUTH_TYPE_CD, B.PATH_SEQ, B.PATH_AUTH_SEQ,  C.UP_PATH_SEQ, DECODE(B.PATH_SEQ, NULL,'N','Y') SELECT_YN
+        	FROM  TB_AUTH A LEFT OUTER JOIN TB_PATH_AUTH B ON A.AUTH_SEQ= B.AUTH_SEQ AND B.PATH_SEQ =  #{pathSeq}     LEFT OUTER JOIN TB_PATH C ON B.PATH_SEQ=C.PATH_SEQ
+	        WHERE   A.USE_YN= 'Y'
+		]]>
+	</select>
+
+	
+
+	<!-- 권한메뉴등록등록 -->
+	<insert id="insertAuthMenu" parameterType="ftMap">
+		<selectKey keyProperty="authMenuSeq" resultType="String"
+			order="BEFORE">
+			SELECT nvl(MAX(auth_menu_seq ),0)+1 from TB_AUTH_MENU
+		</selectKey>
+			INSERT INTO TB_AUTH_MENU (
+			AUTH_MENU_SEQ,
+			MENU_SEQ ,
+			RGSTP_NO ,
+			AUTH_SEQ , 
+			RGST_DTTM
+			)
+			VALUES (
+			#{authMenuSeq},
+			#{menuSeq} ,
+			#{userNo} ,
+			#{authSeq} ,
+			sysdate
+			)
+	</insert>
+
+	<!-- 권한등록 -->
+	<insert id="insertAuth" parameterType="ftMap">
+		<selectKey keyProperty="authSeq" resultType="String"
+			order="BEFORE">
+			SELECT NVL(MAX(AUTH_SEQ),0)+1 FROM TB_AUTH
+		</selectKey>
+		INSERT INTO TB_AUTH (
+		AUTH_SEQ,
+		AUTH_CD,
+		AUTH_NM,
+		AUTH_TYPE_CD,
+		UP_AUTH_SEQ,
+		USE_YN,
+
+		rgstp_no,
+		rgst_dttm
+		) VALUES (
+		#{authSeq},
+		<if test="authTypeCd == '010' or authTypeCd == '020'">
+			#{authSeq}||'_'||#{authCd},
+		</if>
+
+		<if test='authTypeCd =="030"'>
+			#{authCd},
+		</if>
+
+		#{authNm},
+		#{authTypeCd},
+		#{upAuthSeq},
+		'Y',
+
+		#{userNo},
+		sysdate
+
+		)
+
+	</insert>
+
+	<!-- 권한수정 -->
+	<update id="updateAuth" parameterType="ftMap">
+		UPDATE
+		TB_AUTH
+		SET
+		AUTH_TYPE_CD = #{authTypeCd},
+		AUTH_NM = #{authNm},
+		AUTH_CD = #{authCd},
+		USE_YN = #{useYn},
+		UPDTP_NO = #{userNo},
+		UPDT_DTTM = sysdate
+		WHERE
+		AUTH_SEQ = #{authSeq}
+	</update>
+
+
+	<!-- 경로등록 -->
+	<insert id="insertPath" parameterType="ftMap">
+		<selectKey keyProperty="pathSeq" resultType="String"
+			order="BEFORE">
+			SELECT NVL(MAX(PATH_SEQ),0)+1 FROM TB_PATH
+		</selectKey>
+
+		INSERT INTO TB_PATH(
+		PATH_SEQ,
+		UP_PATH_SEQ,
+		PATH,
+		PATH_NM,
+		PATH_ORD,
+		RGSTP_NO ,
+		rgst_dttm
+		) VALUES (
+		#{pathSeq},
+		#{upPathSeq},
+		#{path},
+		#{pathNm},
+		#{pathOrd},
+		#{userNo},
+		sysdate
+
+		)
+	</insert>
+
+	<!-- 경로수정 -->
+	<update id="updatePath" parameterType="ftMap">
+		UPDATE
+		TB_PATH
+		SET
+		PATH = #{path},
+		PATH_NM = #{pathNm},
+		UPDTP_NO = #{userNo},
+		UPDT_DTTM = sysdate
+		WHERE
+		PATH_SEQ = #{pathSeq}
+	</update>
+
+
+
+
+	<select id="getAuthCount" parameterType="ftMap"
+		resultType="java.lang.Integer">
+		SELECT count(1) as cnt FROM TB_AUTH WHERE up_auth_seq=#{upAuthSeq}
+	</select>
+
+	<delete id="deleteUserAuth" parameterType="ftMap">
+		DELETE FROM TB_USER_AUTH WHERE auth_seq=#{authSeq}
+	</delete>
+
+	<delete id="deleteAuthMenu" parameterType="ftMap">
+		DELETE FROM TB_AUTH_MENU WHERE auth_seq=#{authSeq}
+	</delete>
+
+	<delete id="deleteAuth" parameterType="ftMap">
+		DELETE FROM TB_AUTH WHERE auth_seq=#{authSeq}
+	</delete>
+
+	<delete id="deletePathAuthByAuthSeq" parameterType="ftMap">
+		DELETE FROM TB_PATH_AUTH WHERE auth_seq=#{authSeq}
+	</delete>
+	 
+	
+	<update id="updatePathOrd" parameterType="ftMap">
+		 UPDATE TB_PATH SET path_ord=#{pathOrd}, updt_dttm=sysdate WHERE path_seq=#{pathSeq}
+	 </update>
+	 
+	 
+	 <delete id="deletePathAuthByPathSeq" parameterType="ftMap">
+		 DELETE FROM TB_PATH_AUTH WHERE path_seq=#{pathSeq}
+	</delete>
+	 
+	  <delete id="deletePath" parameterType="ftMap"> 
+		 DELETE FROM TB_PATH WHERE path_seq=#{pathSeq}
+	</delete>
+	
+	
+	
+	<!-- 권한메뉴등록등록 -->
+	<insert id="insertPathAuth" parameterType="ftMap">
+		<selectKey keyProperty="pathAuthSeq" resultType="String"
+			order="BEFORE">
+			SELECT nvl(MAX(path_auth_seq ),0)+1 from TB_PATH_AUTH
+		</selectKey>
+			 insert into TB_PATH_AUTH ( path_auth_seq, rgstp_no , auth_seq , path_seq , rgst_dttm ) values ( #{pathAuthSeq},  #{userNo} ,  #{authSeq} , #{pathSeq} , sysdate )
+	</insert>
+	
+	
+
+	 
+</mapper>
