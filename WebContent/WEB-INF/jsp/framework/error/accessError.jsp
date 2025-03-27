@@ -20,7 +20,7 @@
             </div>-->
             <span class="error"><img src="${basePath}/img/error_warning.svg" alt="경고 아이콘"></span>
             <span class="error-info"><span>관리자</span>에게 문의바랍니다.</span><span class="error-info">접근권한이 없습니다</span>
-            <span class="error-info02">(담당자 : 한민규) 044-204-7174</span>
+            <span class="error-info02">(담당자 : OOO) 000-000-0000</span>
             <div class="btn-box">
                 <a href="/main" class="btn-home">메인화면으로</a>
             </div>

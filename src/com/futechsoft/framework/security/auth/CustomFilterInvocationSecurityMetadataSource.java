@@ -41,12 +41,15 @@ public class CustomFilterInvocationSecurityMetadataSource implements FilterInvoc
 		Collection<ConfigAttribute> result = null;
 		while (ite.hasNext()) {
 			String resURL = ite.next();
+			
 			if (pathMatcher.match(resURL, url)) {
 				result = requestMap.get(resURL);
 				break;
 			}
 		}
 
+		
+		
 		if (result == null || result.size() == 0) {
 			result = new ArrayList<ConfigAttribute>();
 			result.add(new SecurityConfig("ROLE_ADMIN"));

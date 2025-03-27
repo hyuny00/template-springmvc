@@ -111,11 +111,14 @@ public class LoginController {
 	}
 	
 	
-	@Autowired
-	private JwtTokenProvider jwtProvider;
+	//@Autowired
+	//private JwtTokenProvider jwtProvider;
 	
 	@RequestMapping(value = "/loginWithoutSecurityJwt")
 	public void loginWithoutSecurityJwt(String userId, String password, HttpServletRequest request, HttpServletResponse response) throws Exception {
+		
+		System.out.println("userIduserId...."+userId);
+		
 		try {
 			CustomUserDetails user = (CustomUserDetails) userDetailsService.loadUserByUsername(userId);
 
@@ -124,29 +127,19 @@ public class LoginController {
 				throw new BadCredentialsException(ErrorCode.BAD_CREDENTIALS.getMessage());
 			}
 			
-			 // JWT 생성
-	        String token = jwtProvider.createToken(user.getUsername(), user.getAuthorities());
-	        
-	     // JWT를 쿠키에 설정
-	        Cookie cookie = new Cookie("token", token);
-	        cookie.setHttpOnly(true);  // 자바스크립트에서 접근 불가
-	        cookie.setSecure(true);  // HTTPS 연결에서만 전송
-	        cookie.setPath("/");  // 모든 경로에서 쿠키 접근 가능
-	        cookie.setMaxAge(3600);  // 쿠키 유효시간 설정 (초 단위)
-
-	        response.addCookie(cookie);  // 응답에 쿠키 추가
-
-	        
-	        // Authentication 객체 생성
+			
+			System.out.println("/loginWithoutSecurityJwt");
+			
+			
+			// Authentication 객체 생성
 	        Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
 	        // SecurityContext에 Authentication 설정
 	        SecurityContext securityContext = SecurityContextHolder.getContext();
 	        securityContext.setAuthentication(authentication);
-	        
-
 
 	        loginSuccessJwtHandler.setDefaultUrl("/main");
+	        loginSuccessJwtHandler.setLoginId(userId);
 	        loginSuccessJwtHandler.onAuthenticationSuccess(request, response, securityContext.getAuthentication());
 
 		}catch(Exception e) {

@@ -155,7 +155,7 @@ public class AuthController extends AbstractController {
 		
 		params.put("userNo", SecurityUtil.getUserNo());
 
-		if(!params.getString("authCd").startsWith(AuthConstant.ROLE_PREFIX)) params.put("authCd", AuthConstant.ROLE_PREFIX+params.getString("authCd"));
+		//if(!params.getString("authCd").startsWith(AuthConstant.ROLE_PREFIX)) params.put("authCd", AuthConstant.ROLE_PREFIX+params.getString("authCd"));
 		authService.save(params);
 
 		params.put("isSuccess", true);

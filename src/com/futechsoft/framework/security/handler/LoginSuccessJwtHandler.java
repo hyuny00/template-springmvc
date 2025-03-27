@@ -59,7 +59,7 @@ public class LoginSuccessJwtHandler implements AuthenticationSuccessHandler {
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		clearAuthenticationAttributes(request);
 
-		String userId = request.getParameter(loginId);
+		String userId = getLoginId();
 		
 		
 		try {

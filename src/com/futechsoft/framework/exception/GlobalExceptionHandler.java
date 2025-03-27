@@ -135,17 +135,15 @@ public class GlobalExceptionHandler {
 
 
 	
-	 @ModelAttribute
-	    public void addUserToModel(Model model) {
-	        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-	        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
-	            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-	            
-	            
-	            System.out.println(">>>>>>>>>>>>>>>>>>"+userDetails.getUserNo());
-	            model.addAttribute("user", userDetails);  // 모든 JSP에서 ${user.userNm} 사용 가능
-	        }
-	    }
+	@ModelAttribute
+    public void addUserToModel(Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.getPrincipal() instanceof CustomUserDetails) {
+            CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+            
+            model.addAttribute("user", userDetails);  // 모든 JSP에서 ${user.userNm} 사용 가능
+        }
+    }
 
 	/*
 	 * @ExceptionHandler(FileUploadException.class) protected String

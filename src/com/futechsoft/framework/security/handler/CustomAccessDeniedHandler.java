@@ -37,6 +37,10 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
 
 		if(accessDeniedException instanceof MissingCsrfTokenException || accessDeniedException instanceof InvalidCsrfTokenException) {
+			
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
+			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAA");
 			errorPage="/invalidCsrf";
 		}
 
