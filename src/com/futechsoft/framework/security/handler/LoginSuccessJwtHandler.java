@@ -71,25 +71,16 @@ public class LoginSuccessJwtHandler implements AuthenticationSuccessHandler {
 
 	        // JWT 토큰을 쿠키에 설정
 	        Cookie cookie = new Cookie("JWT", token);
-	        //cookie.setHttpOnly(true);  // JavaScript에서 접근할 수 없도록 설정
+	        cookie.setHttpOnly(true);  // JavaScript에서 접근할 수 없도록 설정
 	       // cookie.setSecure(true);    // HTTPS 프로토콜에서만 쿠키 전송 (프로덕션 환경에서만 활성화)
 	        cookie.setPath("/");       // 전체 도메인에서 쿠키 사용
 	        cookie.setMaxAge(3600);    // 1시간 동안 유효
 
 	        response.addCookie(cookie);
 	        
-	        System.out.println("token..."+token);
-			
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAA");
-			
 			securityService.resetFailCnt(userId);
 			
 			
-			System.out.println("gggggggggggggggggggggggg"+SecurityUtil.getUserNo());
 		} catch (BizException e) {
 			LOGGER.error(e.toString());
 		} catch (Exception e) {
