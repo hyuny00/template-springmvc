@@ -1,7 +1,6 @@
 package com.futechsoft.framework.security.service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,7 +26,7 @@ public class LayoutService {
 
 	@Autowired
 	private ResourceMenuEventListener resourceMenuEventListener;
-
+/*
 	public List<AuthMenu> getAuthMenuList() {
 
 		Map<String, List<AuthMenu>> menuMap = resourceMenuEventListener.authMenuMap();
@@ -99,10 +98,12 @@ public class LayoutService {
 
 		return topMenuSeqList;
 	}
-
+*/
+	
 	public Map<String, List<Menu>> getMenuListMap() {
 		return resourceMenuEventListener.getMenuListMap();
 	}
+	
 
 	private List<UserAuth> getUserAuthList() {
 		CustomUserDetails userDetails = SecurityUtil.getPrincipal();
@@ -119,7 +120,6 @@ public class LayoutService {
 		return userAuthList;
 	}
 
-	
 	
 
 	

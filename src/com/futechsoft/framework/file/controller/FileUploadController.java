@@ -130,8 +130,18 @@ public class FileUploadController extends AbstractController {
 	@ResponseBody
 	public Map<String, List<FileInfoVo>> deleteFile(@RequestBody FileInfoVo[] fileInfoVos) throws Exception {
 
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.temp");
+
+		String serviceType = propertiesConfiguration.getString("service.type");
+		
+		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
 		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
+		
+		if(serviceType.equals("dev")) {
+			 tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
+			 realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
+		}
+		
+		
 		/*
 		 * Gson gson = new Gson();
 		 * FileInfoVo[] fileInfoVos = gson.fromJson(delFileInfo, FileInfoVo[].class);
@@ -235,9 +245,21 @@ public class FileUploadController extends AbstractController {
 
 	@RequestMapping(value = "/file/download")
 	public void download(HttpServletRequest request, HttpServletResponse response) throws Exception {
-
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.temp");
+		
+		
+		String serviceType = propertiesConfiguration.getString("service.type");
+		
+		
+		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
 		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
+		
+		if(serviceType.equals("dev")) {
+			 tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
+			 realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
+		}
+		
+
+		
 
 		FtMap params = getFtMap(request);
 
@@ -306,7 +328,16 @@ public class FileUploadController extends AbstractController {
 
 	@RequestMapping(value = "/file/download/zip")
 	public void downloadZip(HttpServletRequest request, HttpServletResponse res) throws Exception {
-		String tempZipPath = propertiesConfiguration.getString("file.uploadPath.temp.zip");
+		
+		String serviceType = propertiesConfiguration.getString("service.type");
+		String tempZipPath =propertiesConfiguration.getString("file.uploadPath.temp.zip.real");
+	
+		
+		if(serviceType.equals("dev")) {
+			tempZipPath = propertiesConfiguration.getString("file.uploadPath.temp.zip.dev");
+		}
+
+		
 
 		FtMap params = getFtMap(request);
 
@@ -355,9 +386,19 @@ public class FileUploadController extends AbstractController {
 	@RequestMapping(value = "/file/isExistFile")
 	@ResponseBody
 	public Map<String, Object> isExistFile(HttpServletRequest request, FileInfoVo fileInfoVo) throws Exception {
+		
+		String serviceType = propertiesConfiguration.getString("service.type");
 
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.temp");
+		
+		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
 		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
+		
+		if(serviceType.equals("dev")) {
+			 tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
+			 realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
+		}
+
+		
 
 		FtMap params = getFtMap(request);
 

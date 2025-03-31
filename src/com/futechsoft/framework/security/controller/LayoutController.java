@@ -23,59 +23,27 @@ public class LayoutController {
 
 	@RequestMapping("/framework/layout/header")
 	public String topMenu(HttpServletRequest request) throws Exception {
-
-	//	request.setAttribute("topMenuSeqList", layoutService.getTopMenuSeqList());
-	//	request.setAttribute("menuList", layoutService.getMenuListMap());
-
 		return "framework/layout/header";
 	}
 
 	@RequestMapping("/framework/layout/leftMenu")
 	public String leftMenu(HttpServletRequest request) throws Exception {
-/*
-		Map<String, List<Menu>> menuListMap = layoutService.getMenuListMap();
-
-		request.setAttribute("authMenuList", layoutService.getAuthMenuList());
-		String topMenuSeq = request.getParameter("topMenuSeq");
-		request.setAttribute("subMenuList", menuListMap.get(topMenuSeq));
-
-
-		request.setAttribute("menuList", layoutService.getMenuListMap());
-*/
 		return "framework/layout/leftMenu";
 	}
 
 	@RequestMapping("/framework/layout/adminHeader")
 	public String adminHeader(HttpServletRequest request) throws Exception {
-
-		//request.setAttribute("topMenuSeqList", layoutService.getTopMenuSeqList());
-		//request.setAttribute("menuList", layoutService.getMenuListMap());
-
 		return "framework/layout/adminHeader";
 	}
 
 	@RequestMapping("/framework/layout/adminLeftMenu")
 	public String adminLeftMenu(HttpServletRequest request) throws Exception {
-/*
-		request.setAttribute("authMenuList", layoutService.getAuthMenuList());
-
-		Map<String, List<Menu>> menuListMap = layoutService.getMenuListMap();
-
-		String topMenuSeq = request.getParameter("topMenuSeq");
-		request.setAttribute("subMenuList", menuListMap.get(topMenuSeq));
-
-		request.setAttribute("menuList", layoutService.getMenuListMap());
-*/
 		return "framework/layout/adminLeftMenu";
 	}
 	
 	@GetMapping("/framework/layout/authMenuTree")
     public ResponseEntity<List<MenuVO>> getAuthMenuTree(@RequestParam(required = false) Long selectedMenuSeq) {
     	List<MenuVO> menuTree = layoutService.getAuthMenuTree(selectedMenuSeq);
-    	
-    	System.out.println(menuTree);
-    	
-    	
         return ResponseEntity.ok(menuTree);
     }
 }

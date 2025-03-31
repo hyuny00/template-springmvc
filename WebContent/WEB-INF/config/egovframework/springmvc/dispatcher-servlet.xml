@@ -6,6 +6,7 @@
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:security="http://www.springframework.org/schema/security"
        	xmlns:tx="http://www.springframework.org/schema/tx"
+       	  xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="
 				http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
 				http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.2.xsd
@@ -13,6 +14,8 @@
 				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
 				http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
 					http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+					http://www.springframework.org/schema/cache
+                                  http://www.springframework.org/schema/cache/spring-cache.xsd
 				">
 
     <!-- The controllers are autodetected POJOs labeled with the @Controller annotation. -->
@@ -23,7 +26,8 @@
         <context:exclude-filter expression="org.springframework.stereotype.Repository" type="annotation"/>
     </context:component-scan>
 
-
+    
+     
  	<mvc:annotation-driven/>
 
  	<aop:aspectj-autoproxy />

@@ -8,9 +8,11 @@ import javax.annotation.Resource;
 import org.apache.poi.xssf.streaming.SXSSFSheet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.futechsoft.framework.annotation.CacheAccess;
 import com.futechsoft.framework.common.page.Page;
 import com.futechsoft.framework.common.page.Pageable;
 import com.futechsoft.framework.excel.CustomResultHandler;
@@ -48,6 +50,7 @@ public class SampleService extends EgovAbstractServiceImpl {
 	 * @return 샘플목록
 	 * @throws Exception
 	 */
+	@CacheAccess(value = "userCache")
 	public Page<FtMap> selectSampleList(Pageable pageable, FtMap params) throws Exception {
 
 		List<FtMap> list = sampleMapper.selectSampleList(pageable, params);
@@ -125,6 +128,7 @@ public class SampleService extends EgovAbstractServiceImpl {
 	 * @param params
 	 * @throws Exception
 	 */
+	@CacheEvict(value = "userCache", allEntries = true)
 	@Transactional
 	public void updateSample(FtMap params) throws Exception {
 

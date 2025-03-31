@@ -13,7 +13,6 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 
-
     <!-- 환경설정 기본정보를 globals.properties 에서 참조하도록 propertyConfigurer 설정  -->
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
