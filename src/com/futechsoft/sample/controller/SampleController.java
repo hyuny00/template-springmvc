@@ -92,13 +92,28 @@ public class SampleController extends AbstractController{
 		request.setAttribute("etcCode", etcCode);
 
 
+		
 
+		System.out.println("getPageSize..........."+page.getPageable().getPageSize());
+		System.out.println("getDisplayPage..........."+page.getPageable().getDisplayPage());
+		System.out.println("getListPageSize..........."+page.getPageable().getListPageSize());
+		System.out.println("getTotalCount..........."+page.getPageable().getTotalCount());
+		System.out.println("getTotalPage..........."+page.getPageable().getTotalPage());
+		System.out.println("isNext..........."+page.getPageable().isNext());
+		
+		request.setAttribute("getTotalPage", page.getPageable().getTotalPage());
+
+		request.setAttribute("getTotalCount", page.getPageable().getTotalCount());
+		request.setAttribute("isNext", page.getPageable().isNext());
+		
+		
+		
 		request.setAttribute("list", page.getList());
-		request.setAttribute("pageable", page.getPageable());
-
+		
+		request.setAttribute("pageObject", page.getPageable());
 		return "tiles:sample/sampleList";
 	}
-
+ 
 	/**
 	 * 샘플폼으로 이동한다
 	 * @param request

@@ -1,7 +1,13 @@
 package com.futechsoft.framework.common.page;
 
-public class Pageable {
+import java.io.Serializable;
 
+public class Pageable implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int pageNo = 1;
 	private int offset;
 	private int pageSize = 10;

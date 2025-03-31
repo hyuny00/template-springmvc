@@ -56,7 +56,10 @@ public class SampleService extends EgovAbstractServiceImpl {
 		List<FtMap> list = sampleMapper.selectSampleList(pageable, params);
 		long count = sampleMapper.countSampleList(params);
 
+		//pageable.setTotalCount(count);
 		Page<FtMap> page = new Page<FtMap>(pageable, list, count);
+		
+		
 
 		return page;
 	}

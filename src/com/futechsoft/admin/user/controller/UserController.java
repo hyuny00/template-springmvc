@@ -55,7 +55,7 @@ public class UserController extends AbstractController {
 		Page<FtMap> page = service.getPageList(pageble, params);
 
 		request.setAttribute("list", page.getList());
-		request.setAttribute("pageble", page.getPageable());
+		request.setAttribute("pageObject", page.getPageable());
 
 		return "admin_tiles:admin/user/userList";
 		

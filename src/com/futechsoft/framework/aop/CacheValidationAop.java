@@ -42,6 +42,8 @@ public class CacheValidationAop {
     public Object validateCache(ProceedingJoinPoint joinPoint) throws Throwable {
     	
     	
+    	
+    	
         Object[] args = joinPoint.getArgs();
         Pageable pageable = null;
         FtMap params = null;

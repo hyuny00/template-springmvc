@@ -190,8 +190,9 @@
         	<div >
 
         	</div>
-        	<!-- /List -->
-
+        	<!-- /List --> ${isNext}
+    ${pageable.prev}oooooooooo  ${pageable.next}
+ ${getTotalCount}AAAAAAAAA   ${getTotalPage}"JJJJJJJJJ"${pageable.totalCount}dddddd${pageable.pageNo}llllllllll${pageable2.totalCount}
         	<jsp:include page="/WEB-INF/jsp/framework/_includes/paging.jsp" flush="true"/>
 
         	<div id="sysbtn">

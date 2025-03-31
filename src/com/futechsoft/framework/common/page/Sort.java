@@ -1,6 +1,8 @@
 package com.futechsoft.framework.common.page;
 
-public class Sort {
+import java.io.Serializable;
+
+public class Sort implements Serializable{
 
 	private String direction = "";
 
