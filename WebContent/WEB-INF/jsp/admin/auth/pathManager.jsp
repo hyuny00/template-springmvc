@@ -465,7 +465,7 @@
 			<input type="hidden" name="mode" id="mode">
 			<jsp:include page="/WEB-INF/jsp/framework/_includes/includePageParam.jsp" flush="true" />
 			<h2 class="page-title">
-				<span>경로관리</span>
+				<span>리소스관리</span>
 			</h2>
 			<blockquote class="page-desc">url주소의 권한을 관리하실수 있습니다</blockquote>
 			<div class="">

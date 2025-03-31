@@ -406,6 +406,7 @@
 			<jsp:include page="/WEB-INF/jsp/framework/_includes/includePageParam.jsp" flush="true" />
 			<input type="hidden" name="menuOrd" id="menuOrd">
 			<input type="hidden" name="mode" id="mode" value="new">
+			<input type="hidden" name="useYn" id="useYn" value="Y">
 			<input type="hidden" name="selectedMenuTypeCd" id="selectedMenuTypeCd">
 				<div class="popup-conts table-scroll">
 					<div class="flex pc">
