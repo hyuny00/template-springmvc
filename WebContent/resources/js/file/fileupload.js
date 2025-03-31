@@ -816,7 +816,7 @@ var uploadModule =(function() {
 		     }
 
 			 if(acceptFile.toUpperCase().indexOf(fileExt.toUpperCase()) == -1){
-				 $("#progressLabel_"+uploadFormId).html("파일확장자가 "+fileExt+ "인 파일은 업로드 할수 없습니다.");
+				 $("#progressLabel_"+uploadFormId).append("["+fileNm+"] : 파일확장자가 "+fileExt+ "인 파일은 업로드 할수 없습니다.");
 				 continue;
 			 }
 
@@ -824,7 +824,7 @@ var uploadModule =(function() {
 			 if( isNotEmpty(maxFileSize)){
 				 tmpmaxFileSize = maxFileSize.substr(0, maxFileSize.length-1);
 				 if(files[i].size > tmpmaxFileSize*1024*1024 ){
-					 $("#progressLabel_"+uploadFormId).html("파일사이즈가 "+maxFileSize+ "이하만 업로드 가능합니다.");
+					 $("#progressLabel_"+uploadFormId).append("["+fileNm+"] : 파일사이즈가 "+maxFileSize+ "이하만 업로드 가능합니다.");
 					 continue;
 				 }
 			 }else{
@@ -833,7 +833,7 @@ var uploadModule =(function() {
 
 
 			 if( tempFileList.indexOf(files[i].name) != -1){
-				 $("#progressLabel_"+uploadFormId).html("파일명이 같은 파일이 존재합니다.");
+				 $("#progressLabel_"+uploadFormId).append("["+fileNm+"] : 파일명이 같은 파일이 존재합니다.");
 				 continue;
 			 }
 			 fileList.push(files[i]);

@@ -20,8 +20,7 @@
     </nav>
 </header>
 
-<!-- common-menu.js 스크립트를 먼저 로드 -->
-<script src="${basePath}/js/common-menu.js"></script>
+
 <script>
 // 페이지 로드 시 탑 메뉴 렌더링
 $(document).ready(function() {
