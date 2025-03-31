@@ -25,6 +25,7 @@ public class LayoutController {
 	@Autowired
 	private LayoutService layoutService;
 
+	/*
 	@RequestMapping("/framework/layout/header")
 	public String topMenu(HttpServletRequest request) throws Exception {
 
@@ -72,6 +73,7 @@ public class LayoutController {
 
 		return "framework/layout/adminLeftMenu";
 	}
+	*/
 	
 	@GetMapping("/framework/layout/authMenuTree")
     public ResponseEntity<List<MenuVO>> getAuthMenuTree(@RequestParam(required = false) Long selectedMenuSeq) {

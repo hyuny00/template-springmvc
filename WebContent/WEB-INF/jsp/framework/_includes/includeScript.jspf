@@ -17,7 +17,7 @@
 <script src="${basePath}/js/bootstrap.min.js"></script>
 <script src="${basePath}/js/ui.js" ></script>
 <script src="${basePath}/js/regbnCustom.js" ></script>
-
+<script src="${basePath}/js/menu/common-menu.js" ></script>
 
 <script >
 
@@ -50,9 +50,10 @@
 		  $.ajaxSetup({
 			    beforeSend: function(xhr, settings) {
 			    	xhr.setRequestHeader("AJAX", true);
-			        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-			            xhr.setRequestHeader("${_csrf.headerName}", token);
-			        }
+			    	//jwt 사용시 csrf사용안하게 함
+			        //if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+			           // xhr.setRequestHeader("${_csrf.headerName}", token);
+			        //}
 			    }
 			});
 

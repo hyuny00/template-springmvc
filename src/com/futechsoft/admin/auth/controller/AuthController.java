@@ -90,6 +90,9 @@ public class AuthController extends AbstractController {
 	@ResponseBody
 	@RequestMapping("/admin/menu/getAuthMenuList")
 	public List<FtMap> getAuthMenuList(HttpServletRequest request) throws Exception {
+		
+		
+		System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKK");
 
 		FtMap params = getFtMap(request);
 

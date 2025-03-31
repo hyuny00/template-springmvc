@@ -1,6 +1,5 @@
 package com.futechsoft.framework.security.controller;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.futechsoft.framework.exception.ErrorCode;
 import com.futechsoft.framework.security.auth.CustomUserDetailsService;
-import com.futechsoft.framework.security.auth.JwtTokenProvider;
 import com.futechsoft.framework.security.handler.LoginFailureHandler;
 import com.futechsoft.framework.security.handler.LoginSuccessHandler;
 import com.futechsoft.framework.security.handler.LoginSuccessJwtHandler;
@@ -113,9 +111,6 @@ public class LoginController {
 	}
 	
 	
-	//@Autowired
-	//private JwtTokenProvider jwtProvider;
-	
 	@RequestMapping(value = "/loginWithoutSecurityJwt")
 	public void loginWithoutSecurityJwt(String userId, String password, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -128,7 +123,6 @@ public class LoginController {
 			if (!matchPassword(password, user.getPassword())) {
 				throw new BadCredentialsException(ErrorCode.BAD_CREDENTIALS.getMessage());
 			}
-			
 			
 			
 			// Authentication 객체 생성

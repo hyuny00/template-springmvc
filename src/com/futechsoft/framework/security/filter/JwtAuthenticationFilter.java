@@ -50,6 +50,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
+        
+        
+        System.out.println("jwtToken............"+jwtToken);
+        
+        
+        
         // 2. JWT가 없으면 다음 필터로 이동
         if (jwtToken == null) { // JWT가 없을 때만 바로 다음 필터로 진행
             filterChain.doFilter(request, response);
