@@ -13,7 +13,7 @@
 
 
 <input type="hidden" name="pageNo" value="<c:if test="${empty param.pageNo}">1</c:if><c:if test="${not empty param.pageNo}">${param.pageNo}</c:if>"/>
-<input type="hidden" name="pageSize" value="<c:if test="${empty param.pageSize}">500</c:if><c:if test="${not empty param.pageSize}">${param.pageSize}</c:if>"/>
+<input type="hidden" name="pageSize" value="<c:if test="${empty param.pageSize}">10</c:if><c:if test="${not empty param.pageSize}">${param.pageSize}</c:if>"/>
 
 
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
