@@ -61,13 +61,8 @@ public class SampleController extends AbstractController{
 
 		// 권한 체크 필요할때(ROLE_ 붙여야함)
 		if (SecurityUtil.hasAuth("ROLE_ADMIN")) {
-			LOGGER.debug("jjjjjjjjjjjjjjjjjjjjjjjj");
+			LOGGER.debug("ROLE_ADMIN");
 		}
-
-
-
-		LOGGER.debug("getMiniCd..."+SecurityUtil.getMiniCd());
-		LOGGER.debug("getDptCd..."+SecurityUtil.getDptCd());
 
 		FtMap params = super.getFtMap(request);
 		params.put("userNo", SecurityUtil.getUserNo());
@@ -91,25 +86,8 @@ public class SampleController extends AbstractController{
 		LOGGER.debug(etcCode.toString());
 		request.setAttribute("etcCode", etcCode);
 
-
-		
-
-		System.out.println("getPageSize..........."+page.getPageable().getPageSize());
-		System.out.println("getDisplayPage..........."+page.getPageable().getDisplayPage());
-		System.out.println("getListPageSize..........."+page.getPageable().getListPageSize());
-		System.out.println("getTotalCount..........."+page.getPageable().getTotalCount());
-		System.out.println("getTotalPage..........."+page.getPageable().getTotalPage());
-		System.out.println("isNext..........."+page.getPageable().isNext());
-		
-		request.setAttribute("getTotalPage", page.getPageable().getTotalPage());
-
-		request.setAttribute("getTotalCount", page.getPageable().getTotalCount());
-		request.setAttribute("isNext", page.getPageable().isNext());
-		
-		
 		
 		request.setAttribute("list", page.getList());
-		
 		request.setAttribute("pageObject", page.getPageable());
 		return "tiles:sample/sampleList";
 	}
@@ -151,11 +129,6 @@ public class SampleController extends AbstractController{
 	 * @return  jsp경로
 	 * @throws Exception
 	 */
-	//@PostAuthorize("isAuthenticated() and ((returnObject.userId==principal.userId) or hasRole('ROLE_ADMIN'))")
-		//@PostAuthorize("isAuthenticated() and (returnObject.getString('id') == 'SAMPLE-00001' or  hasRole('ROLE_ADMIN'))")
-	//로그인하고 리턴값의 id가  'SAMPLE-00001' 이거나 권한이 ROLE_ADMIN인경우만 조회됨
-//	@PostAuthorize("isAuthenticated() and (#model['result'].getString('id') == 'SAMPLE-00001'  or  hasRole('ROLE_ADMIN') )")
-	//@PreAuthorize("isAuthenticated() and ((#userId==principal.userId) or hasRole('ROLE_ADMIN'))")
 	@RequestMapping("/sample/selectSample")
 	public String selectSample(HttpServletRequest request) throws Exception {
 
@@ -164,8 +137,6 @@ public class SampleController extends AbstractController{
 		FtMap result = sampleService.selectSample(params);
 
 		request.setAttribute("result", result);
-
-
 
 
 		return "tiles:sample/sampleForm";
@@ -340,7 +311,6 @@ public class SampleController extends AbstractController{
 			JxlsHelper.getInstance().processTemplate(io, os, context);
 		} catch (Exception e) {
 			response.setHeader("Set-Cookie", "fileDownload=false; path=/");
-//			e.printStackTrace();
 			LOGGER.error(e.toString());
 		}
 

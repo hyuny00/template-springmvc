@@ -190,9 +190,6 @@
         	<div >
 
         	</div>
-        	<!-- /List --> ${isNext}
-    ${pageable.prev}oooooooooo  ${pageable.next}
- ${getTotalCount}AAAAAAAAA   ${getTotalPage}"JJJJJJJJJ"${pageable.totalCount}dddddd${pageable.pageNo}llllllllll${pageable2.totalCount}
         	<jsp:include page="/WEB-INF/jsp/framework/_includes/paging.jsp" flush="true"/>
 
         	<div id="sysbtn">
@@ -200,9 +197,6 @@
         	      <li>
         	          <span class="btn_blue_l">
         	              	<a href="javascript:sampleForm();">create</a>
-
-       	               	
-
                       </span>
                       <sec:authorize access="hasAnyRole('ROLE_ADMIN','ROLE_USER')">
 						   [권한 체크]

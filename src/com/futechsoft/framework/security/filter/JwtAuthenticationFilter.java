@@ -6,6 +6,7 @@ import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,6 +34,16 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
+    	
+    	
+    	// **1. 기존 SecurityContext 확인 (이미 인증된 상태라면 JWT 검증 생략)JWT,session같이사용
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        
+        
+        
         // 1. JWT 가져오기
         String authHeader = request.getHeader("Authorization");
         String jwtToken = null;
@@ -50,9 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
-        
-        
-        System.out.println("jwtToken............"+jwtToken);
         
         
         
@@ -73,6 +81,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 UsernamePasswordAuthenticationToken authToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authToken);
+                
+                
+                // **1. 기존 SecurityContext 확인 (이미 인증된 상태라면 JWT 검증 생략)JWT,session같이사용
+                HttpSession session = request.getSession(true); // 세션이 없으면 생성
+                session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
                 
             }
         }

@@ -40,7 +40,9 @@ public class JwtTokenProvider {
 	    
 	    private String secretKeyString = "your-secret-key-which-should-be-at-least-256-bits-long"; // 256 비트 이상의 키 문자열
 	    private SecretKey secretKey;
-	    private final long validityInMilliseconds = 3600000; // 1시간
+	    
+	    //private final long validityInMilliseconds = 3600000; // 1시간
+	    private final long validityInMilliseconds = 1800000; // 30분
 
 	    @PostConstruct
 	    protected void init() {

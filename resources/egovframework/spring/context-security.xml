@@ -25,8 +25,11 @@
 	<security:http pattern="/login/loginPage" security="none"/>
 
 
-
+<!--  
     <security:http auto-config="false" use-expressions="true" create-session="stateless">
+ -->   
+     <security:http auto-config="false" use-expressions="true" create-session="ifRequired">
+    
 
 		<security:headers>
 	           <security:frame-options disabled="true"></security:frame-options>
