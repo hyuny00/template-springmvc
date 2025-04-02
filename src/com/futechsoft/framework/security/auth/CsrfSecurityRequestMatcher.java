@@ -19,6 +19,7 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
 	private RequestMatcher ckUploadMatcher = new RegexRequestMatcher("/file/uploadImage.*", null, true);
 	private RequestMatcher registCertMatcher = new RegexRequestMatcher("/admin/user/registCert", null, true);
 	private RequestMatcher certLoginMatcher = new RegexRequestMatcher("/login/certLogin", null, true);
+	private RequestMatcher LoginMatcher = new RegexRequestMatcher("/login/loginPage", null, true);
 
 	//비로그인 사용자등록
 	private RequestMatcher idDupChk = new RegexRequestMatcher("/admin/user/popup/idDupChk", null, true);
@@ -27,7 +28,7 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
 	private RequestMatcher authMatcher = new RegexRequestMatcher("/auth", null, true);
 
 
-	private RequestMatcher orMatcher = new OrRequestMatcher(wsMatcher, ckUploadMatcher, registCertMatcher, certLoginMatcher, idDupChk, userForm, authMatcher);
+	private RequestMatcher orMatcher = new OrRequestMatcher(wsMatcher, ckUploadMatcher, registCertMatcher, certLoginMatcher, idDupChk, userForm, authMatcher,LoginMatcher);
 
 	@Override
 	public boolean matches(HttpServletRequest request) {

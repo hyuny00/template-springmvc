@@ -9,7 +9,6 @@
  <c:if test="${includeCss}">
  	<link rel="stylesheet" href="${basePath}/css<tiles:getAsString name="includeCss"/>.css" >
  </c:if>
- <link href="${basePath}/css/noti.css" rel="stylesheet" />
 
 
 <!--<link href="data:image/x-icon;" type="image/x-icon" rel="shortcut icon">-->

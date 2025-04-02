@@ -23,7 +23,7 @@
 	<security:http pattern="/favicon.ico" security="none"/>
 	<security:http pattern="/index.jsp" security="none"/>
 	<security:http pattern="/login/loginPage" security="none"/>
-
+	<security:http pattern="/tiles" security="none"/>
 
 <!--  
     <security:http auto-config="false" use-expressions="true" create-session="stateless">

@@ -16,18 +16,10 @@
 
 <script src="${basePath}/js/bootstrap.min.js"></script>
 <script src="${basePath}/js/ui.js" ></script>
-<script src="${basePath}/js/regbnCustom.js" ></script>
 <script src="${basePath}/js/menu/common-menu.js" ></script>
 
 <script >
 
-	var host = location.host.toLowerCase();
-	var currentAddress = location.href;
-
-	if (host.indexOf("gyujis.go.kr")!=-1 && host.indexOf("www")== -1) {
-	    currentAddress = currentAddress.replace("//","//www.");
-	    location.href = currentAddress;
-	}
 
 	var console = window.console || {log:function(){}};
 
@@ -57,10 +49,9 @@
 			    }
 			});
 
-		  <sec:authorize access="isAuthenticated()">
 			  $.idleHands({
 	              activityEvents: 'click keypress scroll wheel mousewheel mousemove',
-	              applicationId: 'gyujis_application',
+	              applicationId: 'my_application',
 	              dialogMessage: '계속 로그인을 유지하겠습니까?',
 	              dialogTimeRemainingLabel: '로그아웃까지 남은 시간',
 	              dialogTitle: 'Logging out...',
@@ -72,14 +63,13 @@
 	              heartRate: 300,
 	              inactivityLogoutUrl: '${basePath}/autoLogout',
 	              inactivityDialogDuration: 45,
-	              localStoragePrefix: 'gyujis_application',
+	              localStoragePrefix: 'my_application',
 	              logoutNowButtonText: "로그아웃",
 	              manualLogoutUrl: null,
 	              maxInactivitySeconds: 5400,
 	              stayLoggedInButtonText: "로그인유지"
 	          });
 			  $('#jquery-idle-hands').hide();
-		</sec:authorize>
 
 	 });
 
@@ -93,7 +83,3 @@
 
 </script>
 <script  src="${basePath}/js/file/fileupload.js"></script>
-
- <c:if test="${includeGpki}">
- 	<jsp:include page="/WEB-INF/jsp/framework/_includes/includeGpkiJs.jsp"></jsp:include>
- </c:if>
