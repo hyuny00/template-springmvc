@@ -43,9 +43,9 @@
 					            login-processing-url="/auth"
 					            username-parameter="userId"
 					            password-parameter="password" />
-
-		<security:csrf disabled="true" />
-		<!--<security:csrf request-matcher-ref="csrfSecurityRequestMatcher"/>-->
+<!--
+		<security:csrf disabled="true" />-->
+		<security:csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
 
 	  	<security:anonymous granted-authority="ROLE_ANONYMOUS" />
 	  	

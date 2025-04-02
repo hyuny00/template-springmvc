@@ -36,12 +36,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
     	
     	
+    	
     	// **1. 기존 SecurityContext 확인 (이미 인증된 상태라면 JWT 검증 생략)JWT,session같이사용
         if (SecurityContextHolder.getContext().getAuthentication() != null) {
             filterChain.doFilter(request, response);
             return;
         }
-        
         
         
         // 1. JWT 가져오기
@@ -61,7 +61,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 }
             }
         }
-        
         
         
         // 2. JWT가 없으면 다음 필터로 이동

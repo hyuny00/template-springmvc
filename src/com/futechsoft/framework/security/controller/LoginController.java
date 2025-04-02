@@ -111,7 +111,7 @@ public class LoginController {
 	}
 	
 	
-	@RequestMapping(value = "/loginWithoutSecurityJwt")
+	@RequestMapping(value = "/loginSessAndJwt")
 	public void loginWithoutSecurityJwt(String userId, String password, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
 		System.out.println("userIduserId...."+userId);

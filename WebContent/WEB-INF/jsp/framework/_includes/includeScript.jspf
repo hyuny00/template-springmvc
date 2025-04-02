@@ -43,9 +43,9 @@
 			    beforeSend: function(xhr, settings) {
 			    	xhr.setRequestHeader("AJAX", true);
 			    	//jwt 사용시 csrf사용안하게 함
-			        //if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
-			           // xhr.setRequestHeader("${_csrf.headerName}", token);
-			        //}
+			        if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+			            xhr.setRequestHeader("${_csrf.headerName}", token);
+			        }
 			    }
 			});
 

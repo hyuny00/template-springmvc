@@ -26,9 +26,10 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
 	private RequestMatcher userForm = new RegexRequestMatcher("/admin/user/userAppl/insertUser", null, true);
 
 	private RequestMatcher authMatcher = new RegexRequestMatcher("/auth", null, true);
+	private RequestMatcher jwtAuthMatcher = new RegexRequestMatcher("/loginSessAndJwt", null, true);
 
 
-	private RequestMatcher orMatcher = new OrRequestMatcher(wsMatcher, ckUploadMatcher, registCertMatcher, certLoginMatcher, idDupChk, userForm, authMatcher,LoginMatcher);
+	private RequestMatcher orMatcher = new OrRequestMatcher(wsMatcher, ckUploadMatcher, registCertMatcher, certLoginMatcher, idDupChk, userForm, authMatcher,LoginMatcher,jwtAuthMatcher);
 
 	@Override
 	public boolean matches(HttpServletRequest request) {
