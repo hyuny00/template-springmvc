@@ -6,12 +6,11 @@ import org.apache.ibatis.annotations.Param;
 
 import com.futechsoft.admin.user.vo.UserAuth;
 import com.futechsoft.framework.annotation.Mapper;
-import com.futechsoft.framework.common.mapper.GenericMapper;
 import com.futechsoft.framework.common.page.Pageable;
 import com.futechsoft.framework.util.FtMap;
 
 @Mapper("user.mapper.UserMapper")
-public interface UserMapper extends GenericMapper<FtMap> {
+public interface UserMapper  {
 
 
 

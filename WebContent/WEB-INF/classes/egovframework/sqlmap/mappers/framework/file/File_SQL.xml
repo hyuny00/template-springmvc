@@ -69,7 +69,7 @@
 				   file_path,
 				   file_ord,
 				   file_auth,
-				   TBL_NM,
+				   TBL_NM, 
 				   TBL_COL_NM,
 				   DEL_YN,
 				   RGR_ID,
@@ -105,6 +105,15 @@
     		file_id = #{fileId}
     </update>
 
+  <update id="updateFileOrd" parameterType="ftMap">
+    	UPDATE
+    		TB_FILE
+    	SET
+    		file_ord = #{fileOrd}
+    	WHERE
+    		file_id = #{fileId}
+    </update>
+    
 
       <update id="deleteDoc" parameterType="ftMap">
     	DELETE
@@ -113,11 +122,11 @@
     		doc_id = #{docId}
     </update>
 
-      <update id="deleteFile" parameterType="ftMap">
+      <delete id="deleteFile" parameterType="ftMap">
     	DELETE
     		TB_FILE
     	WHERE
     		file_id = #{fileId}
-    </update>
+    </delete>
 	 
 </mapper>

@@ -29,10 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.futechsoft.framework.common.sqlHelper.Column;
-import com.futechsoft.framework.common.sqlHelper.InsertParam;
-import com.futechsoft.framework.common.sqlHelper.TableInfo;
-import com.futechsoft.framework.common.sqlHelper.WhereKey;
+
 import com.futechsoft.framework.exception.ErrorCode;
 import com.futechsoft.framework.exception.FileUploadException;
 import com.futechsoft.framework.exception.ZipParsingException;
@@ -210,12 +207,16 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	public List<String> saveFiles(FtMap paramMap, String saveFilePath, String findDocId) throws Exception {
 		return  save( paramMap,  saveFilePath, findDocId);
 	}
+	
+	
 
 	/**
 	 * 파일정보를 DB에 인서트한다
 	 * @param param
 	 * @throws Exception
 	 */
+	
+	/*
 	@Transactional
 	public void saveFile(FtMap param) throws Exception {
 
@@ -224,7 +225,9 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 		InsertParam insertParam = new InsertParam(TableInfo.FILE_TABLE, param, columnList, "file_id");
 		mapper.insert(insertParam);
 	}
-
+   */
+	
+	
 	/**
 	 * 파일을 저장한다
 	 * @param paramMap
@@ -323,8 +326,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 			if (!refDocId.equals(findDocId)) return;
 		}
 
-		List<FtMap> columnList = mapper.getColumnList(TableInfo.FILE_TABLE);
-
+	
 		int fileOrd = 0;
 		for (FileInfoVo fileInfoVo : fileInfoVos) {
 
@@ -334,7 +336,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 			if (StringUtils.defaultString(fileInfoVo.getTemp()).equals("Y")) {
 				File file = Paths.get(tempUploadPath, fileInfoVo.getFileId() + ".TEMP").toFile();
 				File fileToMove = Paths.get(realUploadPath, saveFilePath, fileInfoVo.getFileId() + ".FILE").toFile();
-
+ 
 
 				FileUtils.moveFile(file, fileToMove);
 
@@ -361,8 +363,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 				FtMap param = new FtMap();
 				param.setFtMap(map);
 
-				InsertParam insertParam = new InsertParam(TableInfo.FILE_TABLE, param, columnList, "file_id");
-				mapper.insert(insertParam);
+				mapper.insertFileInfo(param);
 
 				if(StringUtils.defaultString(fileInfoVo.getThumbnailYn()).equals("Y")) {
 
@@ -388,7 +389,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 				FtMap param = new FtMap();
 				param.put("fileId", fileInfoVo.getFileId());
 				param.put("fileOrd", fileInfoVo.getFileOrd());
-				mapper.updateColumn(TableInfo.FILE_TABLE, param, new Column("file_ord"), new WhereKey("file_id"));
+				mapper.updateFileOrd(param);
 			}
 
 			//실제파일삭제START
@@ -421,7 +422,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	 * @throws Exception
 	 */
 	public void deleteFile(FtMap params) throws Exception {
-		mapper.delete(TableInfo.FILE_TABLE, params, new WhereKey("file_id"));
+		mapper.deleteFile(params);
 	}
 
 	/**
@@ -706,7 +707,6 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 		}
 
 
-		List<FtMap> columnList = mapper.getColumnList(TableInfo.FILE_TABLE);
 
 		int fileOrd = 0;
 
@@ -741,13 +741,15 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 				Map<String, Object> map = ConvertUtil.beanToMap(fileInfoVo);
 				FtMap param = new FtMap();
 				param.setFtMap(map);
-
+ 
+				
+				
 				//삭제후 저장
 				param.put("docId", docId);
-				mapper.delete(TableInfo.FILE_TABLE, param, new WhereKey("doc_id"));
+				mapper.deleteDoc(param);
 
-				InsertParam insertParam = new InsertParam(TableInfo.FILE_TABLE, param, columnList, "file_id");
-				mapper.insert(insertParam);
+
+				mapper.insertFileInfo(param);
 
 			}
 

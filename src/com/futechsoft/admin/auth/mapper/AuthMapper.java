@@ -7,7 +7,6 @@ import com.futechsoft.admin.auth.vo.AuthMenu;
 import com.futechsoft.admin.auth.vo.Path;
 import com.futechsoft.admin.auth.vo.PathAuth;
 import com.futechsoft.framework.annotation.Mapper;
-import com.futechsoft.framework.common.mapper.GenericMapper;
 import com.futechsoft.framework.util.FtMap;
 
 /**
@@ -19,7 +18,7 @@ import com.futechsoft.framework.util.FtMap;
  * @version $Revision$
  */
 @Mapper("auth.mapper.AuthMapper")
-public interface AuthMapper extends GenericMapper<FtMap> {
+public interface AuthMapper {
 
 	public List<Auth> getAuthList(FtMap params);
 

@@ -80,6 +80,7 @@ public class FileUtil {
 
 		boolean deleteFileCheck = true;
 
+		/*
 		if (!SecurityUtil.hasAuth(AuthConstant.ROLE_ADMIN, AuthConstant.ROLE_REGBN_USER, AuthConstant.ROLE_REGBN_MGR)) {
 			if (!StringUtils.defaultString(SecurityUtil.getUserNo()).equals(realFileInfoVo.getRgstpNo())) {
 				String fileAuth = realFileInfoVo.getFileAuth();
@@ -93,7 +94,7 @@ public class FileUtil {
 				}
 			}
 		}
-
+*/
 		return deleteFileCheck;
 	}
 
@@ -107,7 +108,7 @@ public class FileUtil {
 	public static boolean hasFileDownloadAuth(FileInfoVo fileInfoVo) throws Exception {
 
 		boolean fileDownloadCheck = true;
-
+/*
 		if (!SecurityUtil.hasAuth(AuthConstant.ROLE_ADMIN, AuthConstant.ROLE_REGBN_MGR, AuthConstant.ROLE_REGBN_USER, AuthConstant.ROLE_REGBN_APPR, AuthConstant.ROLE_REGBN_ACCPT)) {
 			if (!StringUtils.defaultString(SecurityUtil.getUserNo()).equals(fileInfoVo.getRgstpNo())) {
 				String fileAuth = fileInfoVo.getFileAuth();
@@ -119,7 +120,7 @@ public class FileUtil {
 				}
 			}
 		}
-
+*/
 		return fileDownloadCheck;
 	}
 

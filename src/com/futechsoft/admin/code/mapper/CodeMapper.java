@@ -4,11 +4,10 @@ import java.util.List;
 
 import com.futechsoft.admin.code.vo.Code;
 import com.futechsoft.framework.annotation.Mapper;
-import com.futechsoft.framework.common.mapper.GenericMapper;
 import com.futechsoft.framework.util.FtMap;
 
 @Mapper("code.mapper.CodeMapper")
-public interface CodeMapper extends GenericMapper<FtMap> {
+public interface CodeMapper {
 
 	List<Code> getCodeList(FtMap params) throws Exception;
 

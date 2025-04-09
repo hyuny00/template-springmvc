@@ -9,9 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.futechsoft.admin.code.mapper.CodeMapper;
 import com.futechsoft.admin.code.vo.Code;
-import com.futechsoft.framework.common.sqlHelper.Column;
-import com.futechsoft.framework.common.sqlHelper.TableInfo;
-import com.futechsoft.framework.common.sqlHelper.WhereKey;
 import com.futechsoft.framework.util.FtMap;
 
 @Service("code.service.CodeService")

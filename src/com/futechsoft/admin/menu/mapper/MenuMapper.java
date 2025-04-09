@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.futechsoft.admin.menu.vo.Menu;
 import com.futechsoft.framework.annotation.Mapper;
-import com.futechsoft.framework.common.mapper.GenericMapper;
 import com.futechsoft.framework.util.FtMap;
 
 /**
@@ -16,7 +15,7 @@ import com.futechsoft.framework.util.FtMap;
  * @version $Revision$
  */
 @Mapper("menu.mapper.MenuMapper")
-public interface MenuMapper extends GenericMapper<FtMap> {
+public interface MenuMapper {
 
 	List<Menu> getMenuList(FtMap params) throws Exception;
 

@@ -6,7 +6,7 @@ import com.futechsoft.framework.annotation.Mapper;
 import com.futechsoft.framework.util.FtMap;
 
 @Mapper("framework.common.mapper.CommonMapper")
-public interface CommonMapper extends GenericMapper<FtMap> {
+public interface CommonMapper{
 
 	List<FtMap> selectCommonCodeList(FtMap params) throws Exception;
 	void insertUserAuth(FtMap params) throws Exception;
