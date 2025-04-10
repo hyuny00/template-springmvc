@@ -20,6 +20,7 @@ import com.futechsoft.framework.excel.ExcelColumn;
 import com.futechsoft.framework.excel.LargeExcel;
 import com.futechsoft.framework.file.service.FileUploadService;
 import com.futechsoft.framework.util.FtMap;
+import com.futechsoft.framework.util.SecurityUtil;
 import com.futechsoft.sample.mapper.SampleMapper;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -101,8 +102,12 @@ public class SampleService extends EgovAbstractServiceImpl {
 	@Transactional
 	public void insertSample(FtMap params) throws Exception {
 
+		
+		
 		//업무테이블명세팅
 		params.put("tblNm", "tb_propodal_master");
+		params.put("userNo", SecurityUtil.getUserNo());
+		
 		//fileUploadService.saveFile(params, "AAAA");
 		/*
 		fileUploadService.saveFile(params, "AAAA","attcDocId");
@@ -114,6 +119,8 @@ public class SampleService extends EgovAbstractServiceImpl {
 		params.put("attcDocId", attcDocId);
 */
 
+		
+		
 		List<String> tempDocIdList = fileUploadService.saveFiles(params, "AAAA","attcDocId");
 		for(String  docInfo : tempDocIdList) {
 			LOGGER.debug("mmmmmmm..."+docInfo);

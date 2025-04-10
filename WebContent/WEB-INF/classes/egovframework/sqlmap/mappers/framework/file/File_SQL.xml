@@ -51,12 +51,12 @@
 				file_size,
 				file_path, 
 				del_yn,
-				RGR_ID,
+				RGSTP_NO,
 				file_ord,
 				file_auth,
 				tbl_col_nm,
 				tbl_nm
-			FROM TB_FILE WHERE docu_id=#{docId} AND decode(del_ayn, null, 'N', del_ayn) = 'N' ORDER BY fl_odr
+			FROM TB_FILE WHERE doc_id=#{docId} AND decode(del_yn, null, 'N', del_yn) = 'N' ORDER BY file_ord
 	 </select>
 
 
@@ -72,10 +72,10 @@
 				   TBL_NM, 
 				   TBL_COL_NM,
 				   DEL_YN,
-				   RGR_ID,
-				   REG_DTM,
-				   UTUR_ID,
-				   UPDT_DTM
+				   RGSTP_NO,
+				   rgst_dttm,
+				   updtp_no,
+				   updt_dttm
 				   )
 			VALUES (
 					#{fileId} ,
@@ -87,10 +87,10 @@
 				   #{fileAuth} ,
 				   #{tblNm} ,
 				   #{tblColNm} ,
-				   #{delyn} ,
-				   #{regNo} ,
+				   'N' ,
+				   #{userNo} ,
 				   sysdate ,
-				   #{regNo} ,
+				   #{userNo} ,
 				   sysdate
 				    )
 	 </insert>

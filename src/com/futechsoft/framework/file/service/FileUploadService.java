@@ -362,7 +362,9 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 				Map<String, Object> map = ConvertUtil.beanToMap(fileInfoVo);
 				FtMap param = new FtMap();
 				param.setFtMap(map);
-
+				param.put("userNo", paramMap.getString("userNo"));
+				
+				
 				mapper.insertFileInfo(param);
 
 				if(StringUtils.defaultString(fileInfoVo.getThumbnailYn()).equals("Y")) {
