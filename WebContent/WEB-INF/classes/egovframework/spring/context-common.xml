@@ -7,7 +7,7 @@
 				http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
 
     <!-- component-scan 설정-->
-	<context:component-scan base-package="com.futechsoft,kr.go.gyujis">
+	<context:component-scan base-package="com.futechsoft,kr.go.odakorea.stats">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
