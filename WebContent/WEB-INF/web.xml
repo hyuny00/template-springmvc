@@ -41,13 +41,18 @@
 
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
-<!-- 		<param-value> -->
-<!-- 			classpath*:egovframework/spring/context-*.xml -->
-<!-- 		</param-value> -->
 		<param-value>
 			classpath*:egovframework/spring/context-*.xml
 		</param-value>
 	</context-param>
+	
+	
+	<context-param>
+	    <param-name>spring.profiles.active</param-name>
+	    <param-value>dev</param-value> <!-- 또는 prod -->
+	</context-param>
+
+
 
 	<filter>
         <display-name>springMultipartFilter</display-name>

@@ -17,18 +17,15 @@ import java.util.zip.ZipOutputStream;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import com.futechsoft.framework.exception.ErrorCode;
 import com.futechsoft.framework.exception.FileUploadException;
@@ -45,7 +42,7 @@ import com.google.gson.JsonParser;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.logging.util.EgovResourceReleaser;
 
-@PropertySource("classpath:globals.properties")
+//@PropertySource("classpath:globals.properties")
 
 @Service("framework.file.service.FileUploadService")
 public class FileUploadService extends EgovAbstractServiceImpl {
@@ -57,8 +54,15 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	@Resource(name = "framework.file.mapper.FileMapper")
 	private FileMapper mapper;
 
-	@Autowired
-	PropertiesConfiguration propertiesConfiguration;
+	//@Autowired
+	//PropertiesConfiguration propertiesConfiguration;
+	
+	
+	@Value("${file.uploadPath.temp}")
+	private String tempUploadPath;
+	
+	@Value("${file.uploadPath}")
+	private String realUploadPath;
 
 	/**
 	 * 파일을 임시경로에 업로드
@@ -70,14 +74,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	 */
 	public FileInfoVo upload(MultipartFile multipartFile, FileInfoVo fileInfoVo) throws FileUploadException {
 
-		String serviceType = propertiesConfiguration.getString("service.type");
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
-
-		if(serviceType.equals("dev")) {
-			tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
-		}
-
-
+	
 
 		FileInfoVo fileObject = null;
 		try {
@@ -102,13 +99,6 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	 * @throws Exception
 	 */
 	private FileInfoVo writeFile(MultipartFile multipartFile, FileInfoVo fileInfoVo) throws Exception {
-
-		String serviceType = propertiesConfiguration.getString("service.type");
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
-
-		if(serviceType.equals("dev")) {
-			tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
-		}
 
 
 
@@ -297,15 +287,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	 * @throws Exception
 	 */
 	private void saveProcess(JsonObject jsonObject, FtMap paramMap, String saveFilePath, String findDocId, String docId, List<String>  delFileIdList, List<String> addFileIdList) throws Exception {
-		String serviceType = propertiesConfiguration.getString("service.type");
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
-		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
-
-		if(serviceType.equals("dev")) {
-			tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
-			realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
-		}
-
+		
 
 		if(!saveFilePath.equals("")) {
 			saveFilePath =   Paths.get(saveFilePath,  FileUtil.getSaveFilePath()).toString();
@@ -466,7 +448,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	 * @throws Exception
 	 */
 	public void createZip(FileInfoVo[] fileInfoVos, String target) throws Exception {
-		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
+		
 
 		File targetDir = new File(target).getParentFile();
 		boolean check = false;
@@ -692,15 +674,7 @@ public class FileUploadService extends EgovAbstractServiceImpl {
 	 */
 	public void saveExcelUploadFile(FileInfoVo fileInfoVo, String saveFilePath,  String docId,  String tblNm,  String refDocId) throws Exception {
 
-		String serviceType = propertiesConfiguration.getString("service.type");
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
-		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
-
-		if(serviceType.equals("dev")) {
-			tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
-			realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
-		}
-
+	
 
 		if(!saveFilePath.equals("")) {
 			saveFilePath =   Paths.get(saveFilePath,  FileUtil.getSaveFilePath()).toString();

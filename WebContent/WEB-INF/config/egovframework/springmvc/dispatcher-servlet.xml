@@ -67,6 +67,29 @@
 
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
+	<!-- DEV 설정 -->
+	<beans profile="dev">
+		<bean
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+					<value>classpath:globals-dev.properties</value>
+				</list>
+			</property>
+		</bean>
+	</beans>
+
+	<!-- PROD 설정 -->
+	<beans profile="prod">
+		<bean
+			class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+			<property name="locations">
+				<list>
+					<value>classpath:globals-prod.properties</value>
+				</list>
+			</property>
+		</bean>
+	</beans>
 
 
 

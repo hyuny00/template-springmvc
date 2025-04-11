@@ -42,8 +42,6 @@ public class CacheValidationAop {
     public Object validateCache(ProceedingJoinPoint joinPoint) throws Throwable {
     	
     	
-    	
-    	
         Object[] args = joinPoint.getArgs();
         Pageable pageable = null;
         FtMap params = null;
@@ -64,7 +62,6 @@ public class CacheValidationAop {
     public Object validateCache(ProceedingJoinPoint joinPoint, Pageable pageable, FtMap params) throws Throwable {
     	
     	
-    	
         MethodSignature signature = (MethodSignature) joinPoint.getSignature();
         Method method = signature.getMethod();
         CacheAccess cacheAccess = method.getAnnotation(CacheAccess.class);
@@ -75,7 +72,6 @@ public class CacheValidationAop {
         
         logger.debug("Cache validation: cacheName={}, key={}", cacheName, key);
 
-        // 캐시 가져오기
         Cache cache = cacheManager.getCache(cacheName);
         if (cache == null) {
             logger.warn("Cache not found: {}", cacheName);

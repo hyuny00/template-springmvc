@@ -20,7 +20,7 @@
 					user_nm	,
 					user_email,
 					tel_no
-			FROM TB_USER
+			FROM TB_USER_SAMPLE
 			<include refid="whereStatement"/>
 
 			 <if test="pageable.isSorted">
@@ -37,7 +37,7 @@
 
     <select id="countUserList" resultType="long">
          select count(1)
-         from TB_USER
+         from TB_USER_SAMPLE
         <include refid="whereStatement"/>
     </select>
 
@@ -49,7 +49,7 @@
 	        SELECT
 				b.user_no, a.auth_seq, a.up_auth_seq, a.auth_cd, a.auth_nm, a.auth_type_cd,
                                    DECODE(B.auth_seq, NULL,'N','Y') select_yn
-	        FROM  tb_auth  a left outer  join tb_user_auth b on a.auth_seq= b.auth_seq and b.user_no = #{userNo}   left outer  join  tb_user c on b.user_no =c.user_no
+	        FROM  tb_auth_SAMPLE  a left outer  join tb_user_auth_SAMPLE b on a.auth_seq= b.auth_seq and b.user_no = #{userNo}   left outer  join  tb_user_SAMPLE c on b.user_no =c.user_no
 	        where a.use_yn= 'Y'
 		]]>
 	</select>

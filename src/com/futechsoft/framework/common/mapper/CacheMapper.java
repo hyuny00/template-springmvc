@@ -33,14 +33,14 @@ public interface CacheMapper {
      * @param cacheName 캐시 이름
      * @throws Exception 예외 발생 시
      */
-    @Insert("INSERT INTO cache_update_log (cache_name, last_updated) VALUES (#{cacheName}, NOW())")
+    @Insert("INSERT INTO cache_update_log (cache_name, last_updated) VALUES (#{cacheName}, CURRENT_TIMESTAMP )")
     void insertCache(@Param("cacheName") String cacheName) throws Exception;
     
     /**
      * 현재 시간 조회
      * @return 현재 시간 (Timestamp)
      */
-    @Select("SELECT NOW()")
+    @Select("SELECT CURRENT_TIMESTAMP FROM db_root")
     Timestamp getCurrentTime();
 
 }

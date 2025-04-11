@@ -16,7 +16,6 @@ import com.futechsoft.admin.auth.service.AuthService;
 import com.futechsoft.admin.auth.vo.Auth;
 import com.futechsoft.admin.auth.vo.AuthMenu;
 import com.futechsoft.admin.menu.service.MenuService;
-import com.futechsoft.framework.common.constant.AuthConstant;
 import com.futechsoft.framework.common.controller.AbstractController;
 import com.futechsoft.framework.security.auth.ResourceMenuService;
 import com.futechsoft.framework.util.FtMap;
@@ -92,7 +91,6 @@ public class AuthController extends AbstractController {
 	public List<FtMap> getAuthMenuList(HttpServletRequest request) throws Exception {
 		
 		
-		System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKK");
 
 		FtMap params = getFtMap(request);
 

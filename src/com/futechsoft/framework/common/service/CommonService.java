@@ -40,7 +40,8 @@ public class CommonService extends EgovAbstractServiceImpl {
 	 * @throws Exception
 	 */
 	public List<FtMap> selectCommonCodeList(FtMap params) throws Exception {
-		return commonMapper.selectCommonCodeList(params);
+		return null;
+		//return commonMapper.selectCommonCodeList(params);
 	}
 
 	/**
@@ -53,6 +54,7 @@ public class CommonService extends EgovAbstractServiceImpl {
 
 		FtMap codeMap = new FtMap();
 
+		if(codeList == null) return null;
 		for(FtMap ftMap : codeList) {
 			codeMap.put( ftMap.getString("code"), ftMap.getString("value"));
 		}
@@ -94,7 +96,8 @@ public class CommonService extends EgovAbstractServiceImpl {
 	 */
 	public FtMap selectCommonCodeMap(FtMap params) throws Exception {
 		List<FtMap> codeList = commonMapper.selectCommonCodeList(params);
-		return selectCommonCodeMap(codeList);
+		//return selectCommonCodeMap(codeList);
+		return null;
 	}
 
 

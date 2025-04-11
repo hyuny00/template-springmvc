@@ -9,7 +9,7 @@
 
 		    SELECT
 				    	menu_seq,  up_menu_seq,menu_url, menu_nm, menu_ord, menu_type_cd, use_yn, etc, open_yn,
-				       (select count(menu_seq) from tb_menu   where up_menu_seq  =  a.menu_seq
+				       (select count(menu_seq) from tb_menu_SAMPLE   where up_menu_seq  =  a.menu_seq
 				     ]]>
 			        	<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
 		              		 AND use_yn = #{useYn}
@@ -17,10 +17,10 @@
 
 				     <![CDATA[
 				       ) sub_menu_cnt,
-				       (select menu_nm from  tb_menu    where   menu_seq  =  a.up_menu_seq) up_menu_nm,
+				       (select menu_nm from  tb_menu_SAMPLE    where   menu_seq  =  a.up_menu_seq) up_menu_nm,
 
-				       (select menu_seq from tb_menu    where menu_type_cd='010' and menu_seq= a.up_menu_seq) top_menu_seq
-	            from tb_menu a
+				       (select menu_seq from tb_menu_SAMPLE    where menu_type_cd='010' and menu_seq= a.up_menu_seq) top_menu_seq
+	            from tb_menu_SAMPLE a
 	            where up_menu_seq = #{menuSeq}
             ]]>
 
@@ -37,10 +37,10 @@
 	 <insert id="insertMenu" parameterType="ftMap">
 
 	    <selectKey keyProperty="menuSeq" resultType="int" order="BEFORE">
-	    	SELECT nvl(MAX(menu_seq),0)+1 from tb_menu
+	    	SELECT nvl(MAX(menu_seq),0)+1 from tb_menu_SAMPLE
 	    </selectKey>
 
-         	insert into tb_menu
+         	insert into tb_menu_SAMPLE
          	(
          		menu_seq,
        		 	menu_nm,
@@ -78,7 +78,7 @@
      <!-- 메뉴수정 -->
     <update id="updateMenu" parameterType="ftMap">
     	UPDATE
-    		tb_menu
+    		tb_menu_SAMPLE
     	SET
     		top_menu_seq = #{topMenuSeq},
     		up_menu_seq = #{upMenuSeq},
@@ -94,19 +94,19 @@
     </update>
 
 	<select id="getMenuCount" parameterType="ftMap"  resultType="java.lang.Integer">
- 		SELECT count(1) as cnt FROM TB_MENU WHERE up_menu_seq=#{upMenuSeq}
+ 		SELECT count(1) as cnt FROM TB_MENU_SAMPLE WHERE up_menu_seq=#{upMenuSeq}
  	</select>
  	
  	  <delete id="deleteAuthMenu" parameterType="ftMap">
- 	  	 DELETE FROM TB_AUTH_MENU WHERE menu_seq=#{menuSeq}
+ 	  	 DELETE FROM TB_AUTH_MENU_SAMPLE WHERE menu_seq=#{menuSeq}
  	  </delete>
  	
  	<delete id="deleteMenu" parameterType="ftMap">
- 	  	 DELETE FROM TB_MENU WHERE menu_seq=#{menuSeq}
+ 	  	 DELETE FROM TB_MENU_SAMPLE WHERE menu_seq=#{menuSeq}
  	</delete>
  	
  	<update id="updateMenuOrd" parameterType="ftMap">
- 		UPDATE TB_MENU SET menu_ord=#{menuOrd}, updt_dttm=sysdate WHERE menu_seq=#{menuSeq}
+ 		UPDATE TB_MENU_SAMPLE SET menu_ord=#{menuOrd}, updt_dttm=sysdate WHERE menu_seq=#{menuSeq}
 	</update>
 </mapper>
 

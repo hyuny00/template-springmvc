@@ -41,5 +41,10 @@
 	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSession"></constructor-arg>
 	</bean>
+	
+	
+	<bean id="sqlSessionTemplateIn" class="org.mybatis.spring.SqlSessionTemplate">
+	    <constructor-arg ref="sqlSessionIn" />
+	</bean>
 
 </beans>

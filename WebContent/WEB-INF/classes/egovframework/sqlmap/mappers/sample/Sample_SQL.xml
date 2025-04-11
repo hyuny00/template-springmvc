@@ -17,16 +17,16 @@
 
     <select id="selectSampleList"  resultType="ftMap">
     		SELECT
- 					ID,
+ 					"ID",
 					USE_YN,
 					NAME,
 					DESCRIPTION,
 				 	REG_USER,
-				 	attc_doc_id2,
+				 	attc_doc_id2
 			FROM SAMPLE
 			<include refid="whereStatement"/>
 
-    		order by ID 
+    		order by "ID" 
 			 <if test="pageable.isPaged">
 	           	LIMIT  #{pageable.offset}, #{pageable.pageSize}
 	       	 </if>
@@ -67,13 +67,13 @@
 
  	<select id="deleteSample"  resultType="ftMap">
     		delete from SAMPLE
-			WHERE id=#{id}
+			WHERE "id"=#{id}
     </select>
 
 
     <insert id="insertSample"  parameterType="ftMap" >
     		insert into sample
-    			( reg_user , use_yn , name , description , rgstp_no , id , rgst_dttm ,attc_doc_id, attc_doc_id2)
+    			( reg_user , use_yn , name , description , rgstp_no , "id" , rgst_dttm ,attc_doc_id, attc_doc_id2)
     		values
     			( #{regUser} , #{useYn} , #{name} , #{description} , #{userNo} , #{id} , sysdate , #{attcDocId}, #{attcDocId2})
 	</insert>
@@ -88,7 +88,7 @@
 					attc_doc_id=#{attcDocId},
 					attc_doc_id2=#{attcDocId2},
 					updt_dttm=sysdate
-			WHERE id=#{id}
+			WHERE "id"=#{id}
 	</insert>
 
 

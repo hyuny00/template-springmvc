@@ -13,7 +13,7 @@
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
 
-    <!-- 환경설정 기본정보를 globals.properties 에서 참조하도록 propertyConfigurer 설정  -->
+    <!-- 환경설정 기본정보를 globals.properties 에서 참조하도록 propertyConfigurer 설정 
 	<bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
             <list>
@@ -21,6 +21,9 @@
             </list>
         </property>
     </bean>
+     -->
+    
+    
   <!--
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
 		<property name="basenames">
@@ -91,11 +94,12 @@
     <!-- alias name="local.MultiCommonsMultipartResolver" alias="multipartResolver" /-->
     <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" />
 
-
+    <!--
      <bean id="propertiesConfiguration" class="org.apache.commons.configuration.PropertiesConfiguration">
         <constructor-arg type="java.lang.String"  value="${file.upload.properties.path}" />
         <property name="reloadingStrategy" ref="fileChangedReloadingStrategy" />
     </bean>
+-->
 
     <bean id="fileChangedReloadingStrategy"
           class="org.apache.commons.configuration.reloading.FileChangedReloadingStrategy" />

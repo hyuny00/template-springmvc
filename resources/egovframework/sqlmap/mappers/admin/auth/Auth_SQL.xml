@@ -10,15 +10,15 @@
 
 		    SELECT
 		  		AUTH_SEQ, UP_AUTH_SEQ, AUTH_CD, AUTH_NM, AUTH_TYPE_CD, USE_YN,
-		       (SELECT COUNT(AUTH_SEQ) FROM TB_AUTH   WHERE  UP_AUTH_SEQ  =  A.AUTH_SEQ
+		       (SELECT COUNT(AUTH_SEQ) FROM TB_AUTH_SAMPLE   WHERE  UP_AUTH_SEQ  =  A.AUTH_SEQ
 		   ]]>
 		<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
 			AND USE_YN = #{useYn}
 		</if>
 		         <![CDATA[
 		       ) SUB_AUTH_CNT,
-		       (SELECT AUTH_NM FROM  TB_AUTH    WHERE   AUTH_SEQ  =  A.UP_AUTH_SEQ) UP_AUTH_NM
-            FROM TB_AUTH A
+		       (SELECT AUTH_NM FROM  TB_AUTH_SAMPLE    WHERE   AUTH_SEQ  =  A.UP_AUTH_SEQ) UP_AUTH_NM
+            FROM TB_AUTH_SAMPLE A
             WHERE UP_AUTH_SEQ = #{authSeq}
 
           ]]>
@@ -35,7 +35,7 @@
 		<![CDATA[
 	        SELECT
 				AUTH_SEQ, AUTH_CD
-	        FROM  TB_AUTH WHERE AUTH_TYPE_CD='030' AND USE_YN= 'Y'
+	        FROM  TB_AUTH_SAMPLE WHERE AUTH_TYPE_CD='030' AND USE_YN= 'Y'
 		]]>
 	</select>
 
@@ -51,13 +51,13 @@
 
 				(
 					SELECT COUNT(a.MENU_SEQ) FROM
-							 ( SELECT up_menu_seq FROM tb_menu a LEFT OUTER JOIN tb_auth_menu b
+							 ( SELECT up_menu_seq FROM tb_menu_SAMPLE a LEFT OUTER JOIN tb_auth_menu_SAMPLE b
 										 on a.menu_seq= b.menu_seq WHERE b.auth_seq is null
 							 )  m
 			 	WHERE m.up_menu_seq  =  a.menu_seq) noAuthCount,
 
-				(SELECT COUNT(MENU_SEQ) FROM TB_MENU   WHERE UP_MENU_SEQ  =  A.MENU_SEQ  AND USE_YN = 'Y') subMenuCnt
-	        FROM tb_menu a left outer join   tb_auth_menu  b on a.menu_seq= b.menu_seq and b.auth_seq =  #{authSeq}  left outer join     tb_auth c on b.auth_seq=c.auth_seq  AND c.USE_YN = 'Y'
+				(SELECT COUNT(MENU_SEQ) FROM TB_MENU_SAMPLE   WHERE UP_MENU_SEQ  =  A.MENU_SEQ  AND USE_YN = 'Y') subMenuCnt
+	        FROM tb_menu_SAMPLE a left outer join   tb_auth_menu_SAMPLE  b on a.menu_seq= b.menu_seq and b.auth_seq =  #{authSeq}  left outer join     tb_auth_SAMPLE c on b.auth_seq=c.auth_seq  AND c.USE_YN = 'Y'
 	        where  a.use_yn= 'Y'
 	]]>
 	</select>
@@ -72,9 +72,9 @@
 	  			UP_PATH_SEQ,
 	  			PATH,
 	  			PATH_NM,
-	       		(SELECT COUNT(PATH_SEQ) FROM TB_PATH   WHERE  UP_PATH_SEQ  =  A.PATH_SEQ) SUB_CNT,
-          		(SELECT PATH FROM  TB_PATH    WHERE   PATH_SEQ  =  A.UP_PATH_SEQ) UP_PATH
-            FROM TB_PATH A
+	       		(SELECT COUNT(PATH_SEQ) FROM TB_PATH_SAMPLE   WHERE  UP_PATH_SEQ  =  A.PATH_SEQ) SUB_CNT,
+          		(SELECT PATH FROM  TB_PATH_SAMPLE    WHERE   PATH_SEQ  =  A.UP_PATH_SEQ) UP_PATH
+            FROM TB_PATH_SAMPLE A
             WHERE UP_PATH_SEQ = #{pathSeq}
  			ORDER BY PATH_ORD
 		]]>
@@ -86,7 +86,7 @@
 		<![CDATA[
 	         SELECT
 					A.AUTH_SEQ, A.AUTH_NM,   A.UP_AUTH_SEQ, A.AUTH_TYPE_CD, B.PATH_SEQ, B.PATH_AUTH_SEQ,  C.UP_PATH_SEQ, DECODE(B.PATH_SEQ, NULL,'N','Y') SELECT_YN
-        	FROM  TB_AUTH A LEFT OUTER JOIN TB_PATH_AUTH B ON A.AUTH_SEQ= B.AUTH_SEQ AND B.PATH_SEQ =  #{pathSeq}     LEFT OUTER JOIN TB_PATH C ON B.PATH_SEQ=C.PATH_SEQ
+        	FROM  TB_AUTH_SAMPLE A LEFT OUTER JOIN TB_PATH_AUTH_SAMPLE B ON A.AUTH_SEQ= B.AUTH_SEQ AND B.PATH_SEQ =  #{pathSeq}     LEFT OUTER JOIN TB_PATH_SAMPLE C ON B.PATH_SEQ=C.PATH_SEQ
 	        WHERE   A.USE_YN= 'Y'
 		]]>
 	</select>
@@ -97,9 +97,9 @@
 	<insert id="insertAuthMenu" parameterType="ftMap">
 		<selectKey keyProperty="authMenuSeq" resultType="String"
 			order="BEFORE">
-			SELECT nvl(MAX(auth_menu_seq ),0)+1 from TB_AUTH_MENU
+			SELECT nvl(MAX(auth_menu_seq ),0)+1 from TB_AUTH_MENU_SAMPLE
 		</selectKey>
-			INSERT INTO TB_AUTH_MENU (
+			INSERT INTO TB_AUTH_MENU_SAMPLE (
 			AUTH_MENU_SEQ,
 			MENU_SEQ ,
 			RGSTP_NO ,
@@ -119,9 +119,9 @@
 	<insert id="insertAuth" parameterType="ftMap">
 		<selectKey keyProperty="authSeq" resultType="String"
 			order="BEFORE">
-			SELECT NVL(MAX(AUTH_SEQ),0)+1 FROM TB_AUTH
+			SELECT NVL(MAX(AUTH_SEQ),0)+1 FROM TB_AUTH_SAMPLE
 		</selectKey>
-		INSERT INTO TB_AUTH (
+		INSERT INTO TB_AUTH_SAMPLE (
 		AUTH_SEQ,
 		AUTH_CD,
 		AUTH_NM,
@@ -156,7 +156,7 @@
 	<!-- 권한수정 -->
 	<update id="updateAuth" parameterType="ftMap">
 		UPDATE
-		TB_AUTH
+		TB_AUTH_SAMPLE
 		SET
 		AUTH_TYPE_CD = #{authTypeCd},
 		AUTH_NM = #{authNm},
@@ -173,10 +173,10 @@
 	<insert id="insertPath" parameterType="ftMap">
 		<selectKey keyProperty="pathSeq" resultType="String"
 			order="BEFORE">
-			SELECT NVL(MAX(PATH_SEQ),0)+1 FROM TB_PATH
+			SELECT NVL(MAX(PATH_SEQ),0)+1 FROM TB_PATH_SAMPLE
 		</selectKey>
 
-		INSERT INTO TB_PATH(
+		INSERT INTO TB_PATH_SAMPLE(
 		PATH_SEQ,
 		UP_PATH_SEQ,
 		PATH,
@@ -199,7 +199,7 @@
 	<!-- 경로수정 -->
 	<update id="updatePath" parameterType="ftMap">
 		UPDATE
-		TB_PATH
+		TB_PATH_SAMPLE
 		SET
 		PATH = #{path},
 		PATH_NM = #{pathNm},
@@ -214,37 +214,37 @@
 
 	<select id="getAuthCount" parameterType="ftMap"
 		resultType="java.lang.Integer">
-		SELECT count(1) as cnt FROM TB_AUTH WHERE up_auth_seq=#{upAuthSeq}
+		SELECT count(1) as cnt FROM TB_AUTH_SAMPLE WHERE up_auth_seq=#{upAuthSeq}
 	</select>
 
 	<delete id="deleteUserAuth" parameterType="ftMap">
-		DELETE FROM TB_USER_AUTH WHERE auth_seq=#{authSeq}
+		DELETE FROM TB_USER_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
 	</delete>
 
 	<delete id="deleteAuthMenu" parameterType="ftMap">
-		DELETE FROM TB_AUTH_MENU WHERE auth_seq=#{authSeq}
+		DELETE FROM TB_AUTH_MENU_SAMPLE WHERE auth_seq=#{authSeq}
 	</delete>
 
 	<delete id="deleteAuth" parameterType="ftMap">
-		DELETE FROM TB_AUTH WHERE auth_seq=#{authSeq}
+		DELETE FROM TB_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
 	</delete>
 
 	<delete id="deletePathAuthByAuthSeq" parameterType="ftMap">
-		DELETE FROM TB_PATH_AUTH WHERE auth_seq=#{authSeq}
+		DELETE FROM TB_PATH_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
 	</delete>
 	 
 	
 	<update id="updatePathOrd" parameterType="ftMap">
-		 UPDATE TB_PATH SET path_ord=#{pathOrd}, updt_dttm=sysdate WHERE path_seq=#{pathSeq}
+		 UPDATE TB_PATH_SAMPLE SET path_ord=#{pathOrd}, updt_dttm=sysdate WHERE path_seq=#{pathSeq}
 	 </update>
 	 
 	 
 	 <delete id="deletePathAuthByPathSeq" parameterType="ftMap">
-		 DELETE FROM TB_PATH_AUTH WHERE path_seq=#{pathSeq}
+		 DELETE FROM TB_PATH_AUTH_SAMPLE WHERE path_seq=#{pathSeq}
 	</delete>
 	 
 	  <delete id="deletePath" parameterType="ftMap"> 
-		 DELETE FROM TB_PATH WHERE path_seq=#{pathSeq}
+		 DELETE FROM TB_PATH_SAMPLE WHERE path_seq=#{pathSeq}
 	</delete>
 	
 	
@@ -253,9 +253,9 @@
 	<insert id="insertPathAuth" parameterType="ftMap">
 		<selectKey keyProperty="pathAuthSeq" resultType="String"
 			order="BEFORE">
-			SELECT nvl(MAX(path_auth_seq ),0)+1 from TB_PATH_AUTH
+			SELECT nvl(MAX(path_auth_seq ),0)+1 from TB_PATH_AUTH_SAMPLE
 		</selectKey>
-			 insert into TB_PATH_AUTH ( path_auth_seq, rgstp_no , auth_seq , path_seq , rgst_dttm ) values ( #{pathAuthSeq},  #{userNo} ,  #{authSeq} , #{pathSeq} , sysdate )
+			 insert into TB_PATH_AUTH_SAMPLE ( path_auth_seq, rgstp_no , auth_seq , path_seq , rgst_dttm ) values ( #{pathAuthSeq},  #{userNo} ,  #{authSeq} , #{pathSeq} , sysdate )
 	</insert>
 	
 	

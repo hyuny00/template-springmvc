@@ -11,12 +11,11 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.jxls.common.Context;
 import org.jxls.util.JxlsHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -42,12 +41,12 @@ public class SampleController extends AbstractController{
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(SampleController.class);
 
-	@Autowired
-	PropertiesConfiguration propertiesConfiguration;
 
 	@Resource(name = "sample.service.SampleService")
 	SampleService sampleService;
 
+
+	
 
 	/**
 	 * 샘플목록을 조회한다
@@ -58,7 +57,11 @@ public class SampleController extends AbstractController{
 	 */
 	@RequestMapping("/sample/selectSampleList")
 	public String selectSampleList(Pageable pageble, HttpServletRequest request) throws Exception {
+		
+		
 
+		
+		
 		// 권한 체크 필요할때(ROLE_ 붙여야함)
 		if (SecurityUtil.hasAuth("ROLE_ADMIN")) {
 			LOGGER.debug("ROLE_ADMIN");
@@ -83,7 +86,7 @@ public class SampleController extends AbstractController{
 		/*공통코드 목록을 map형식으로 변환*/
 		//FtMap codeMap = getCommonService().selectCommonCodeMap(params);
 		FtMap etcCode = super.getCommonService().selectCommonCodeMap(codeList);
-		LOGGER.debug(etcCode.toString());
+		//LOGGER.debug(etcCode.toString());
 		request.setAttribute("etcCode", etcCode);
 
 		

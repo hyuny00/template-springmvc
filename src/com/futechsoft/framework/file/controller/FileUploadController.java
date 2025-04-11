@@ -14,9 +14,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,20 +44,40 @@ public class FileUploadController extends AbstractController {
 	@Resource(name = "framework.file.service.FileUploadService")
 	FileUploadService fileUploadService;
 
-	@Autowired
-	PropertiesConfiguration propertiesConfiguration;
+	//@Autowired
+	//PropertiesConfiguration propertiesConfiguration;
+	
+	@Value("${file.uploadPath.temp}")
+	private String tempUploadPath;
+	
+	@Value("${file.uploadPath}")
+	private String realUploadPath;
+	
+	@Value("${file.uploadPath.temp.zip}")
+	private String tempZipPath;
+
+	
+	@Value("${file.upload.accept.doc}")
+	private String[] acceptDocs;
+	
+	@Value("${file.upload.accept.image}")
+	private String[] acceptImages;
+	
+	@Value("${file.upload.accept.multimedia}")
+	private String[] acceptMultimedias;
+	
+	@Value("${file.upload.size}")
+	private Long uploadSize;
+	
+	@Value("${file.upload.chunkSize}")
+	private Long chunkSize;
 
 	@RequestMapping(value = "/file/upload")
 	@ResponseBody
 	public Map<String, Object> upload(Model model, @RequestParam MultipartFile file, @RequestParam String metadata)
 			throws JsonMappingException, JsonProcessingException, FileUploadException {
 
-		System.out.println("file upload..............................");
-
-		String[] acceptDocs = propertiesConfiguration.getStringArray("file.upload.accept.doc");
-		String[] acceptImages = propertiesConfiguration.getStringArray("file.upload.accept.image");
-		String[] acceptMultimedias = propertiesConfiguration.getStringArray("file.upload.accept.multimedia");
-
+		
 		String acceptDoc = "";
 		String acceptImage = "";
 		String acceptMultimedia = "";
@@ -72,8 +91,7 @@ public class FileUploadController extends AbstractController {
 			acceptMultimedia += accept + ",";
 		}
 
-		Long uploadSize = propertiesConfiguration.getLong("file.upload.size");
-		Long chunkSize = propertiesConfiguration.getLong("file.upload.chunkSize");
+	
 
 		Gson gson = new Gson();
 		FileInfoVo fileInfoVo = gson.fromJson(metadata, FileInfoVo.class);
@@ -131,16 +149,7 @@ public class FileUploadController extends AbstractController {
 	public Map<String, List<FileInfoVo>> deleteFile(@RequestBody FileInfoVo[] fileInfoVos) throws Exception {
 
 
-		String serviceType = propertiesConfiguration.getString("service.type");
-		
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
-		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
-		
-		if(serviceType.equals("dev")) {
-			 tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
-			 realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
-		}
-		
+	
 		
 		/*
 		 * Gson gson = new Gson();
@@ -208,10 +217,7 @@ public class FileUploadController extends AbstractController {
 	 */
 	private void setuploadForm(String acceptType, HttpServletRequest req) throws Exception {
 
-		String[] acceptDocs = propertiesConfiguration.getStringArray("file.upload.accept.doc");
-		String[] acceptImages = propertiesConfiguration.getStringArray("file.upload.accept.image");
-		String[] acceptMultimedias = propertiesConfiguration.getStringArray("file.upload.accept.multimedia");
-
+		
 		String acceptDoc = "";
 		String acceptImage = "";
 		String acceptMultimedia = "";
@@ -246,17 +252,6 @@ public class FileUploadController extends AbstractController {
 	@RequestMapping(value = "/file/download")
 	public void download(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
-		
-		String serviceType = propertiesConfiguration.getString("service.type");
-		
-		
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
-		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
-		
-		if(serviceType.equals("dev")) {
-			 tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
-			 realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
-		}
 		
 
 		
@@ -329,14 +324,7 @@ public class FileUploadController extends AbstractController {
 	@RequestMapping(value = "/file/download/zip")
 	public void downloadZip(HttpServletRequest request, HttpServletResponse res) throws Exception {
 		
-		String serviceType = propertiesConfiguration.getString("service.type");
-		String tempZipPath =propertiesConfiguration.getString("file.uploadPath.temp.zip.real");
-	
 		
-		if(serviceType.equals("dev")) {
-			tempZipPath = propertiesConfiguration.getString("file.uploadPath.temp.zip.dev");
-		}
-
 		
 
 		FtMap params = getFtMap(request);
@@ -387,17 +375,6 @@ public class FileUploadController extends AbstractController {
 	@ResponseBody
 	public Map<String, Object> isExistFile(HttpServletRequest request, FileInfoVo fileInfoVo) throws Exception {
 		
-		String serviceType = propertiesConfiguration.getString("service.type");
-
-		
-		String tempUploadPath = propertiesConfiguration.getString("file.uploadPath.real.temp");
-		String realUploadPath = propertiesConfiguration.getString("file.uploadPath.real");
-		
-		if(serviceType.equals("dev")) {
-			 tempUploadPath = propertiesConfiguration.getString("file.uploadPath.dev.temp");
-			 realUploadPath = propertiesConfiguration.getString("file.uploadPath.dev");
-		}
-
 		
 
 		FtMap params = getFtMap(request);
