@@ -20,8 +20,10 @@ public class CacheUpdateService {
      * @throws Exception 
      */
     public void updateCacheTimestamp(String cacheName) throws Exception {
-    	cacheMapper.deleteCache(cacheName);
-    	cacheMapper.insertCache(cacheName);
+    	if (cacheName != null) {
+    		cacheMapper.deleteCache(cacheName);
+        	cacheMapper.insertCache(cacheName);
+    	}
     }
     
     public Timestamp getLastUpdatedByCacheName(String cacheName) throws Exception {

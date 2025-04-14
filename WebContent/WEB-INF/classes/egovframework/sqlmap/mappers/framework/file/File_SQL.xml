@@ -12,7 +12,7 @@
 				del_yn,
 				file_ord,
 				'N' temp
-			FROM TB_FILE WHERE doc_id=#{docId} AND del_yn='N' ORDER BY file_ord
+			FROM TB_FILE_sample WHERE doc_id=#{docId} AND del_yn='N' ORDER BY file_ord
 	 </select>
 
 
@@ -29,17 +29,17 @@
 				file_auth,
 				tbl_col_nm,
 				tbl_nm
-			FROM TB_FILE WHERE file_id=#{fileId} AND del_yn='N'
+			FROM TB_FILE_sample WHERE file_id=#{fileId} AND del_yn='N'
 	 </select>
 
 
  	<update id="updateMergeDocId" parameterType="ftMap" >
-	      UPDATE TB_FILE SET DOC_ID= #{mergeDocId}  WHERE DOC_ID= #{tempDocId}
+	      UPDATE TB_FILE_sample SET DOC_ID= #{mergeDocId}  WHERE DOC_ID= #{tempDocId}
 	 </update>
 
 
 	<update id="updateThumbNnailFileInfo" parameterType="com.futechsoft.framework.file.vo.FileInfoVo" >
-	      UPDATE TB_FILE SET file_path= #{filePath}, file_size=#{fileSize}   WHERE file_id= #{fileId}
+	      UPDATE TB_FILE_sample SET file_path= #{filePath}, file_size=#{fileSize}   WHERE file_id= #{fileId}
 	 </update>
 	 
 	 
@@ -56,12 +56,12 @@
 				file_auth,
 				tbl_col_nm,
 				tbl_nm
-			FROM TB_FILE WHERE doc_id=#{docId} AND decode(del_yn, null, 'N', del_yn) = 'N' ORDER BY file_ord
+			FROM TB_FILE_sample WHERE doc_id=#{docId} AND decode(del_yn, null, 'N', del_yn) = 'N' ORDER BY file_ord
 	 </select>
 
 
 	 <insert id="insertFileInfo" parameterType="ftMap" >
-			INSERT INTO TB_FILE (
+			INSERT INTO TB_FILE_sample (
 				   file_id,
 				   doc_id,
 				   file_nm,
@@ -98,7 +98,7 @@
 
 	  <update id="updateFileOrd" parameterType="ftMap">
     	UPDATE
-    		TB_FILE
+    		TB_FILE_sample
     	SET
     		file_ord = #{fileOrd}
     	WHERE
@@ -109,14 +109,14 @@
 
       <update id="deleteDoc" parameterType="ftMap">
     	DELETE
-    		TB_FILE
+    		TB_FILE_sample
     	WHERE
     		doc_id = #{docId}
     </update>
 
       <delete id="deleteFile" parameterType="ftMap">
     	DELETE
-    		TB_FILE
+    		TB_FILE_sample
     	WHERE
     		file_id = #{fileId}
     </delete>

@@ -45,7 +45,6 @@ public class SampleController extends AbstractController{
 	@Resource(name = "sample.service.SampleService")
 	SampleService sampleService;
 
-
 	
 
 	/**
@@ -57,9 +56,6 @@ public class SampleController extends AbstractController{
 	 */
 	@RequestMapping("/sample/selectSampleList")
 	public String selectSampleList(Pageable pageble, HttpServletRequest request) throws Exception {
-		
-		
-
 		
 		
 		// 권한 체크 필요할때(ROLE_ 붙여야함)

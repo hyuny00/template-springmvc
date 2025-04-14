@@ -27,9 +27,7 @@ import com.futechsoft.framework.security.auth.CustomUserDetailsService;
 import com.futechsoft.framework.security.auth.JwtTokenProvider;
 import com.futechsoft.framework.security.service.SecurityService;
 import com.futechsoft.framework.security.vo.CustomUserDetails;
-import com.futechsoft.framework.util.CommonUtil;
 import com.futechsoft.framework.util.FtMap;
-import com.futechsoft.framework.util.SecurityUtil;
 
 @Component
 public class LoginSuccessJwtHandler implements AuthenticationSuccessHandler {

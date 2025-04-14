@@ -5,14 +5,14 @@
 
 	<Resources cacheMaxSize="100000" cachingAllowed="true" />
 
-	<Resource name="FTCORE" auth="Container"
+	<Resource name="ODAKOREA_DB" auth="Container"
 		type="javax.sql.DataSource"
 		driverClassName="cubrid.jdbc.driver.CUBRIDDriver"
 		url="jdbc:CUBRID:223.130.159.250:30000:odaadm2:::" username="ftcore"
 		password="ftcore" maxTotal="8" maxIdle="8" maxWaitMillis="-1" />
 
 
-	<Resource name="FTCORE_IN" auth="Container"
+	<Resource name="ODAKOREA_DB_IN" auth="Container"
 		type="javax.sql.DataSource"
 		driverClassName="cubrid.jdbc.driver.CUBRIDDriver"
 		url="jdbc:CUBRID:223.130.159.250:30000:odaadm2:::" username="ftcore"

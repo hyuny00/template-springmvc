@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.futechsoft.framework.util.FtMap;
 import com.futechsoft.framework.util.SecurityUtil;
-import com.futechsoft.sample.controller.SampleController;
 
 @Controller
 public class ViewController  extends AbstractController {

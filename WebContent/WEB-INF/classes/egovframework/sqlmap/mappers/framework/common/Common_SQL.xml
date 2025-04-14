@@ -18,7 +18,7 @@
 
 
 	 <insert id="insertUserAuth" parameterType="ftMap">
-	       	INSERT INTO tb_user_auth (
+	       	INSERT INTO tb_user_auth_sample (
 						       	user_auth_seq,
 								user_no,
 								auth_seq,
@@ -27,9 +27,9 @@
 
 								)
 								values(
-									(SELECT nvl(MAX(user_auth_seq),0)+1 from tb_user_auth),
+									(SELECT nvl(MAX(user_auth_seq),0)+1 from tb_user_auth_sample),
 									#{userNo},
-									(SELECT auth_seq FROM TB_AUTH where auth_cd=#{authCd} AND use_yn='Y'),
+									(SELECT auth_seq FROM TB_AUTH_sample where auth_cd=#{authCd} AND use_yn='Y'),
 									#{userNo},
 									sysdate
 								)
@@ -38,7 +38,7 @@
 	 </insert>
 
 	 <delete id="deleteUserAuth" parameterType="ftMap">
-	       	delete tb_user_auth where user_no =#{userNo} and  auth_seq=(SELECT auth_seq FROM TB_AUTH where auth_cd=#{authCd} AND use_yn='Y')
+	       	delete tb_user_auth_sample where user_no =#{userNo} and  auth_seq=(SELECT auth_seq FROM TB_AUTH_sample where auth_cd=#{authCd} AND use_yn='Y')
 	 </delete>
 	 
 	 

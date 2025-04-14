@@ -2,7 +2,7 @@
 <Configuration>
 
 	<Properties>
-	  	<Property name="logNm">logtest</Property>
+	  	<Property name="logNm">odakorea</Property>
 		<Property name="layoutPattern">%d [%t] %-5level %c(%M:%L) - %m%n</Property>
 	</Properties>
 

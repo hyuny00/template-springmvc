@@ -2,7 +2,6 @@ package com.futechsoft.framework.common.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +12,6 @@ import com.futechsoft.framework.security.event.ResourceMenuEventListener;
 import com.futechsoft.framework.util.FtMap;
 
 public abstract class AbstractController {
-
 
 
 	@Autowired
@@ -27,7 +25,6 @@ public abstract class AbstractController {
 
 	@Autowired
 	private ExcelHelper excelHelper;
-
 
 	
 	@Value("${excel.template.path}")
@@ -57,9 +54,6 @@ public abstract class AbstractController {
 
 
 	protected String getExceltemplatePath(HttpServletRequest request) {
-
-		
-
 		return  templatePath;
 	}
 

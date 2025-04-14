@@ -17,7 +17,7 @@ public interface CacheMapper {
      * @param cacheName 캐시 이름
      * @return 마지막 업데이트 시간 (Timestamp)
      */
-    @Select("SELECT last_updated FROM cache_update_log WHERE cache_name = #{cacheName}")
+    @Select("SELECT last_updated FROM cache_update_log WHERE cache_name =  nvl(#{cacheName},'')")
     Timestamp getLastUpdatedByCacheName(@Param("cacheName") String cacheName);
     
     /**
@@ -25,7 +25,7 @@ public interface CacheMapper {
      * @param cacheName 캐시 이름
      * @throws Exception 예외 발생 시
      */
-    @Delete("DELETE FROM cache_update_log WHERE cache_name = #{cacheName}")
+    @Delete("DELETE FROM cache_update_log WHERE cache_name = nvl(#{cacheName},'')")
     void deleteCache(@Param("cacheName") String cacheName) throws Exception;
     
     /**
@@ -33,7 +33,7 @@ public interface CacheMapper {
      * @param cacheName 캐시 이름
      * @throws Exception 예외 발생 시
      */
-    @Insert("INSERT INTO cache_update_log (cache_name, last_updated) VALUES (#{cacheName}, CURRENT_TIMESTAMP )")
+    @Insert("INSERT INTO cache_update_log (cache_name, last_updated) VALUES ( nvl(#{cacheName},''), CURRENT_TIMESTAMP )")
     void insertCache(@Param("cacheName") String cacheName) throws Exception;
     
     /**

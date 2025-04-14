@@ -4,34 +4,42 @@
 
 
 
- 	<select id="getMenuList" parameterType="ftMap"  resultType="com.futechsoft.admin.menu.vo.Menu">
-		<![CDATA[
+<select id="getMenuList" parameterType="ftMap" resultType="com.futechsoft.admin.menu.vo.Menu">
+    SELECT
+        a.menu_seq,
+        a.up_menu_seq,
+        a.menu_url,
+        a.menu_nm,
+        a.menu_ord,
+        a.menu_type_cd,
+        a.use_yn,
+        a.etc,
+        a.open_yn,
+        COALESCE(b.sub_menu_cnt, 0) AS sub_menu_cnt,  
+        c.menu_nm AS up_menu_nm,  
+        d.menu_seq AS top_menu_seq  
+    FROM
+        tb_menu_SAMPLE a
+    LEFT JOIN
+        (  -- sub_menu_cnt를 계산하는 JOIN
+            SELECT up_menu_seq, COUNT(menu_seq) AS sub_menu_cnt
+            FROM tb_menu_SAMPLE
+            GROUP BY up_menu_seq
+        ) b ON a.menu_seq = b.up_menu_seq
+    LEFT JOIN
+        tb_menu_SAMPLE c ON a.up_menu_seq = c.menu_seq  -- 상위 메뉴 이름
+    LEFT JOIN
+        tb_menu_SAMPLE d ON a.up_menu_seq = d.menu_seq AND d.menu_type_cd = '010' 
+    WHERE
+        a.up_menu_seq = #{menuSeq}
+    <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
+        AND a.use_yn = #{useYn}
+    </if>
+    ORDER BY
+        a.menu_ord
+</select>
 
-		    SELECT
-				    	menu_seq,  up_menu_seq,menu_url, menu_nm, menu_ord, menu_type_cd, use_yn, etc, open_yn,
-				       (select count(menu_seq) from tb_menu_SAMPLE   where up_menu_seq  =  a.menu_seq
-				     ]]>
-			        	<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
-		              		 AND use_yn = #{useYn}
-		         		</if>
 
-				     <![CDATA[
-				       ) sub_menu_cnt,
-				       (select menu_nm from  tb_menu_SAMPLE    where   menu_seq  =  a.up_menu_seq) up_menu_nm,
-
-				       (select menu_seq from tb_menu_SAMPLE    where menu_type_cd='010' and menu_seq= a.up_menu_seq) top_menu_seq
-	            from tb_menu_SAMPLE a
-	            where up_menu_seq = #{menuSeq}
-            ]]>
-
-
-           	<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
-              	 AND use_yn = #{useYn}
-         	</if>
-
-            order by menu_ord
-
-	</select>
 
 
 	 <insert id="insertMenu" parameterType="ftMap">

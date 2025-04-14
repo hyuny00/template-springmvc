@@ -5,28 +5,36 @@
 
 
 	<select id="getAuthList" parameterType="ftMap"
-		resultType="com.futechsoft.admin.auth.vo.Auth">
-		<![CDATA[
+        resultType="com.futechsoft.admin.auth.vo.Auth">
 
-		    SELECT
-		  		AUTH_SEQ, UP_AUTH_SEQ, AUTH_CD, AUTH_NM, AUTH_TYPE_CD, USE_YN,
-		       (SELECT COUNT(AUTH_SEQ) FROM TB_AUTH_SAMPLE   WHERE  UP_AUTH_SEQ  =  A.AUTH_SEQ
-		   ]]>
-		<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
-			AND USE_YN = #{useYn}
-		</if>
-		         <![CDATA[
-		       ) SUB_AUTH_CNT,
-		       (SELECT AUTH_NM FROM  TB_AUTH_SAMPLE    WHERE   AUTH_SEQ  =  A.UP_AUTH_SEQ) UP_AUTH_NM
-            FROM TB_AUTH_SAMPLE A
-            WHERE UP_AUTH_SEQ = #{authSeq}
+        SELECT
+            A.AUTH_SEQ,
+            A.UP_AUTH_SEQ,
+            A.AUTH_CD,
+            A.AUTH_NM,
+            A.AUTH_TYPE_CD,
+            A.USE_YN,
+            COALESCE(B.SUB_AUTH_CNT, 0) AS SUB_AUTH_CNT,  
+            C.AUTH_NM AS UP_AUTH_NM  
+        FROM 
+            TB_AUTH_SAMPLE A
+        LEFT JOIN 
+            (  -- SUB_AUTH_CNT를 계산하는 JOIN
+                SELECT UP_AUTH_SEQ, COUNT(AUTH_SEQ) AS SUB_AUTH_CNT
+                FROM TB_AUTH_SAMPLE
+                WHERE USE_YN = 'Y' 
+                GROUP BY UP_AUTH_SEQ
+            ) B ON A.AUTH_SEQ = B.UP_AUTH_SEQ
+        LEFT JOIN 
+            TB_AUTH_SAMPLE C ON A.UP_AUTH_SEQ = C.AUTH_SEQ
+        WHERE 
+            A.UP_AUTH_SEQ = #{authSeq}
+            <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
+                AND A.USE_YN = #{useYn}
+            </if>
 
-          ]]>
-		<if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
-			AND USE_YN = #{useYn}
-		</if>
+</select>
 
-	</select>
 
 
 
@@ -44,21 +52,49 @@
 	<select id="getAuthMenuList"
 		resultType="com.futechsoft.admin.auth.vo.AuthMenu">
 		<![CDATA[
-		   SELECT
-				a.menu_type_cd, a.menu_nm, b.auth_seq, a.menu_seq, b.auth_menu_seq, c.auth_cd, a.up_menu_seq, a.menu_url, a.open_yn,
-
-				decode(b.menu_seq, null,'N','Y') selectYn,
-
-				(
-					SELECT COUNT(a.MENU_SEQ) FROM
-							 ( SELECT up_menu_seq FROM tb_menu_SAMPLE a LEFT OUTER JOIN tb_auth_menu_SAMPLE b
-										 on a.menu_seq= b.menu_seq WHERE b.auth_seq is null
-							 )  m
-			 	WHERE m.up_menu_seq  =  a.menu_seq) noAuthCount,
-
-				(SELECT COUNT(MENU_SEQ) FROM TB_MENU_SAMPLE   WHERE UP_MENU_SEQ  =  A.MENU_SEQ  AND USE_YN = 'Y') subMenuCnt
-	        FROM tb_menu_SAMPLE a left outer join   tb_auth_menu_SAMPLE  b on a.menu_seq= b.menu_seq and b.auth_seq =  #{authSeq}  left outer join     tb_auth_SAMPLE c on b.auth_seq=c.auth_seq  AND c.USE_YN = 'Y'
-	        where  a.use_yn= 'Y'
+		  SELECT
+			    a.menu_type_cd,
+			    a.menu_nm,
+			    b.auth_seq,
+			    a.menu_seq,
+			    b.auth_menu_seq,
+			    c.auth_cd,
+			    a.up_menu_seq,
+			    a.menu_url,
+			    a.open_yn,
+			    CASE WHEN b.menu_seq IS NULL THEN 'N' ELSE 'Y' END AS selectYn,  
+			    COALESCE(d.noAuthCount, 0) AS noAuthCount, 
+			    COALESCE(e.subMenuCnt, 0) AS subMenuCnt 
+			FROM 
+			    tb_menu_SAMPLE a
+			LEFT OUTER JOIN 
+			    tb_auth_menu_SAMPLE b 
+			    ON a.menu_seq = b.menu_seq 
+			    AND b.auth_seq = #{authSeq}
+			LEFT OUTER JOIN 
+			    tb_auth_SAMPLE c 
+			    ON b.auth_seq = c.auth_seq 
+			    AND c.USE_YN = 'Y'
+			LEFT JOIN 
+			    ( 
+			        SELECT a.up_menu_seq, COUNT(a.menu_seq) AS noAuthCount -- 테이블 'a'의 'menu_seq'와 'up_menu_seq' 사용
+			        FROM tb_menu_SAMPLE a
+			        LEFT OUTER JOIN tb_auth_menu_SAMPLE b
+			        ON a.menu_seq = b.menu_seq
+			        WHERE b.auth_seq IS NULL
+			        GROUP BY a.up_menu_seq
+			    ) d 
+			    ON a.menu_seq = d.up_menu_seq
+			LEFT JOIN 
+			    (
+			        SELECT a.up_menu_seq, COUNT(a.menu_seq) AS subMenuCnt -- 테이블 'a'의 'menu_seq'와 'up_menu_seq' 사용
+			        FROM TB_MENU_SAMPLE a
+			        WHERE a.USE_YN = 'Y'
+			        GROUP BY a.up_menu_seq
+			    ) e 
+			    ON a.menu_seq = e.up_menu_seq
+			WHERE 
+			    a.use_yn = 'Y'
 	]]>
 	</select>
 
@@ -91,7 +127,7 @@
 		]]>
 	</select>
 
-	
+
 
 	<!-- 권한메뉴등록등록 -->
 	<insert id="insertAuthMenu" parameterType="ftMap">
@@ -99,20 +135,20 @@
 			order="BEFORE">
 			SELECT nvl(MAX(auth_menu_seq ),0)+1 from TB_AUTH_MENU_SAMPLE
 		</selectKey>
-			INSERT INTO TB_AUTH_MENU_SAMPLE (
-			AUTH_MENU_SEQ,
-			MENU_SEQ ,
-			RGSTP_NO ,
-			AUTH_SEQ , 
-			RGST_DTTM
-			)
-			VALUES (
-			#{authMenuSeq},
-			#{menuSeq} ,
-			#{userNo} ,
-			#{authSeq} ,
-			sysdate
-			)
+		INSERT INTO TB_AUTH_MENU_SAMPLE (
+		AUTH_MENU_SEQ,
+		MENU_SEQ ,
+		RGSTP_NO ,
+		AUTH_SEQ ,
+		RGST_DTTM
+		)
+		VALUES (
+		#{authMenuSeq},
+		#{menuSeq} ,
+		#{userNo} ,
+		#{authSeq} ,
+		sysdate
+		)
 	</insert>
 
 	<!-- 권한등록 -->
@@ -204,7 +240,8 @@
 		PATH = #{path},
 		PATH_NM = #{pathNm},
 		UPDTP_NO = #{userNo},
-		UPDT_DTTM = sysdate
+		UPDT_DTTM =
+		sysdate
 		WHERE
 		PATH_SEQ = #{pathSeq}
 	</update>
@@ -214,51 +251,55 @@
 
 	<select id="getAuthCount" parameterType="ftMap"
 		resultType="java.lang.Integer">
-		SELECT count(1) as cnt FROM TB_AUTH_SAMPLE WHERE up_auth_seq=#{upAuthSeq}
+		SELECT count(1) as cnt FROM TB_AUTH_SAMPLE WHERE
+		up_auth_seq=#{upAuthSeq}
 	</select>
 
 	<delete id="deleteUserAuth" parameterType="ftMap">
-		DELETE FROM TB_USER_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
+		DELETE FROM
+		TB_USER_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
 	</delete>
 
 	<delete id="deleteAuthMenu" parameterType="ftMap">
-		DELETE FROM TB_AUTH_MENU_SAMPLE WHERE auth_seq=#{authSeq}
+		DELETE FROM
+		TB_AUTH_MENU_SAMPLE WHERE auth_seq=#{authSeq}
 	</delete>
 
 	<delete id="deleteAuth" parameterType="ftMap">
-		DELETE FROM TB_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
+		DELETE FROM TB_AUTH_SAMPLE
+		WHERE auth_seq=#{authSeq}
 	</delete>
 
 	<delete id="deletePathAuthByAuthSeq" parameterType="ftMap">
-		DELETE FROM TB_PATH_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
+		DELETE FROM
+		TB_PATH_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
 	</delete>
-	 
-	
+
+
 	<update id="updatePathOrd" parameterType="ftMap">
-		 UPDATE TB_PATH_SAMPLE SET path_ord=#{pathOrd}, updt_dttm=sysdate WHERE path_seq=#{pathSeq}
-	 </update>
-	 
-	 
-	 <delete id="deletePathAuthByPathSeq" parameterType="ftMap">
-		 DELETE FROM TB_PATH_AUTH_SAMPLE WHERE path_seq=#{pathSeq}
+		UPDATE TB_PATH_SAMPLE SET path_ord=#{pathOrd}, updt_dttm=sysdate WHERE
+		path_seq=#{pathSeq}
+	</update>
+
+
+	<delete id="deletePathAuthByPathSeq" parameterType="ftMap">
+		DELETE FROM TB_PATH_AUTH_SAMPLE WHERE path_seq=#{pathSeq}
 	</delete>
-	 
-	  <delete id="deletePath" parameterType="ftMap"> 
-		 DELETE FROM TB_PATH_SAMPLE WHERE path_seq=#{pathSeq}
+
+	<delete id="deletePath" parameterType="ftMap">
+		DELETE FROM TB_PATH_SAMPLE WHERE path_seq=#{pathSeq}
 	</delete>
-	
-	
-	
+
+
+
 	<!-- 권한메뉴등록등록 -->
 	<insert id="insertPathAuth" parameterType="ftMap">
 		<selectKey keyProperty="pathAuthSeq" resultType="String"
 			order="BEFORE">
 			SELECT nvl(MAX(path_auth_seq ),0)+1 from TB_PATH_AUTH_SAMPLE
 		</selectKey>
-			 insert into TB_PATH_AUTH_SAMPLE ( path_auth_seq, rgstp_no , auth_seq , path_seq , rgst_dttm ) values ( #{pathAuthSeq},  #{userNo} ,  #{authSeq} , #{pathSeq} , sysdate )
+		insert into TB_PATH_AUTH_SAMPLE ( path_auth_seq, rgstp_no , auth_seq ,
+		path_seq , rgst_dttm ) values ( #{pathAuthSeq}, #{userNo} , #{authSeq}
+		, #{pathSeq} , sysdate )
 	</insert>
-	
-	
-
-	 
 </mapper>
