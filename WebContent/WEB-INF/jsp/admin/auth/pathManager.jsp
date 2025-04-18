@@ -56,7 +56,7 @@
 
 	 		$("#save").show();
 	 		$("#delete").hide();
-	 		$("#pathAuthView").hide();
+	 		$("#pathRoleView").hide();
 
 	 		$("#upPath").val($("#path").val());
 
@@ -65,8 +65,8 @@
 
 	    	$("#mode").val("new");
 
-	    	$("#allAuth").hide();
-	    	$("#savePathAuth").hide();
+	    	$("#allRole").hide();
+	    	$("#savePathRole").hide();
 
 
 	    	$("#pathForm").show();
@@ -157,14 +157,14 @@
 
 
 
-	 	$("#savePathAuth").on("click",function(e) {
+	 	$("#savePathRole").on("click",function(e) {
 
 
 		 	e.preventDefault();
 
-    	 	$("#pathAuthView").hide();
+    	 	$("#pathRoleView").hide();
 
-    	 	savePathAuth();
+    	 	savePathRole();
 
 
 
@@ -173,18 +173,18 @@
 
 
 
-		$("#pathAuthView").on("click",function(e) {
+		$("#pathRoleView").on("click",function(e) {
 
 
  		 	e.preventDefault();
 
 
- 		 	$("#allAuth").show();
+ 		 	$("#allRole").show();
  			$("#pathForm").hide();
 	 		$("#save").hide();
 	 		$("#delete").hide();
-	 		$("#savePathAuth").show();
- 		 	$("#pathAuthView").hide();
+	 		$("#savePathRole").show();
+ 		 	$("#pathRoleView").hide();
 
      	});
 
@@ -268,7 +268,7 @@
         $('#pathTree').on("select_node.jstree", function (e, data) {
         	showChildren(data);
 
-        	createPathAuthTree();
+        	createPathRoleTree();
         });
 
 
@@ -300,19 +300,19 @@
    		 if(data.node.original.id =='0'){
     		 $("#delete").hide();
     		 $("#save").hide();
-    		 $("#pathAuthView").hide();
+    		 $("#pathRoleView").hide();
     	 }else{
     		// $("#delete").show();
     		// $("#save").show();
 
-       		 if($('#savePathAuth').is(':visible') ){
+       		 if($('#savePathRole').is(':visible') ){
        			$("#save").hide();
        			$("#delete").hide();
-       		 	$("#pathAuthView").hide();
+       		 	$("#pathRoleView").hide();
        		 }else{
        			 $("#save").show();
        			$("#delete").show();
-       		 	$("#pathAuthView").show();
+       		 	$("#pathRoleView").show();
        		 }
     	 }
 
@@ -345,9 +345,9 @@
 
 
 
-	function createPathAuthTree() {
+	function createPathRoleTree() {
 
-		$('#authTree').jstree("destroy");
+		$('#roleTree').jstree("destroy");
 
 		var pathSeq=$("#pathSeq").val();
  		if(pathSeq == "") pathSeq=-1
@@ -359,7 +359,7 @@
              data : {  "useYn" : "Y",  "pathSeq" : pathSeq },
              dataType: "json",
              success: function (jsondata) {
-            	    $('#authTree').jstree({
+            	    $('#roleTree').jstree({
 
             	    	 'core': {
                              'data': jsondata
@@ -401,16 +401,16 @@
 
 
 
-        $('#authTree').on('ready.jstree', function (e, data) {
-        	 $("#authTree").jstree("open_all");
+        $('#roleTree').on('ready.jstree', function (e, data) {
+        	 $("#roleTree").jstree("open_all");
         })
 
 
-        $('#authTree').on("changed.jstree", function (e, data) {
+        $('#roleTree').on("changed.jstree", function (e, data) {
 
         });
 
-        $('#authTree').on("select_node.jstree", function (e, data) {
+        $('#roleTree').on("select_node.jstree", function (e, data) {
 
         });
 
@@ -418,7 +418,7 @@
 
    	 }
 
-	function savePathAuth(){
+	function savePathRole(){
 
 		if(!confirm("저장하시겠습니까?")) return;
 
@@ -429,7 +429,7 @@
 		if(pathSeq == "") pathSeq=-1
 
 		sendData.pathSeq = pathSeq;
-		sendData.auth_seqs= $('#authTree').jstree(true).get_selected();
+		sendData.role_seqs= $('#roleTree').jstree(true).get_selected();
 
 		$.ajax({
 		    url:'/admin/auth/savePathAuth',
@@ -440,7 +440,7 @@
 
 		    success: function(data) {
 		    	if(data.isSuccess){
-		    		 $("#authTree").jstree("open_all");
+		    		 $("#roleTree").jstree("open_all");
 		    		 alert("저장되었습니다.");
 		    	}else{
 		    		alert("저장에 실패했습니다.");
@@ -531,9 +531,9 @@
 							</div>
 						</div>
 
-						<div class="flex-box" id="allAuth" style="display: none;">
+						<div class="flex-box" id="allRole" style="display: none;">
 							<div class="scroll2 mL20">
-								<div id="authTree" class="auth-box"></div>
+								<div id="roleTree" class="auth-box"></div>
 							</div>
 						</div>
 					</div>
@@ -541,8 +541,8 @@
 						<ul class="btn-list">
 							<li id="new"><a href="#" class="btn-submit-s navy">신규</a></li>
 							<li id="save" style="display: none"><a href="#" class="btn-submit-s white">저장</a></li>
-							<li id="pathAuthView"><a href="#" class="btn-submit-s gray btn-close">경로별 권한지정</a></li>
-							<li id="savePathAuth" style="display: none"><a href="#" class="btn-submit-s white">경로별 권한저장</a></li>
+							<li id="pathRoleView"><a href="#" class="btn-submit-s gray btn-close">경로별 권한지정</a></li>
+							<li id="savePathRole" style="display: none"><a href="#" class="btn-submit-s white">경로별 권한저장</a></li>
 							<li id="delete" style="display: none"><a href="#" class="btn-submit-s red">삭제</a></li>
 						</ul>
 					</div>

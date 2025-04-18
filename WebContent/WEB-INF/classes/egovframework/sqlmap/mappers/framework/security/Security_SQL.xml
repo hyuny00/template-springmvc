@@ -8,15 +8,15 @@
  	</select>
 
 
-     <select id="getUserAuthList" parameterType="String" resultType="com.futechsoft.admin.user.vo.UserAuth">
+     <select id="getUserRoleList" parameterType="String" resultType="com.futechsoft.admin.user.vo.UserRole">
        	 SELECT
 		       	 a.user_no,
-		       	 c.auth_cd,
-		       	 c.auth_nm,
-		       	 c.auth_seq
+		       	 c.role_cd,
+		       	 c.role_nm,
+		       	 c.role_seq
        	 FROM TB_USER_SAMPLE a
-       	 				left join tb_user_auth_SAMPLE b ON a.user_no = b.user_no
-       					left join tb_auth_SAMPLE c ON b.auth_seq=c.auth_seq
+       	 				left join tb_user_role_SAMPLE b ON a.user_no = b.user_no
+       					left join tb_role_SAMPLE c ON b.role_seq=c.role_seq
        	 WHERE a.user_id=#{userId}
 	 </select>
 
@@ -35,14 +35,14 @@
 	 </update>
 
 
-	 <select id="getAuthMenu" parameterType="long"  resultType="com.futechsoft.admin.auth.vo.AuthMenu">
+	 <select id="getRoleMenu" parameterType="long"  resultType="com.futechsoft.admin.auth.vo.RoleMenu">
 		<![CDATA[
 
 		    SELECT 	a.menu_seq,  a.up_menu_seq, a.menu_url, a.menu_nm, a.menu_ord, a.menu_type_cd,
-            		c.auth_seq, c.auth_cd,  a.top_menu_seq, a.open_yn
-            from tb_menu_SAMPLE a left outer join tb_auth_menu_SAMPLE b ON a.menu_seq= b.menu_seq
-            left outer join tb_auth_SAMPLE c ON b.auth_seq= c.auth_seq
-            WHERE a.use_yn='Y' AND  b.auth_seq= #{authSeq}
+            		c.role_seq, c.role_cd,  a.top_menu_seq, a.open_yn
+            from tb_menu_SAMPLE a left outer join tb_role_menu_SAMPLE b ON a.menu_seq= b.menu_seq
+            left outer join tb_role_SAMPLE c ON b.role_seq= c.role_seq
+            WHERE a.use_yn='Y' AND  b.role_seq= #{roleSeq}
             order by a.menu_ord
 
 		]]>
@@ -79,12 +79,12 @@
 		]]>
 	</select>
 
-	<select id="getPathAuthList" parameterType="long" resultType="com.futechsoft.admin.auth.vo.PathAuth">
+	<select id="getPathRoleList" parameterType="long" resultType="com.futechsoft.admin.auth.vo.PathRole">
 		<![CDATA[
 	        SELECT
-				a.auth_seq, a.path_seq, a.path_auth_seq,  b.up_path_seq, b.path, c.auth_cd
-	        FROM  tb_path_auth_SAMPLE a join tb_path_SAMPLE b on a.path_seq= b.path_seq join  tb_auth_SAMPLE c on a.auth_seq=c.auth_seq
-	        where   c.use_yn= 'Y' and c.auth_type_cd='030' and b.path_seq=#{pathSeq}
+				a.role_seq, a.path_seq, a.path_role_seq,  b.up_path_seq, b.path, c.role_cd
+	        FROM  tb_path_role_SAMPLE a join tb_path_SAMPLE b on a.path_seq= b.path_seq join  tb_role_SAMPLE c on a.role_seq=c.role_seq
+	        where   c.use_yn= 'Y' and c.role_type_cd='030' and b.path_seq=#{pathSeq}
 		]]>
     </select>
 

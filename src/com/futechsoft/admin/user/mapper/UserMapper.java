@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.futechsoft.admin.user.vo.UserAuth;
+import com.futechsoft.admin.user.vo.UserRole;
 import com.futechsoft.framework.annotation.Mapper;
 import com.futechsoft.framework.common.page.Pageable;
 import com.futechsoft.framework.util.FtMap;
@@ -32,7 +32,7 @@ public interface UserMapper  {
 	 * @param params
 	 * @throws Exception
 	 */
-	List<UserAuth> getUserAuthList(FtMap params) throws Exception;
+	List<UserRole> getUserRoleList(FtMap params) throws Exception;
 
 	/**
 	 * 유저 상세 정보
@@ -49,7 +49,7 @@ public interface UserMapper  {
 	 * @param params
 	 * @throws Exception
 	 */
-	void insertUserAuth(FtMap params) throws Exception;
+	void insertUserRole(FtMap params) throws Exception;
 	
 	/**
 	 * 유저  삭제
@@ -63,7 +63,7 @@ public interface UserMapper  {
 	 * @param params
 	 * @throws Exception
 	 */
-	void deleteUserAuth(FtMap params) throws Exception;
+	void deleteUserRole(FtMap params) throws Exception;
 
 
 
@@ -72,7 +72,7 @@ public interface UserMapper  {
 	 * @param params
 	 * @throws Exception
 	 */
-	List<FtMap> selectAuthList(FtMap params) throws Exception;
+	List<FtMap> selectRoleList(FtMap params) throws Exception;
 
 
 	void insertUser(FtMap params) throws Exception;

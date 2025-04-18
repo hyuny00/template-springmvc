@@ -1,6 +1,6 @@
 package com.futechsoft.framework.common.constant;
 
-public class AuthConstant {
+public class RoleConstant {
 
 	public static final String ROLE_PREFIX="ROLE_";
 

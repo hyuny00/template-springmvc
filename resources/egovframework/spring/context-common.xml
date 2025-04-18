@@ -103,5 +103,9 @@
 
     <bean id="fileChangedReloadingStrategy"
           class="org.apache.commons.configuration.reloading.FileChangedReloadingStrategy" />
+          
+          
+   
+	
 
 </beans>

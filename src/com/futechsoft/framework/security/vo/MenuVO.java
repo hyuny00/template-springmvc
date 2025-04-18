@@ -3,7 +3,7 @@ package com.futechsoft.framework.security.vo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.futechsoft.admin.auth.vo.AuthMenu;
+import com.futechsoft.admin.auth.vo.RoleMenu;
 
 
 
@@ -17,7 +17,7 @@ public class MenuVO {
     private boolean isSelected;
     private List<MenuVO> children = new ArrayList<>();
 
-    public MenuVO(AuthMenu menu, boolean isSelected) {
+    public MenuVO(RoleMenu menu, boolean isSelected) {
         this.menuSeq = menu.getMenuSeq();
         this.upMenuSeq = menu.getUpMenuSeq();
         this.menuNm = menu.getMenuNm();

@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.futechsoft.admin.auth.service.AuthService;
+import com.futechsoft.admin.auth.service.RoleService;
 import com.futechsoft.admin.auth.vo.Path;
-import com.futechsoft.admin.auth.vo.PathAuth;
+import com.futechsoft.admin.auth.vo.PathRole;
 import com.futechsoft.framework.common.controller.AbstractController;
 import com.futechsoft.framework.security.auth.ResourceMetaService;
 import com.futechsoft.framework.util.FtMap;
@@ -23,8 +23,8 @@ import com.futechsoft.framework.util.FtMap;
 @Controller
 public class PathController extends AbstractController {
 
-	@Resource(name = "auth.service.AuthService")
-	private AuthService authService;
+	@Resource(name = "auth.service.RoleService")
+	private RoleService roleService;
 
 	@Resource(name = "framework.security.ResourceMetaService")
 	private ResourceMetaService resourceMetaService;
@@ -44,7 +44,7 @@ public class PathController extends AbstractController {
 		if (StringUtils.isEmpty(params.getString("pathSeq")) || params.getString("pathSeq").equals("#")) {
 			params.put("pathSeq", "-1");
 		}
-		List<Path> pathList = authService.getPathList(params);
+		List<Path> pathList = roleService.getPathList(params);
 
 		List<FtMap> pathListMap = new ArrayList<FtMap>();
 
@@ -71,58 +71,58 @@ public class PathController extends AbstractController {
 	}
 
 	@RequestMapping("/admin/auth/authSelctor")
-	public String authSelctor(HttpServletRequest request) throws Exception {
+	public String roleSelctor(HttpServletRequest request) throws Exception {
 		return "admin/auth/authSelctor";
 	}
 
 	@ResponseBody
 	@RequestMapping("/admin/auth/getPathAuthList")
-	public List<FtMap> getPathAuthList(HttpServletRequest request) throws Exception {
+	public List<FtMap> getPathRoleList(HttpServletRequest request) throws Exception {
 
 		FtMap params = getFtMap(request);
 
-		if (StringUtils.isEmpty(params.getString("authSeq")) || params.getString("authSeq").equals("#")) {
-			params.put("authSeq", "-1");
+		if (StringUtils.isEmpty(params.getString("roleSeq")) || params.getString("roleSeq").equals("#")) {
+			params.put("roleSeq", "-1");
 		}
 	//	List<Auth> authList = authService.getList(params);
 
-		List<PathAuth> pathAuthList = authService.getPathAuthList(params);
+		List<PathRole> pathRoleList = roleService.getPathRoleList(params);
 
-		List<FtMap> authListMap = new ArrayList<FtMap>();
+		List<FtMap> roleListMap = new ArrayList<FtMap>();
 
 		FtMap map = null;
 		boolean selected=true;
-		for (PathAuth pathAuth : pathAuthList) {
+		for (PathRole pathRole : pathRoleList) {
 			map = new FtMap();
 
-			map.put("id", String.valueOf(pathAuth.getAuthSeq()));
-			map.put("text", pathAuth.getAuthNm());
-			map.put("upAuthNm", pathAuth.getAuthNm());
-			map.put("upAuthSeq", pathAuth.getUpAuthSeq());
-			map.put("parent", pathAuth.getUpAuthSeq() == -1 ?"#" : pathAuth.getUpAuthSeq());
+			map.put("id", String.valueOf(pathRole.getRoleSeq()));
+			map.put("text", pathRole.getRoleNm());
+			map.put("upRoleNm", pathRole.getRoleNm());
+			map.put("upRoleSeq", pathRole.getUpRoleSeq());
+			map.put("parent", pathRole.getUpRoleSeq() == -1 ?"#" : pathRole.getUpRoleSeq());
 
 			//map.put("useYn", auth.getUseYn());
-			map.put("authTypeCd", pathAuth.getAuthTypeCd());
+			map.put("roleTypeCd", pathRole.getRoleTypeCd());
 			//map.put("children", auth.getSubAuthCnt() > 0 ? true : false);
-			map.put("type", pathAuth.getAuthTypeCd());
+			map.put("type", pathRole.getRoleTypeCd());
 
 			FtMap map1 = new FtMap();
-			map1.put("selected", pathAuth.getSelectYn().equals("Y")?true : false);
+			map1.put("selected", pathRole.getSelectYn().equals("Y")?true : false);
 			map.put("state", map1);
-			if(pathAuth.getSelectYn().equals("N")) {
+			if(pathRole.getSelectYn().equals("N")) {
 				selected=false;
 			}
 
-			authListMap.add(map);
+			roleListMap.add(map);
 		}
 
 		if(!selected) {
-			authListMap.get(0).put("selected", "N");
+			roleListMap.get(0).put("selected", "N");
 			//map1.put("selected", "N");
 		}
-		System.out.println("authListMap....."+authListMap);
+		System.out.println("authListMap....."+roleListMap);
 
-		return authListMap;
+		return roleListMap;
 	}
 
 	@ResponseBody
@@ -130,7 +130,7 @@ public class PathController extends AbstractController {
 	public FtMap updateMenuOrd(HttpServletRequest request, @RequestParam(value = "path_seqs[]") String[] path_seqs)
 			throws Exception {
 
-		authService.savePathOrd(path_seqs);
+		roleService.savePathOrd(path_seqs);
 
 		FtMap params = new FtMap();
 		params.put("isSuccess", true);
@@ -144,7 +144,7 @@ public class PathController extends AbstractController {
 
 		FtMap params = getFtMap(request);
 
-		authService.savePath(params);
+		roleService.savePath(params);
 
 		resourceMetaService.createSecurityMetaDataSource();
 
@@ -159,7 +159,7 @@ public class PathController extends AbstractController {
 
 		FtMap params = getFtMap(request);
 
-		authService.deletePath(params);
+		roleService.deletePath(params);
 
 		resourceMetaService.createSecurityMetaDataSource();
 
@@ -170,11 +170,11 @@ public class PathController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping("/admin/auth/savePathAuth")
-	public FtMap savePathAuth(HttpServletRequest request, @RequestBody FtMap params) throws Exception {
+	public FtMap savePathRole(HttpServletRequest request, @RequestBody FtMap params) throws Exception {
 
 		@SuppressWarnings("unchecked")
-		ArrayList<String> list = (ArrayList<String>) params.get("auth_seqs");
-		authService.savePathAuth(params, list);
+		ArrayList<String> list = (ArrayList<String>) params.get("role_seqs");
+		roleService.savePathRole(params, list);
 
 		resourceMetaService.createSecurityMetaDataSource();
 

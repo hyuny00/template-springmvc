@@ -4,7 +4,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import com.futechsoft.framework.common.constant.AuthConstant;
+import com.futechsoft.framework.common.constant.RoleConstant;
 import com.futechsoft.framework.security.vo.CustomUserDetails;
 
 /**
@@ -43,8 +43,8 @@ public class SecurityUtil {
 	 */
 	public static boolean hasAuth(String authCd) {
 
-		if(!authCd.startsWith(AuthConstant.ROLE_PREFIX)) {
-			authCd=AuthConstant.ROLE_PREFIX+authCd;
+		if(!authCd.startsWith(RoleConstant.ROLE_PREFIX)) {
+			authCd=RoleConstant.ROLE_PREFIX+authCd;
 		}
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication == null) return false;
@@ -145,32 +145,6 @@ public class SecurityUtil {
 		return userDetails.getMiniCd();
 	}
 
-	/**
-	 * 로그인한 사용자의 온나라id를 가져온다
-	 * @return
-	 * @throws Exception
-	 */
-	public static String getOnnaraId() throws Exception {
-
-		CustomUserDetails userDetails = getPrincipal();
-
-		if (userDetails == null) return null;
-
-		return userDetails.getOnnaraId();
-	}
-
-	/**
-	 * 로그인한 사용자의 아름터id를 가져온다
-	 * @return
-	 * @throws Exception
-	 */
-	public static String getAreumteoId() throws Exception {
-
-		CustomUserDetails userDetails = getPrincipal();
-
-		if (userDetails == null) return null;
-
-		return userDetails.getAreumteoId();
-	}
+	
 
 }

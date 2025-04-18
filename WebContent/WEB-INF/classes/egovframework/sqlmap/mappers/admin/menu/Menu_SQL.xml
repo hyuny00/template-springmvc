@@ -105,8 +105,8 @@
  		SELECT count(1) as cnt FROM TB_MENU_SAMPLE WHERE up_menu_seq=#{upMenuSeq}
  	</select>
  	
- 	  <delete id="deleteAuthMenu" parameterType="ftMap">
- 	  	 DELETE FROM TB_AUTH_MENU_SAMPLE WHERE menu_seq=#{menuSeq}
+ 	  <delete id="deleteRoleMenu" parameterType="ftMap">
+ 	  	 DELETE FROM TB_ROLE_MENU_SAMPLE WHERE menu_seq=#{menuSeq}
  	  </delete>
  	
  	<delete id="deleteMenu" parameterType="ftMap">

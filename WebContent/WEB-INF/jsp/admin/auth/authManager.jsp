@@ -6,13 +6,13 @@
 	$( document ).ready(function() {
 
 
-		$('#authTypeCd').select2({
+		$('#roleTypeCd').select2({
 		});
 		$('#useYn').select2({
 		});
 
 
-		createAuthTree();
+		createRoleTree();
 
 		$("#up").on("click",function(e) {
 			e.preventDefault();
@@ -37,16 +37,16 @@
 		});
 
 		function updateOrd(){
-			var authOrd = [];
+			var roleOrd = [];
 			$('#sortOrd option').each(function(){
-				authOrd.push($(this).val());
+				roleOrd.push($(this).val());
 			});
 
 			$.ajax({
 			    url:'/admin/auth/updateAuthMenuOrd',
 			    type:'post',
 			    contentType:"application/x-www-form-urlencoded; charset=UTF-8",
-			    data:{auth_seqs : authOrd},
+			    data:{role_seqs : roleOrd},
 			    success: function(data) {
 			    }
 			    ,error: function(err) {
@@ -59,14 +59,14 @@
 	 	$("#new").on("click",function(e) {
  		 	e.preventDefault();
 
-	 		$("#authNm").focus();
+	 		$("#roleNm").focus();
 
- 		 	if($("#upAuthSeq").val() ==''){
+ 		 	if($("#upRoleSeq").val() ==''){
 		 		alert("상위권한을 선택하세요");
  			 	return;
  		 	}
 
- 		 	if($("#authTypeCd").val() =='030'){
+ 		 	if($("#roleTypeCd").val() =='030'){
 	 			 alert("상위권한을 선택하세요");
 	 			 return;
  		 	}
@@ -74,24 +74,24 @@
 
 	 		$("#save").show();
 	 		$("#delete").hide();
-	 		$("#authMenuView").hide();
+	 		$("#roleMenuView").hide();
 
-	 		$("#upAuthNm").val($("#authNm").val());
-	    	$("#upAuthSeq").val($("#authSeq").val());
+	 		$("#upRoleNm").val($("#roleNm").val());
+	    	$("#upRoleSeq").val($("#roleSeq").val());
 
 
-    	 	if($("#upAuthSeq").val() =='0'){
+    	 	if($("#upRoleSeq").val() =='0'){
  				$("#new").hide();
  		 	}
 
 
-	    	if($("#upAuthSeq").val() =='0'){
-	    		//$("#authTypeCd").val("010").attr("selected", "selected");
-	    		$("#authTypeCd").val("010").select2();
+	    	if($("#upRoleSeq").val() =='0'){
+	    		//$("#roleTypeCd").val("010").attr("selected", "selected");
+	    		$("#roleTypeCd").val("010").select2();
 	 		 }else{
-	 			 if($("#authTypeCd").val()=='010'){
-	 				//$("#authTypeCd").val("020").attr("selected", "selected");
-	 				$("#authTypeCd").val("020").select2();
+	 			 if($("#roleTypeCd").val()=='010'){
+	 				//$("#roleTypeCd").val("020").attr("selected", "selected");
+	 				$("#roleTypeCd").val("020").select2();
 	 			 }
 
 	 		 }
@@ -100,20 +100,20 @@
 	    	$("#mode").val("new");
 
 	    	$("#allMenu").hide();
-	    	$("#saveAuthMenu").hide();
+	    	$("#saveRoleMenu").hide();
 
-	    	$("#authForm").show();
+	    	$("#roleForm").show();
 
 
 
-	    	 var selected = $('#authTypeCd').val();
+	    	 var selected = $('#roleTypeCd').val();
 
 	    	 if(selected =='010' || selected =='020'){
-	    		$( "#authCd" ).val("");
-	 			$( "#authCd" ).prop( "readonly", true );
+	    		$( "#roleCd" ).val("");
+	 			$( "#roleCd" ).prop( "readonly", true );
 	 		 }
 	    	 if(selected =='030'){
-				 $( "#authCd" ).prop( "readonly", false );
+				 $( "#roleCd" ).prop( "readonly", false );
 	 		 }
 
 
@@ -127,7 +127,7 @@
 
  		 	e.preventDefault();
 
- 		 	 if($("#upAuthSeq").val() ==''){
+ 		 	 if($("#upRoleSeq").val() ==''){
 	 			 alert("상위권한을 선택하세요");
 	 			 return;
 	 		 }
@@ -146,8 +146,8 @@
 			    success: function(data) {
 			    	if(data.isSuccess){
 
-			    		$("#authTree").jstree("refresh_node", $("#upAuthSeq").val());
-			  		    $("#authTree").jstree("open_node", $("#upAuthSeq").val());
+			    		$("#roleTree").jstree("refresh_node", $("#upRoleSeq").val());
+			  		    $("#roleTree").jstree("open_node", $("#upRoleSeq").val());
 
 			    	}else{
 			    		alert("저장에 실패했습니다.");
@@ -167,13 +167,13 @@
 		 		 e.preventDefault();
 
 
-		 		if($("#authSeq").val()==''){
+		 		if($("#roleSeq").val()==''){
 		 			alert("삭제할 항목을 선택하세요.");
 		 			return;
 
 		 		}
 
-		 		if($("#upAuthSeq").val()==-1){
+		 		if($("#upRoleSeq").val()==-1){
 		 			alert("최상위 항목을 삭제할수 없습니다.");
 		 			return;
 		 		}
@@ -192,8 +192,8 @@
 				    success: function(data) {
 				    	if(data.isSuccess){
 
-				    		$("#authTree").jstree("refresh_node", $("#upAuthSeq").val());
-				  		    $("#authTree").jstree("open_node", $("#upAuthSeq").val());
+				    		$("#roleTree").jstree("refresh_node", $("#upRoleSeq").val());
+				  		    $("#roleTree").jstree("open_node", $("#upRoleSeq").val());
 
 
 				    	}else{
@@ -207,42 +207,42 @@
 
 	     });
 
-	 	$("#saveAuthMenu").on("click",function(e) {
+	 	$("#saveRoleMenu").on("click",function(e) {
 
 		 	e.preventDefault();
-    	 	$("#authMenuView").hide();
-    	 	saveAuthMenu();
+    	 	$("#roleMenuView").hide();
+    	 	saveRoleMenu();
 
       });
 
 
 
-	 	$("#authTypeCd").change(function() {
+	 	$("#roleTypeCd").change(function() {
 
-	 		 var selected = $('#authTypeCd').val();
+	 		 var selected = $('#roleTypeCd').val();
 
 	 		 if(selected =='010' || selected =='020'){
-	 			$( "#authCd" ).val("");
-	 			$( "#authCd" ).prop( "readonly", true );
+	 			$( "#roleCd" ).val("");
+	 			$( "#roleCd" ).prop( "readonly", true );
 	 		 }
 			 if(selected =='030'){
-				 $( "#authCd" ).prop( "readonly", false );
+				 $( "#roleCd" ).prop( "readonly", false );
 	 		 }
 
 	 	});
 		//메뉴권한지정
-		$("#authMenuView").on("click",function(e) {
+		$("#roleMenuView").on("click",function(e) {
 
 
  		 	e.preventDefault();
 
 
  		 	$("#allMenu").show();
- 			$("#authForm").hide();
+ 			$("#roleForm").hide();
 	 		$("#save").hide();
 	 		$("#delete").hide();
-	 		$("#saveAuthMenu").show();
- 		 	$("#authMenuView").hide();
+	 		$("#saveRoleMenu").show();
+ 		 	$("#roleMenuView").hide();
 
      	});
 
@@ -254,21 +254,21 @@
 
 
 
-	function createAuthTree() {
+	function createRoleTree() {
 
 
 		var schUseYn = $("#schUseYn").val();
 
-		$('#authTree').jstree("destroy");
+		$('#roleTree').jstree("destroy");
 
-        $('#authTree').jstree({
+        $('#roleTree').jstree({
         	 'core': {
 
         	      'data': {
 	        	        "url" :  "/admin/auth/getAuthList",
 
 	       	        	 "data": function (node) {
-	       	        	 		 return {"useYn" :schUseYn, "authSeq" : node.id};
+	       	        	 		 return {"useYn" :schUseYn, "roleSeq" : node.id};
 	                      }
         	      } ,
         	      "check_callback" : true,
@@ -291,15 +291,15 @@
 
         });
 
-        $('#authTree').on("loaded.jstree", function (e, data) {
-        	 $("#authTree").jstree("open_all");
+        $('#roleTree').on("loaded.jstree", function (e, data) {
+        	 $("#roleTree").jstree("open_all");
         });
 
 
-        $('#authTree').on("changed.jstree", function (e, data) {
+        $('#roleTree').on("changed.jstree", function (e, data) {
         });
 
-        $('#authTree').on('open_node.jstree',function (e, data) {
+        $('#roleTree').on('open_node.jstree',function (e, data) {
         	showChildren(data);
 
 
@@ -307,9 +307,9 @@
         });
 
 
-        $('#authTree').on("select_node.jstree", function (e, data) {
+        $('#roleTree').on("select_node.jstree", function (e, data) {
         	showChildren(data);
-        	createAuthMenuTree();
+        	createRoleMenuTree();
         });
 
 
@@ -320,7 +320,7 @@
 
 
 
-	function createAuthMenuTree() {
+	function createRoleMenuTree() {
 
 		$('#menuTree').jstree("destroy");
 
@@ -329,7 +329,7 @@
              type: "POST",
 
              url: "/admin/menu/getAuthMenuList",
-             data : {  "useYn" : "Y", "authSeq" : $("#authSeq").val() },
+             data : {  "useYn" : "Y", "roleSeq" : $("#roleSeq").val() },
              dataType: "json",
              success: function (jsondata) {
 
@@ -393,22 +393,22 @@
    	 }
 
 
-	function saveAuthMenu(){
+	function saveRoleMenu(){
 
 		if(!confirm("저장하시겠습니까?")) return;
 
-		var authCd=$("#authCd").val();
+		var roleCd=$("#roleCd").val();
 
-		if(authCd ==''){
+		if(roleCd ==''){
 			alert("권한을 선택하세요.");
 			return;
 		}
 
 		var sendData ={};
-		var authSeq=$("#authSeq").val();
-		if(authSeq == "") authSeq=-1
+		var roleSeq=$("#roleSeq").val();
+		if(roleSeq == "") roleSeq=-1
 
-		sendData.authSeq = authSeq;
+		sendData.roleSeq = roleSeq;
 		sendData.menu_seqs= $('#menuTree').jstree(true).get_selected();
 
 		$.ajax({
@@ -443,43 +443,43 @@
 		$("#delete").show();
 		$("#mode").val("update");
 
-		$("#authNm").val(data.node.text);
+		$("#roleNm").val(data.node.text);
 
-		if(data.node.original.authTypeCd=='030'){
-			$("#authCd").val(data.node.original.authCd);
+		if(data.node.original.roleTypeCd=='030'){
+			$("#roleCd").val(data.node.original.roleCd);
 		}else{
-			 $('#saveAuthMenu').hide();
+			 $('#saveRoleMenu').hide();
 		}
 
-    	$("#upAuthNm").val(data.node.original.upAuthNm);
-    	$("#upAuthSeq").val(data.node.original.upAuthSeq);
-    	$("#authSeq").val(data.node.original.id);
+    	$("#upRoleNm").val(data.node.original.upRoleNm);
+    	$("#upRoleSeq").val(data.node.original.upRoleSeq);
+    	$("#roleSeq").val(data.node.original.id);
 
     	//$("#useYn").val(data.node.original.useYn).attr("selected", "selected");
     	$("#useYn").val(data.node.original.useYn).select2();
 
-    	//$("#authTypeCd").val(data.node.original.authTypeCd).attr("selected", "selected");
+    	//$("#roleTypeCd").val(data.node.original.roleTypeCd).attr("selected", "selected");
 
-    	$("#authTypeCd").val(data.node.original.authTypeCd).select2();
+    	$("#roleTypeCd").val(data.node.original.roleTypeCd).select2();
 
     	$("#etc").val(data.node.original.etc); // 비고
 
 	   	 if(data.node.original.id =='0'){
 	   		 $("#delete").hide();
 	   		 $("#save").hide();
-	   		 $("#authMenuView").hide();
+	   		 $("#roleMenuView").hide();
 	   	 }else{
 
-	   		 if($('#saveAuthMenu').is(':visible') ){
+	   		 if($('#saveRoleMenu').is(':visible') ){
 
 	 			 	$("#save").hide();
 	 	   			$("#delete").hide();
-	 	   		 	$("#authMenuView").hide();
+	 	   		 	$("#roleMenuView").hide();
 
 	   		 }else{
 	  			 	$("#save").show();
 	  	   			$("#delete").show();
-	  	   		 	$("#authMenuView").show();
+	  	   		 	$("#roleMenuView").show();
 	   		 }
 
 	   		if($('#allMenu').is(':visible') ){
@@ -492,25 +492,25 @@
 
 	   	 }
 
-  	 	var selected = $('#authTypeCd').val();
+  	 	var selected = $('#roleTypeCd').val();
 
     	 if(selected =='010' || selected =='020'){
-    		$( "#authCd" ).val("");
- 			$( "#authCd" ).prop( "readonly", true );
+    		$( "#roleCd" ).val("");
+ 			$( "#roleCd" ).prop( "readonly", true );
  		 }
     	 if(selected =='030'){
-			 $( "#authCd" ).prop( "readonly", false );
+			 $( "#roleCd" ).prop( "readonly", false );
  		 }
 
      	// 정렬
-     	var node = $("#authTree").jstree("get_node",data.node.id);
+     	var node = $("#roleTree").jstree("get_node",data.node.id);
 
  		var selected = $('#sortOrd option:selected');
 
      	$('#sortOrd').children('option').remove();
 
      	for (var i = 0; i < node.children.length; i++) {
-     		var temp_node = $("#authTree").jstree("get_node",node.children[i]);
+     		var temp_node = $("#roleTree").jstree("get_node",node.children[i]);
 
           	 $('#sortOrd').append($('<option/>', {
                   value: temp_node.original.id,
@@ -525,9 +525,9 @@
 
 	function init() {
 
-		$("#authNm").val('');
-    	$("#authCd").val('');
-    	$("#authSeq").val('');
+		$("#roleNm").val('');
+    	$("#roleCd").val('');
+    	$("#roleSeq").val('');
 
     	//$("#useYn option:eq(0)").attr("selected", "selected");
 	}
@@ -539,8 +539,8 @@
 <section id="section" class="section">
 	<div class="main-cont-box">
 		<form name="aform" id="aform">
-			<input type="hidden" name="upAuthSeq" id="upAuthSeq">
-			<input type="hidden" name="authSeq" id="authSeq" value="-1">
+			<input type="hidden" name="upRoleSeq" id="upRoleSeq">
+			<input type="hidden" name="roleSeq" id="roleSeq" value="-1">
 			<input type="hidden" name="mode" id="mode">
 			<jsp:include page="/WEB-INF/jsp/framework/_includes/includePageParam.jsp" flush="true" />
 			<h2 class="page-title">
@@ -558,7 +558,7 @@
 											<th>권한사용여부</th>
 											<td style="padding-right: 170px;">
 												<div class="selectbox">
-													<select name="schUseYn" id="selectBox" class="select-s" onChange="javascript:createAuthTree();">
+													<select name="schUseYn" id="selectBox" class="select-s" onChange="javascript:createRoleTree();">
 														<option value="">전체</option>
 														<option value="Y" selected>Yes</option>
 														<option value="N">No</option>
@@ -570,10 +570,10 @@
 								</div>
 							</div>
 							<div class="scroll1" style="height:550px;">
-								<div class="tree-box" id="authTree"></div>
+								<div class="tree-box" id="roleTree"></div>
 							</div>
 						</div>
-						<div class="flex-box1" id="authForm">
+						<div class="flex-box1" id="roleForm">
 							<div class="scroll1 mL20" style="margin-top: 35px; height:520px;">
 								<table class="table border2" style="height: 208px;">
 									<colgroup>
@@ -582,18 +582,18 @@
 									</colgroup>
 
 									<tr>
-										<th><label for="upAuthNm">상위권한</label></th>
+										<th><label for="upRoleNm">상위권한</label></th>
 										<td colspan="3">
 											<div class="inputbox">
-												<input type="text" class="input-s" id="upAuthNm" name="upAuthNm" value="" readonly maxlength="100" />
+												<input type="text" class="input-s" id="upRoleNm" name="upRoleNm" value="" readonly maxlength="100" />
 											</div>
 										</td>
 									</tr>
 									<tr>
-										<th><label for="authTypeCd">권한구분<span class="orange">*</span></label></th>
+										<th><label for="roleTypeCd">권한구분<span class="orange">*</span></label></th>
 										<td colspan="3">
 											<div class="selectbox" style="width: 100%;">
-												<select name="authTypeCd" id="authTypeCd" class="select">
+												<select name="roleTypeCd" id="roleTypeCd" class="select">
 													<option value="010">시스템</option>
 													<option value="020">폴더</option>
 													<option value="030">권한</option>
@@ -602,18 +602,18 @@
 										</td>
 									</tr>
 									<tr>
-										<th><label for="authNm">권한명<span class="orange">*</span></label></th>
+										<th><label for="roleNm">권한명<span class="orange">*</span></label></th>
 										<td colspan="3">
 											<div class="inputbox">
-												<input type="text" class="input-s" id="authNm" name="authNm" value="" maxlength="100" />
+												<input type="text" class="input-s" id="roleNm" name="roleNm" value="" maxlength="100" />
 											</div>
 										</td>
 									</tr>
 									<tr>
-										<th><label for="authCd">권한코드</label></th>
+										<th><label for="roleCd">권한코드</label></th>
 										<td colspan="3">
 											<div class="inputbox">
-												<input type="text" class="input-s" id="authCd" name="authCd" value="" maxlength="100" />
+												<input type="text" class="input-s" id="roleCd" name="roleCd" value="" maxlength="100" />
 											</div>
 										</td>
 									</tr>
@@ -667,7 +667,7 @@
 
 						<div class="flex-box1" id="allMenu" style="display: none;">
 							<div class="scroll1 mL20" style="margin-top: 35px;">
-								<div class="auth-box" id="menuTree"></div>
+								<div class="role-box" id="menuTree"></div>
 							</div>
 						</div>
 					</div>
@@ -675,8 +675,8 @@
 						<ul class="btn-list">
 							<li id="new"><a href="#" class="btn-submit-s navy">신규</a></li>
 							<li id="save"><a href="#" class="btn-submit-s white">권한저장</a></li>
-							<li id="authMenuView"><a href="#" class="btn-submit-s gray btn-close">메뉴권한지정</a></li>
-							<li id="saveAuthMenu"><a href="#" class="btn-submit-s gray btn-close">권한별 메뉴저장</a></li>
+							<li id="roleMenuView"><a href="#" class="btn-submit-s gray btn-close">메뉴권한지정</a></li>
+							<li id="saveRoleMenu"><a href="#" class="btn-submit-s gray btn-close">권한별 메뉴저장</a></li>
 							<li id="delete"><a href="#" class="btn-submit-s red btn-close">삭제</a></li>
 						</ul>
 					</div>

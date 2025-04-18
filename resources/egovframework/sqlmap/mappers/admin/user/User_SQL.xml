@@ -44,12 +44,12 @@
 
 
 
-   <select id="getUserAuthList" parameterType="ftMap" resultType="com.futechsoft.admin.user.vo.UserAuth">
+   <select id="getUserRoleList" parameterType="ftMap" resultType="com.futechsoft.admin.user.vo.UserRole">
 		<![CDATA[
 	        SELECT
-				b.user_no, a.auth_seq, a.up_auth_seq, a.auth_cd, a.auth_nm, a.auth_type_cd,
-                                   DECODE(B.auth_seq, NULL,'N','Y') select_yn
-	        FROM  tb_auth_SAMPLE  a left outer  join tb_user_auth_SAMPLE b on a.auth_seq= b.auth_seq and b.user_no = #{userNo}   left outer  join  tb_user_SAMPLE c on b.user_no =c.user_no
+				b.user_no, a.role_seq, a.up_role_seq, a.role_cd, a.role_nm, a.role_type_cd,
+                                   DECODE(B.role_seq, NULL,'N','Y') select_yn
+	        FROM  tb_role_SAMPLE  a left outer  join tb_user_role_SAMPLE b on a.role_seq= b.role_seq and b.user_no = #{userNo}   left outer  join  tb_user_SAMPLE c on b.user_no =c.user_no
 	        where a.use_yn= 'Y'
 		]]>
 	</select>
@@ -93,12 +93,12 @@
 	</insert>
 	
 	
-	 <insert id="insertUserAuth"  parameterType="ftMap" >
-	    <selectKey keyProperty="userAuthSeq" resultType="String" order="BEFORE">
-	    	SELECT nvl(MAX(user_auth_seq ),0)+1 from TB_USER_AUTH
+	 <insert id="insertUserRole"  parameterType="ftMap" >
+	    <selectKey keyProperty="userRoleSeq" resultType="String" order="BEFORE">
+	    	SELECT nvl(MAX(user_role_seq ),0)+1 from TB_USER_Role
 	    </selectKey>
-	  insert into TB_USER_AUTH ( user_auth_seq, rgstp_no , auth_seq , user_no , rgst_dttm )
-	   values ( #{userAuthSeq},  #{userNo} ,  #{authSeq} ,  #{userNo} , sysdate )
+	  insert into TB_USER_Role ( user_role_seq, rgstp_no , role_seq , user_no , rgst_dttm )
+	   values ( #{userRoleSeq},  #{userNo} ,  #{roleSeq} ,  #{userNo} , sysdate )
 	 </insert>
 
 <update id="updateUser"  parameterType="ftMap" >
@@ -120,9 +120,9 @@
 
 	
     <!-- 유저 권한 삭제 -->
-	<delete id="deleteUserAuth" parameterType="ftMap">
+	<delete id="deleteUserRole" parameterType="ftMap">
 		DELETE FROM
-			TB_USER_AUTH
+			TB_USER_Role
 		WHERE
 			user_no =#{userNo}
 	</delete>

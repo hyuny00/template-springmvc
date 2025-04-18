@@ -26,7 +26,7 @@ public interface MenuMapper {
 	
 	int getMenuCount(FtMap params) throws Exception;
 	
-	void deleteAuthMenu(FtMap params) throws Exception;
+	void deleteRoleMenu(FtMap params) throws Exception;
 	void deleteMenu(FtMap params) throws Exception;
 	
 	void updateMenuOrd(FtMap params) throws Exception;

@@ -12,13 +12,13 @@ public class SecurityMetaDataSourceEvent extends ApplicationEvent {
 	private static final long serialVersionUID = 1L;
 
 	private LinkedHashMap<String, List<ConfigAttribute>> requestMap;
-	private HashMap<String, String> pathAuthMap;
+	private HashMap<String, String> pathRoleMap;
 
 
-	public SecurityMetaDataSourceEvent(Object source, final LinkedHashMap<String, List<ConfigAttribute>> requestMap, final HashMap<String, String> pathAuthMap) {
+	public SecurityMetaDataSourceEvent(Object source, final LinkedHashMap<String, List<ConfigAttribute>> requestMap, final HashMap<String, String> pathRoleMap) {
 		super(source);
 		this.requestMap = requestMap;
-		this.pathAuthMap = pathAuthMap;
+		this.pathRoleMap = pathRoleMap;
 	}
 
 	public LinkedHashMap<String, List<ConfigAttribute>> getRequestMap() {
@@ -29,8 +29,8 @@ public class SecurityMetaDataSourceEvent extends ApplicationEvent {
 		this.requestMap = requestMap;
 	}
 
-	public HashMap<String, String> getPathAuthMap() {
-		return pathAuthMap;
+	public HashMap<String, String> getPathRoleMap() {
+		return pathRoleMap;
 	}
 
 

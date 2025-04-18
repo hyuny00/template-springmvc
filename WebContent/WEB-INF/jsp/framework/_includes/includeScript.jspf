@@ -8,7 +8,6 @@
 <script  src="${basePath}/js/session-expiration-idle-hands/basil.min.js"></script>
 <script  src="${basePath}/js/session-expiration-idle-hands/jquery-idle-hands.js"></script>
 <script  src="${basePath}/js/eventsource-polyfill/eventsource.js"></script>
-<script  src="${basePath}/js/notify/notify.js"></script>
 <script  src="${basePath}/js/date/moment.min.js"></script>
 
 <script  src="${basePath}/js/timepicker/jquery.timepicker.min.js"></script>

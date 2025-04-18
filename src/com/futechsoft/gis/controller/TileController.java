@@ -17,7 +17,7 @@ public class TileController {
     private  TileService tileService;
 
   
-
+/*
     @GetMapping("/{zoom}/{x}/{y}.png")
     public ResponseEntity<byte[]> getTile(@PathVariable int zoom, @PathVariable int x, @PathVariable int y) {
         // B 서버에서 타일을 가져옵니다.
@@ -28,4 +28,17 @@ public class TileController {
                              .header("Content-Type", "image/png")
                              .body(tile);
     }
+    */
+    
+    @GetMapping("/{zoom}/{x}/{y}.png")
+    public ResponseEntity<byte[]> getTile(@PathVariable int zoom, @PathVariable int x, @PathVariable int y) {
+        // B 서버에서 타일을 가져옵니다.
+        byte[] tile = tileService.getMap("c",zoom, x, y);
+
+        // 타일 이미지 파일을 클라이언트에게 반환합니다.
+        return ResponseEntity.ok()
+                             .header("Content-Type", "image/png")
+                             .body(tile);
+    }
+    
 }

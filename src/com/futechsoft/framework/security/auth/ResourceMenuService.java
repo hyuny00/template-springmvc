@@ -14,9 +14,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
-import com.futechsoft.admin.auth.mapper.AuthMapper;
-import com.futechsoft.admin.auth.vo.Auth;
-import com.futechsoft.admin.auth.vo.AuthMenu;
+import com.futechsoft.admin.auth.mapper.RoleMapper;
+import com.futechsoft.admin.auth.vo.Role;
+import com.futechsoft.admin.auth.vo.RoleMenu;
 import com.futechsoft.admin.menu.vo.Menu;
 import com.futechsoft.framework.security.mapper.SecurityMapper;
 import com.futechsoft.framework.exception.BizException;
@@ -45,21 +45,21 @@ public class ResourceMenuService {
 //	private MenuLogService menuLogService;
 
 
-	@Resource(name = "auth.mapper.AuthMapper")
-	private AuthMapper authMapper;
+	@Resource(name = "auth.mapper.RoleMapper")
+	private RoleMapper roleMapper;
 
-	Map<String, List<AuthMenu>> authMenuMap = null;
+	Map<String, List<RoleMenu>> roleMenuMap = null;
 	Map<String, List<Menu>> menuListMap = null;
 
 	@PostConstruct
 	public void init() throws Exception {
 
-		authMenuMap = new HashMap<String, List<AuthMenu>>();
+		roleMenuMap = new HashMap<String, List<RoleMenu>>();
 
-		List<Auth> list = authMapper.getAuthCdList();
-		for (Auth auth : list) {
-			List<AuthMenu> menuList = securityMapper.getAuthMenu(auth.getAuthSeq());
-			authMenuMap.put(auth.getAuthCd().toUpperCase(), menuList);
+		List<Role> list = roleMapper.getRoleCdList();
+		for (Role auth : list) {
+			List<RoleMenu> menuList = securityMapper.getRoleMenu(auth.getRoleSeq());
+			roleMenuMap.put(auth.getRoleCd().toUpperCase(), menuList);
 		}
 
 		menuListMap = new HashMap<String, List<Menu>>();
@@ -72,7 +72,7 @@ public class ResourceMenuService {
 			menuListMap.put(String.valueOf(topMenu.getMenuSeq()), subMenuList);
 		}
 
-		publisher.publishEvent(new ResourceMenuEvent(this, authMenuMap, menuListMap));
+		publisher.publishEvent(new ResourceMenuEvent(this, roleMenuMap, menuListMap));
 	}
 
 }

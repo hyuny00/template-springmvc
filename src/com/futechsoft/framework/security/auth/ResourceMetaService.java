@@ -15,8 +15,8 @@ import org.springframework.security.access.SecurityConfig;
 import org.springframework.stereotype.Component;
 
 import com.futechsoft.admin.auth.vo.Path;
-import com.futechsoft.admin.auth.vo.PathAuth;
-import com.futechsoft.framework.common.constant.AuthConstant;
+import com.futechsoft.admin.auth.vo.PathRole;
+import com.futechsoft.framework.common.constant.RoleConstant;
 import com.futechsoft.framework.security.event.SecurityMetaDataSourceEvent;
 import com.futechsoft.framework.security.service.SecurityService;
 
@@ -47,17 +47,17 @@ public class ResourceMetaService {
 
 			List<ConfigAttribute> atts = new ArrayList<ConfigAttribute>();
 
-			List<PathAuth> pathAuthList = securityService.getPathAuthList(path.getPathSeq());
-			for (PathAuth pathAuth : pathAuthList) {
+			List<PathRole> pathAuthList = securityService.getPathAuthList(path.getPathSeq());
+			for (PathRole pathAuth : pathAuthList) {
 
-				if(!pathAuth.getAuthCd().startsWith(AuthConstant.ROLE_PREFIX)){
-					atts.add(new SecurityConfig(AuthConstant.ROLE_PREFIX + pathAuth.getAuthCd()));
+				if(!pathAuth.getRoleCd().startsWith(RoleConstant.ROLE_PREFIX)){
+					atts.add(new SecurityConfig(RoleConstant.ROLE_PREFIX + pathAuth.getRoleCd()));
 
-					auths +="'"+AuthConstant.ROLE_PREFIX + pathAuth.getAuthCd()+"'";
+					auths +="'"+RoleConstant.ROLE_PREFIX + pathAuth.getRoleCd()+"'";
 				}else {
-					atts.add(new SecurityConfig( pathAuth.getAuthCd()));
+					atts.add(new SecurityConfig( pathAuth.getRoleCd()));
 
-					auths +="'"+pathAuth.getAuthCd()+"'";
+					auths +="'"+pathAuth.getRoleCd()+"'";
 				}
 				auths+=",";
 			}

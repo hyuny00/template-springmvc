@@ -13,21 +13,21 @@ public class SecurityMetaDataSourceListener implements ApplicationListener<Secur
 
 	private LinkedHashMap<String, List<ConfigAttribute>> requestMap;
 
-	private HashMap<String, String> pathAuthMap;
+	private HashMap<String, String> pathRoleMap;
 
 	public LinkedHashMap<String, List<ConfigAttribute>> getRequestMap() {
 		return requestMap;
 	}
 
-	public HashMap<String, String> getPathAuthMap() {
-		return pathAuthMap;
+	public HashMap<String, String> getPathRoleMap() {
+		return pathRoleMap;
 	}
 
 
 	@Override
 	public void onApplicationEvent(SecurityMetaDataSourceEvent event) {
 		this.requestMap = event.getRequestMap();
-		this.pathAuthMap = event.getPathAuthMap();
+		this.pathRoleMap = event.getPathRoleMap();
 	}
 
 }

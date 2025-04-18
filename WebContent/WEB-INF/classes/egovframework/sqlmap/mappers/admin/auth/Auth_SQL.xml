@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.futechsoft.admin.auth.mapper.AuthMapper">
+<mapper namespace="com.futechsoft.admin.auth.mapper.RoleMapper">
 
 
 
-	<select id="getAuthList" parameterType="ftMap"
-        resultType="com.futechsoft.admin.auth.vo.Auth">
+	<select id="getRoleList" parameterType="ftMap"
+        resultType="com.futechsoft.admin.auth.vo.Role">
 
         SELECT
-            A.AUTH_SEQ,
-            A.UP_AUTH_SEQ,
-            A.AUTH_CD,
-            A.AUTH_NM,
-            A.AUTH_TYPE_CD,
+            A.ROLE_SEQ,
+            A.UP_ROLE_SEQ,
+            A.ROLE_CD,
+            A.ROLE_NM,
+            A.ROLE_TYPE_CD,
             A.USE_YN,
-            COALESCE(B.SUB_AUTH_CNT, 0) AS SUB_AUTH_CNT,  
-            C.AUTH_NM AS UP_AUTH_NM  
+            COALESCE(B.SUB_ROLE_CNT, 0) AS SUB_ROLE_CNT,  
+            C.ROLE_NM AS UP_ROLE_NM  
         FROM 
-            TB_AUTH_SAMPLE A
+            TB_ROLE_SAMPLE A
         LEFT JOIN 
-            (  -- SUB_AUTH_CNT를 계산하는 JOIN
-                SELECT UP_AUTH_SEQ, COUNT(AUTH_SEQ) AS SUB_AUTH_CNT
-                FROM TB_AUTH_SAMPLE
+            ( 
+                SELECT UP_ROLE_SEQ, COUNT(ROLE_SEQ) AS SUB_ROLE_CNT
+                FROM TB_ROLE_SAMPLE
                 WHERE USE_YN = 'Y' 
-                GROUP BY UP_AUTH_SEQ
-            ) B ON A.AUTH_SEQ = B.UP_AUTH_SEQ
+                GROUP BY UP_ROLE_SEQ
+            ) B ON A.ROLE_SEQ = B.UP_ROLE_SEQ
         LEFT JOIN 
-            TB_AUTH_SAMPLE C ON A.UP_AUTH_SEQ = C.AUTH_SEQ
+            TB_ROLE_SAMPLE C ON A.UP_ROLE_SEQ = C.ROLE_SEQ
         WHERE 
-            A.UP_AUTH_SEQ = #{authSeq}
+            A.UP_ROLE_SEQ = #{roleSeq}
             <if test="@org.apache.commons.lang.StringUtils@isNotEmpty(useYn)">
                 AND A.USE_YN = #{useYn}
             </if>
@@ -38,50 +38,50 @@
 
 
 
-	<select id="getAuthCdList"
-		resultType="com.futechsoft.admin.auth.vo.Auth">
+	<select id="getRoleCdList"
+		resultType="com.futechsoft.admin.auth.vo.Role">
 		<![CDATA[
 	        SELECT
-				AUTH_SEQ, AUTH_CD
-	        FROM  TB_AUTH_SAMPLE WHERE AUTH_TYPE_CD='030' AND USE_YN= 'Y'
+				ROLE_SEQ, ROLE_CD
+	        FROM  TB_ROLE_SAMPLE WHERE ROLE_TYPE_CD='030' AND USE_YN= 'Y'
 		]]>
 	</select>
 
 
 
-	<select id="getAuthMenuList"
-		resultType="com.futechsoft.admin.auth.vo.AuthMenu">
+	<select id="getRoleMenuList"
+		resultType="com.futechsoft.admin.auth.vo.RoleMenu">
 		<![CDATA[
 		  SELECT
 			    a.menu_type_cd,
 			    a.menu_nm,
-			    b.auth_seq,
+			    b.role_seq,
 			    a.menu_seq,
-			    b.auth_menu_seq,
-			    c.auth_cd,
+			    b.role_menu_seq,
+			    c.role_cd,
 			    a.up_menu_seq,
 			    a.menu_url,
 			    a.open_yn,
 			    CASE WHEN b.menu_seq IS NULL THEN 'N' ELSE 'Y' END AS selectYn,  
-			    COALESCE(d.noAuthCount, 0) AS noAuthCount, 
+			    COALESCE(d.noRoleCount, 0) AS noRoleCount, 
 			    COALESCE(e.subMenuCnt, 0) AS subMenuCnt 
 			FROM 
 			    tb_menu_SAMPLE a
 			LEFT OUTER JOIN 
-			    tb_auth_menu_SAMPLE b 
+			    tb_role_menu_SAMPLE b 
 			    ON a.menu_seq = b.menu_seq 
-			    AND b.auth_seq = #{authSeq}
+			    AND b.role_seq = #{roleSeq}
 			LEFT OUTER JOIN 
-			    tb_auth_SAMPLE c 
-			    ON b.auth_seq = c.auth_seq 
+			    tb_role_SAMPLE c 
+			    ON b.role_seq = c.role_seq 
 			    AND c.USE_YN = 'Y'
 			LEFT JOIN 
 			    ( 
-			        SELECT a.up_menu_seq, COUNT(a.menu_seq) AS noAuthCount -- 테이블 'a'의 'menu_seq'와 'up_menu_seq' 사용
+			        SELECT a.up_menu_seq, COUNT(a.menu_seq) AS noRoleCount -- 테이블 'a'의 'menu_seq'와 'up_menu_seq' 사용
 			        FROM tb_menu_SAMPLE a
-			        LEFT OUTER JOIN tb_auth_menu_SAMPLE b
+			        LEFT OUTER JOIN tb_role_menu_SAMPLE b
 			        ON a.menu_seq = b.menu_seq
-			        WHERE b.auth_seq IS NULL
+			        WHERE b.role_seq IS NULL
 			        GROUP BY a.up_menu_seq
 			    ) d 
 			    ON a.menu_seq = d.up_menu_seq
@@ -117,12 +117,12 @@
 	</select>
 
 
-	<select id="getPathAuthList"
-		resultType="com.futechsoft.admin.auth.vo.PathAuth">
+	<select id="getPathRoleList"
+		resultType="com.futechsoft.admin.auth.vo.PathRole">
 		<![CDATA[
 	         SELECT
-					A.AUTH_SEQ, A.AUTH_NM,   A.UP_AUTH_SEQ, A.AUTH_TYPE_CD, B.PATH_SEQ, B.PATH_AUTH_SEQ,  C.UP_PATH_SEQ, DECODE(B.PATH_SEQ, NULL,'N','Y') SELECT_YN
-        	FROM  TB_AUTH_SAMPLE A LEFT OUTER JOIN TB_PATH_AUTH_SAMPLE B ON A.AUTH_SEQ= B.AUTH_SEQ AND B.PATH_SEQ =  #{pathSeq}     LEFT OUTER JOIN TB_PATH_SAMPLE C ON B.PATH_SEQ=C.PATH_SEQ
+					A.ROLE_SEQ, A.ROLE_NM,   A.UP_ROLE_SEQ, A.ROLE_TYPE_CD, B.PATH_SEQ, B.PATH_ROLE_SEQ,  C.UP_PATH_SEQ, DECODE(B.PATH_SEQ, NULL,'N','Y') SELECT_YN
+        	FROM  TB_ROLE_SAMPLE A LEFT OUTER JOIN TB_PATH_ROLE_SAMPLE B ON A.ROLE_SEQ= B.ROLE_SEQ AND B.PATH_SEQ =  #{pathSeq}     LEFT OUTER JOIN TB_PATH_SAMPLE C ON B.PATH_SEQ=C.PATH_SEQ
 	        WHERE   A.USE_YN= 'Y'
 		]]>
 	</select>
@@ -130,56 +130,56 @@
 
 
 	<!-- 권한메뉴등록등록 -->
-	<insert id="insertAuthMenu" parameterType="ftMap">
-		<selectKey keyProperty="authMenuSeq" resultType="String"
+	<insert id="insertRoleMenu" parameterType="ftMap">
+		<selectKey keyProperty="roleMenuSeq" resultType="String"
 			order="BEFORE">
-			SELECT nvl(MAX(auth_menu_seq ),0)+1 from TB_AUTH_MENU_SAMPLE
+			SELECT nvl(MAX(role_menu_seq ),0)+1 from TB_ROLE_MENU_SAMPLE
 		</selectKey>
-		INSERT INTO TB_AUTH_MENU_SAMPLE (
-		AUTH_MENU_SEQ,
+		INSERT INTO TB_ROLE_MENU_SAMPLE (
+		ROLE_MENU_SEQ,
 		MENU_SEQ ,
 		RGSTP_NO ,
-		AUTH_SEQ ,
+		ROLE_SEQ ,
 		RGST_DTTM
 		)
 		VALUES (
-		#{authMenuSeq},
+		#{roleMenuSeq},
 		#{menuSeq} ,
 		#{userNo} ,
-		#{authSeq} ,
+		#{roleSeq} ,
 		sysdate
 		)
 	</insert>
 
 	<!-- 권한등록 -->
-	<insert id="insertAuth" parameterType="ftMap">
-		<selectKey keyProperty="authSeq" resultType="String"
+	<insert id="insertRole" parameterType="ftMap">
+		<selectKey keyProperty="roleSeq" resultType="String"
 			order="BEFORE">
-			SELECT NVL(MAX(AUTH_SEQ),0)+1 FROM TB_AUTH_SAMPLE
+			SELECT NVL(MAX(ROLE_SEQ),0)+1 FROM TB_ROLE_SAMPLE
 		</selectKey>
-		INSERT INTO TB_AUTH_SAMPLE (
-		AUTH_SEQ,
-		AUTH_CD,
-		AUTH_NM,
-		AUTH_TYPE_CD,
-		UP_AUTH_SEQ,
+		INSERT INTO TB_ROLE_SAMPLE (
+		ROLE_SEQ,
+		ROLE_CD,
+		ROLE_NM,
+		ROLE_TYPE_CD,
+		UP_ROLE_SEQ,
 		USE_YN,
 
 		rgstp_no,
 		rgst_dttm
 		) VALUES (
-		#{authSeq},
-		<if test="authTypeCd == '010' or authTypeCd == '020'">
-			#{authSeq}||'_'||#{authCd},
+		#{roleSeq},
+		<if test="roleTypeCd == '010' or roleTypeCd == '020'">
+			#{roleSeq}||'_'||#{roleCd},
 		</if>
 
-		<if test='authTypeCd =="030"'>
-			#{authCd},
+		<if test='roleTypeCd =="030"'>
+			#{roleCd},
 		</if>
 
-		#{authNm},
-		#{authTypeCd},
-		#{upAuthSeq},
+		#{roleNm},
+		#{roleTypeCd},
+		#{upRoleSeq},
 		'Y',
 
 		#{userNo},
@@ -190,18 +190,18 @@
 	</insert>
 
 	<!-- 권한수정 -->
-	<update id="updateAuth" parameterType="ftMap">
+	<update id="updateRole" parameterType="ftMap">
 		UPDATE
-		TB_AUTH_SAMPLE
+		TB_ROLE_SAMPLE
 		SET
-		AUTH_TYPE_CD = #{authTypeCd},
-		AUTH_NM = #{authNm},
-		AUTH_CD = #{authCd},
+		ROLE_TYPE_CD = #{roleTypeCd},
+		ROLE_NM = #{roleNm},
+		ROLE_CD = #{roleCd},
 		USE_YN = #{useYn},
 		UPDTP_NO = #{userNo},
 		UPDT_DTTM = sysdate
 		WHERE
-		AUTH_SEQ = #{authSeq}
+		ROLE_SEQ = #{roleSeq}
 	</update>
 
 
@@ -249,30 +249,30 @@
 
 
 
-	<select id="getAuthCount" parameterType="ftMap"
+	<select id="getRoleCount" parameterType="ftMap"
 		resultType="java.lang.Integer">
-		SELECT count(1) as cnt FROM TB_AUTH_SAMPLE WHERE
-		up_auth_seq=#{upAuthSeq}
+		SELECT count(1) as cnt FROM TB_ROLE_SAMPLE WHERE
+		up_role_seq=#{upRoleSeq}
 	</select>
 
-	<delete id="deleteUserAuth" parameterType="ftMap">
+	<delete id="deleteUserRole" parameterType="ftMap">
 		DELETE FROM
-		TB_USER_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
+		TB_USER_ROLE_SAMPLE WHERE role_seq=#{roleSeq}
 	</delete>
 
-	<delete id="deleteAuthMenu" parameterType="ftMap">
+	<delete id="deleteRoleMenu" parameterType="ftMap">
 		DELETE FROM
-		TB_AUTH_MENU_SAMPLE WHERE auth_seq=#{authSeq}
+		TB_ROLE_MENU_SAMPLE WHERE role_seq=#{roleSeq}
 	</delete>
 
-	<delete id="deleteAuth" parameterType="ftMap">
-		DELETE FROM TB_AUTH_SAMPLE
-		WHERE auth_seq=#{authSeq}
+	<delete id="deleteRole" parameterType="ftMap">
+		DELETE FROM TB_ROLE_SAMPLE
+		WHERE role_seq=#{roleSeq}
 	</delete>
 
-	<delete id="deletePathAuthByAuthSeq" parameterType="ftMap">
+	<delete id="deletePathRoleByRoleSeq" parameterType="ftMap">
 		DELETE FROM
-		TB_PATH_AUTH_SAMPLE WHERE auth_seq=#{authSeq}
+		TB_PATH_ROLE_SAMPLE WHERE role_seq=#{roleSeq}
 	</delete>
 
 
@@ -282,8 +282,8 @@
 	</update>
 
 
-	<delete id="deletePathAuthByPathSeq" parameterType="ftMap">
-		DELETE FROM TB_PATH_AUTH_SAMPLE WHERE path_seq=#{pathSeq}
+	<delete id="deletePathRoleByPathSeq" parameterType="ftMap">
+		DELETE FROM TB_PATH_ROLE_SAMPLE WHERE path_seq=#{pathSeq}
 	</delete>
 
 	<delete id="deletePath" parameterType="ftMap">
@@ -293,13 +293,13 @@
 
 
 	<!-- 권한메뉴등록등록 -->
-	<insert id="insertPathAuth" parameterType="ftMap">
-		<selectKey keyProperty="pathAuthSeq" resultType="String"
+	<insert id="insertPathRole" parameterType="ftMap">
+		<selectKey keyProperty="pathRoleSeq" resultType="String"
 			order="BEFORE">
-			SELECT nvl(MAX(path_auth_seq ),0)+1 from TB_PATH_AUTH_SAMPLE
+			SELECT nvl(MAX(path_role_seq ),0)+1 from TB_PATH_ROLE_SAMPLE
 		</selectKey>
-		insert into TB_PATH_AUTH_SAMPLE ( path_auth_seq, rgstp_no , auth_seq ,
-		path_seq , rgst_dttm ) values ( #{pathAuthSeq}, #{userNo} , #{authSeq}
+		insert into TB_PATH_ROLE_SAMPLE ( path_role_seq, rgstp_no , role_seq ,
+		path_seq , rgst_dttm ) values ( #{pathRoleSeq}, #{userNo} , #{roleSeq}
 		, #{pathSeq} , sysdate )
 	</insert>
 </mapper>

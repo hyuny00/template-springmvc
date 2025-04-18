@@ -16,7 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import com.futechsoft.admin.user.vo.User;
-import com.futechsoft.admin.user.vo.UserAuth;
+import com.futechsoft.admin.user.vo.UserRole;
 import com.futechsoft.framework.exception.BizException;
 import com.futechsoft.framework.exception.ErrorCode;
 import com.futechsoft.framework.security.service.SecurityService;
@@ -74,7 +74,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		userDetails.setAccountNonLocked(CommonUtil.isTrue(user.getIsAccountNonLocked()));
 		userDetails.setCredentialsNonExpired(CommonUtil.isTrue(user.getIsCredentialsNonExpired()));
 
-		List<UserAuth> userAuthList = null;
+		List<UserRole> userAuthList = null;
 		try {
 			userAuthList = securityService.getUserAuthList(userId);
 		} catch (BizException e) {
@@ -84,7 +84,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			LOGGER.error(e.toString());
 		}
 
-		userDetails.setUserAuthList(userAuthList);
+		userDetails.setUserRoleList(userAuthList);
 
 		return userDetails;
 	}
@@ -133,7 +133,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		userDetails.setAccountNonLocked(CommonUtil.isTrue(user.getIsAccountNonLocked()));
 		userDetails.setCredentialsNonExpired(CommonUtil.isTrue(user.getIsCredentialsNonExpired()));
 
-		List<UserAuth> userAuthList = null;
+		List<UserRole> userAuthList = null;
 		try {
 			userAuthList = securityService.getUserAuthList(user.getUserId());
 		} catch (BizException e) {
@@ -143,7 +143,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			LOGGER.error(e.toString());
 		}
 
-		userDetails.setUserAuthList(userAuthList);
+		userDetails.setUserRoleList(userAuthList);
 
 		return userDetails;
 	}
@@ -191,7 +191,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 		userDetails.setAccountNonLocked(CommonUtil.isTrue(user.getIsAccountNonLocked()));
 		userDetails.setCredentialsNonExpired(CommonUtil.isTrue(user.getIsCredentialsNonExpired()));
 
-		List<UserAuth> userAuthList = null;
+		List<UserRole> userAuthList = null;
 		try {
 			userAuthList = securityService.getUserAuthList(user.getUserId());
 		} catch (BizException e) {
@@ -201,7 +201,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 			LOGGER.error(e.toString());
 		}
 
-		userDetails.setUserAuthList(userAuthList);
+		userDetails.setUserRoleList(userAuthList);
 
 		return userDetails;
 	}

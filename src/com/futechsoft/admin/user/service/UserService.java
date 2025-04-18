@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.futechsoft.admin.user.mapper.UserMapper;
-import com.futechsoft.admin.user.vo.UserAuth;
+import com.futechsoft.admin.user.vo.UserRole;
 import com.futechsoft.framework.common.page.Page;
 import com.futechsoft.framework.common.page.Pageable;
 import com.futechsoft.framework.util.FtMap;
@@ -42,8 +42,8 @@ public class UserService {
 
 	}
 
-	public List<UserAuth> getUserAuthList(FtMap params) throws Exception {
-		return mapper.getUserAuthList(params);
+	public List<UserRole> getUserRoleList(FtMap params) throws Exception {
+		return mapper.getUserRoleList(params);
 	}
 
 
@@ -55,36 +55,36 @@ public class UserService {
 		String userNo = params.getString("userNo");
 		params.put("userNo", userNo);
 
-		saveUserAuth(params);
+		saveUserRole(params);
 		
 	}
 
 	@Transactional
 	public void update(FtMap params) throws Exception {
 
-		mapper.deleteUserAuth(params);
-		saveUserAuth(params);
+		mapper.deleteUserRole(params);
+		saveUserRole(params);
 		
 	}
 
 	@Transactional
-	private void saveUserAuth(FtMap params) throws Exception {
+	private void saveUserRole(FtMap params) throws Exception {
 
-		String[] authSeqs = params.getString("authSeqs").split(",");
+		String[] roleSeqs = params.getString("roleSeqs").split(",");
 
 	
-		for (String authSeq : authSeqs) {
-			if (authSeq.equals("0") || StringUtils.isEmpty(authSeq))
+		for (String roleSeq : roleSeqs) {
+			if (roleSeq.equals("0") || StringUtils.isEmpty(roleSeq))
 				continue;
-			params.put("authSeq", authSeq);
-			mapper.insertUserAuth(params);
+			params.put("roleSeq", roleSeq);
+			mapper.insertUserRole(params);
 		}
 		mapper.updateUser(params);
 	}
 
 	@Transactional
 	public void delete(FtMap params) throws Exception {
-		mapper.deleteUserAuth(params);
+		mapper.deleteUserRole(params);
 		mapper.deleteUser(params);
 	}
 

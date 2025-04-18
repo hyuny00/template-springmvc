@@ -50,7 +50,7 @@
 			function reset() {
 				$("form[name=listForm]").find("input[type=text][name^=sch]").val('');
 		 		$('#schOrgCd').val("").select2();
-				$('#schAuthSeq').val("").select2();
+				$('#schRoleSeq').val("").select2();
 				$('#schUserStatsCd').val("").select2();
 
 		 	}
@@ -164,8 +164,8 @@
 
 				                        			<td class="center title"><a href="javascript:detailUser('${result.userNo}')"><span class="tit">${result.userNm}</span></a></td>
 				                        			<td>
-				                        				<c:forEach items="${result.authSeq}" var="authSeq">
-				                        					 <c:out value="${authCode[''.concat(authSeq)]}" />
+				                        				<c:forEach items="${result.roleSeq}" var="roleSeq">
+				                        					 <c:out value="${roleCode[''.concat(roleSeq)]}" />
 				                        					 <br>
 				                        				</c:forEach>
 				                        			</td>

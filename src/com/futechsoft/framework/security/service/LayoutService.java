@@ -12,10 +12,10 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.futechsoft.admin.auth.vo.AuthMenu;
+import com.futechsoft.admin.auth.vo.RoleMenu;
 import com.futechsoft.admin.menu.vo.Menu;
-import com.futechsoft.admin.user.vo.UserAuth;
-import com.futechsoft.framework.common.constant.AuthConstant;
+import com.futechsoft.admin.user.vo.UserRole;
+import com.futechsoft.framework.common.constant.RoleConstant;
 import com.futechsoft.framework.security.event.ResourceMenuEventListener;
 import com.futechsoft.framework.security.vo.CustomUserDetails;
 import com.futechsoft.framework.security.vo.MenuVO;
@@ -105,16 +105,16 @@ public class LayoutService {
 	}
 	
 
-	private List<UserAuth> getUserAuthList() {
+	private List<UserRole> getUserAuthList() {
 		CustomUserDetails userDetails = SecurityUtil.getPrincipal();
-		List<UserAuth> userAuthList = null;
+		List<UserRole> userAuthList = null;
 
 		if (userDetails != null) {
-			userAuthList = userDetails.getUserAuthList();
+			userAuthList = userDetails.getUserRoleList();
 		} else {
-			userAuthList = new ArrayList<UserAuth>();
-			UserAuth userAuth = new UserAuth();
-			userAuth.setAuthCd(AuthConstant.ROLE_ANONYMOUS);
+			userAuthList = new ArrayList<UserRole>();
+			UserRole userAuth = new UserRole();
+			userAuth.setRoleCd(RoleConstant.ROLE_ANONYMOUS);
 			userAuthList.add(userAuth);
 		}
 		return userAuthList;
@@ -124,34 +124,34 @@ public class LayoutService {
 
 	
 	 public List<MenuVO> getAuthMenuTree(Long selectedMenuSeq) {
-	        Map<String, List<AuthMenu>> menuMap = resourceMenuEventListener.authMenuMap();
-	        List<UserAuth> userAuthList = getUserAuthList();
+	        Map<String, List<RoleMenu>> menuMap = resourceMenuEventListener.roleMenuMap();
+	        List<UserRole> userAuthList = getUserAuthList();
 
 	        return buildAuthMenuTree(menuMap, userAuthList, selectedMenuSeq);
 	    }
 
 	
 	
-	public List<MenuVO> buildAuthMenuTree(Map<String, List<AuthMenu>> menuMap, List<UserAuth> userAuthList, Long selectedMenuSeq) {
+	public List<MenuVO> buildAuthMenuTree(Map<String, List<RoleMenu>> menuMap, List<UserRole> userAuthList, Long selectedMenuSeq) {
 	    Map<Long, MenuVO> menuVOMap = new HashMap<>();
 	    List<MenuVO> rootMenus = new ArrayList<>();
 	    Set<Long> authMenuSeqs = new HashSet<>();
 
 	    // 현재 사용자의 권한별 메뉴 가져오기
-	    for (UserAuth userAuth : userAuthList) {
-	        List<AuthMenu> authMenus = menuMap.get(userAuth.getAuthCd());
+	    for (UserRole userAuth : userAuthList) {
+	        List<RoleMenu> authMenus = menuMap.get(userAuth.getRoleCd());
 	        if (authMenus != null) {
-	            for (AuthMenu authMenu : authMenus) {
+	            for (RoleMenu authMenu : authMenus) {
 	                authMenuSeqs.add(authMenu.getMenuSeq()); // 권한 있는 메뉴 ID 저장
 	            }
 	        }
 	    }
 
 	    // MenuVO 객체 생성 (권한 있는 메뉴만)
-	    for (UserAuth userAuth : userAuthList) {
-	        List<AuthMenu> authMenus = menuMap.get(userAuth.getAuthCd());
+	    for (UserRole userAuth : userAuthList) {
+	        List<RoleMenu> authMenus = menuMap.get(userAuth.getRoleCd());
 	        if (authMenus != null) {
-	            for (AuthMenu authMenu : authMenus) {
+	            for (RoleMenu authMenu : authMenus) {
 	                if (!menuVOMap.containsKey(authMenu.getMenuSeq())) {
 
 	                	MenuVO vo = new MenuVO(authMenu, Objects.equals(authMenu.getMenuSeq(), selectedMenuSeq));

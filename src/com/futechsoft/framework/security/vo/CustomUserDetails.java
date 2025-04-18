@@ -8,8 +8,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.futechsoft.admin.user.vo.UserAuth;
-import com.futechsoft.framework.common.constant.AuthConstant;
+import com.futechsoft.admin.user.vo.UserRole;
+import com.futechsoft.framework.common.constant.RoleConstant;
 
 public class CustomUserDetails implements UserDetails {
 
@@ -25,8 +25,6 @@ public class CustomUserDetails implements UserDetails {
 	private String userEmail;
 	private String miniCd;
 	private String dptCd;
-	private String onnaraId;
-	private String areumteoId;
 	private int loginFailCnt;
 
 	public int getLoginFailCnt() {
@@ -42,7 +40,7 @@ public class CustomUserDetails implements UserDetails {
 	private boolean isAccountNonLocked;
 	private boolean isCredentialsNonExpired;
 
-	private List<UserAuth> userAuthList;
+	private List<UserRole> userRoleList;
 
 	public String getUserNo(){
 		return userNo;
@@ -120,12 +118,12 @@ public class CustomUserDetails implements UserDetails {
 		this.isCredentialsNonExpired = isCredentialsNonExpired;
 	}
 
-	public void setUserAuthList(List<UserAuth> userAuthList) {
-		this.userAuthList = userAuthList;
+	public void setUserRoleList(List<UserRole> userRoleList) {
+		this.userRoleList = userRoleList;
 	}
 
-	public List<UserAuth> getUserAuthList() {
-		return userAuthList;
+	public List<UserRole> getUserRoleList() {
+		return userRoleList;
 	}
 
 	public Collection<GrantedAuthority> getAuthorities() {
@@ -133,13 +131,13 @@ public class CustomUserDetails implements UserDetails {
 		List<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
 
 
-		for (UserAuth userAuth : userAuthList) {
+		for (UserRole userRole : userRoleList) {
 
-			if(userAuth.getAuthCd()!=null) {
-				if(!userAuth.getAuthCd().startsWith((AuthConstant.ROLE_PREFIX))){
-					authorities.add(new SimpleGrantedAuthority(AuthConstant.ROLE_PREFIX + userAuth.getAuthCd()));
+			if(userRole.getRoleCd()!=null) {
+				if(!userRole.getRoleCd().startsWith((RoleConstant.ROLE_PREFIX))){
+					authorities.add(new SimpleGrantedAuthority(RoleConstant.ROLE_PREFIX + userRole.getRoleCd()));
 				}else {
-					authorities.add(new SimpleGrantedAuthority(userAuth.getAuthCd()));
+					authorities.add(new SimpleGrantedAuthority(userRole.getRoleCd()));
 				}
 			}
 		}
@@ -180,21 +178,6 @@ public class CustomUserDetails implements UserDetails {
 		this.miniCd = miniCd;
 	}
 
-	public String getOnnaraId() {
-		return onnaraId;
-	}
-
-	public void setOnnaraId(String onnaraId) {
-		this.onnaraId = onnaraId;
-	}
-
-	public String getAreumteoId() {
-		return areumteoId;
-	}
-
-	public void setAreumteoId(String areumteoId) {
-		this.areumteoId = areumteoId;
-	}
-
+	
 
 }

@@ -2,12 +2,12 @@ package com.futechsoft.framework.security.mapper;
 
 import java.util.List;
 
-import com.futechsoft.admin.auth.vo.AuthMenu;
+import com.futechsoft.admin.auth.vo.RoleMenu;
 import com.futechsoft.admin.auth.vo.Path;
-import com.futechsoft.admin.auth.vo.PathAuth;
+import com.futechsoft.admin.auth.vo.PathRole;
 import com.futechsoft.admin.menu.vo.Menu;
 import com.futechsoft.admin.user.vo.User;
-import com.futechsoft.admin.user.vo.UserAuth;
+import com.futechsoft.admin.user.vo.UserRole;
 import com.futechsoft.framework.annotation.Mapper;
 import com.futechsoft.framework.util.FtMap;
 
@@ -28,7 +28,7 @@ public interface SecurityMapper {
 
 	public User getUserInfoBySsoId(String ssoId) throws Exception;
 
-	public List<UserAuth> getUserAuthList(String userId) throws Exception;
+	public List<UserRole> getUserRoleList(String userId) throws Exception;
 
 	public void resetFailCnt(String userId) throws Exception;
 
@@ -36,13 +36,13 @@ public interface SecurityMapper {
 
 	public void disabledUser(String userId) throws Exception;
 
-	public List<AuthMenu> getAuthMenu(long authSeq) throws Exception;
+	public List<RoleMenu> getRoleMenu(long roleSeq) throws Exception;
 
 	public List<Menu> getTopMenuList() throws Exception;
 
 	public List<Menu> getSubMenuList(long menuSeq) throws Exception;
 
-	public List<PathAuth> getPathAuthList(long pathSeq) throws Exception;
+	public List<PathRole> getPathRoleList(long pathSeq) throws Exception;
 
 	public List<Path> getAllPathList() throws Exception;
 

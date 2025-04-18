@@ -1,8 +1,8 @@
 package com.futechsoft.admin.auth.vo;
 
-public class AuthMenu {
+public class RoleMenu {
 
-	private long authMenuSeq;
+	private long roleMenuSeq;
 
 	private long menuSeq;
 	private long upMenuSeq;
@@ -10,8 +10,8 @@ public class AuthMenu {
 	private String menuNm;
 	private String menuTypeCd;
 	private int menuOrd;
-	private long authSeq;
-	private String authCd;
+	private long roleSeq;
+	private String roleCd;
 
 	private String openYn;
 
@@ -22,31 +22,31 @@ public class AuthMenu {
 	private int subMenuCnt;
 
 	//하위메뉴의 권한이 지정되지않은 카운트
-	private int noAuthCount;
+	private int noRoleCount;
 
-	public long getAuthMenuSeq() {
-		return authMenuSeq;
+	public long getRoleMenuSeq() {
+		return roleMenuSeq;
 	}
 
-	public void setAuthMenuSeq(long authMenuSeq) {
-		this.authMenuSeq = authMenuSeq;
+	public void setRoleMenuSeq(long roleMenuSeq) {
+		this.roleMenuSeq = roleMenuSeq;
 
 	}
 
-	public long getAuthSeq() {
-		return authSeq;
+	public long getRoleSeq() {
+		return roleSeq;
 	}
 
-	public void setAuthSeq(long authSeq) {
-		this.authSeq = authSeq;
+	public void setRoleSeq(long roleSeq) {
+		this.roleSeq = roleSeq;
 	}
 
-	public String getAuthCd() {
-		return authCd;
+	public String getRoleCd() {
+		return roleCd;
 	}
 
-	public void setAuthCd(String authCd) {
-		this.authCd = authCd;
+	public void setRoleCd(String roleCd) {
+		this.roleCd = roleCd;
 	}
 
 	public long getMenuSeq() {
@@ -133,12 +133,12 @@ public class AuthMenu {
 		this.subMenuCnt = subMenuCnt;
 	}
 
-	public int getNoAuthCount() {
-		return noAuthCount;
+	public int getNoRoleCount() {
+		return noRoleCount;
 	}
 
-	public void setNoAuthCount(int noAuthCount) {
-		this.noAuthCount = noAuthCount;
+	public void setNoRoleCount(int noRoleCount) {
+		this.noRoleCount = noRoleCount;
 	}
 
 }

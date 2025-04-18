@@ -15,7 +15,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.futechsoft.framework.common.constant.AuthConstant;
+import com.futechsoft.framework.common.constant.RoleConstant;
 import com.futechsoft.framework.exception.BizException;
 import com.futechsoft.framework.exception.ErrorCode;
 import com.futechsoft.framework.file.vo.FileInfoVo;

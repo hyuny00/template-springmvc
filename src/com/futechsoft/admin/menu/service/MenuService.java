@@ -64,7 +64,7 @@ public class MenuService {
 	@Transactional
 	public void delete(FtMap params) throws Exception {
 
-		menuMapper.deleteAuthMenu(params);
+		menuMapper.deleteRoleMenu(params);
 		menuMapper.deleteMenu(params);
 
 	}

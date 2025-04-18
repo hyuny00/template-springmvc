@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.futechsoft.admin.auth.service.AuthService;
-import com.futechsoft.admin.auth.vo.Auth;
-import com.futechsoft.admin.auth.vo.AuthMenu;
+import com.futechsoft.admin.auth.service.RoleService;
+import com.futechsoft.admin.auth.vo.Role;
+import com.futechsoft.admin.auth.vo.RoleMenu;
 import com.futechsoft.admin.menu.service.MenuService;
 import com.futechsoft.framework.common.controller.AbstractController;
 import com.futechsoft.framework.security.auth.ResourceMenuService;
@@ -22,10 +22,10 @@ import com.futechsoft.framework.util.FtMap;
 import com.futechsoft.framework.util.SecurityUtil;
 
 @Controller
-public class AuthController extends AbstractController {
+public class RoleController extends AbstractController {
 
-	@Resource(name = "auth.service.AuthService")
-	private AuthService authService;
+	@Resource(name = "auth.service.RoleService")
+	private RoleService roleService;
 
 	@Resource(name = "menu.service.MenuService")
 	private MenuService menuService;
@@ -41,43 +41,43 @@ public class AuthController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping("/admin/auth/getAuthList")
-	public List<FtMap> getAuthList(HttpServletRequest request) throws Exception {
+	public List<FtMap> getRoleList(HttpServletRequest request) throws Exception {
 
 		FtMap params = getFtMap(request);
 
-		if (StringUtils.isEmpty(params.getString("authSeq")) || params.getString("authSeq").equals("#")) {
-			params.put("authSeq", "-1");
+		if (StringUtils.isEmpty(params.getString("roleSeq")) || params.getString("roleSeq").equals("#")) {
+			params.put("roleSeq", "-1");
 			params.put("useYn", "Y");
 		}
-		List<Auth> authList = authService.getList(params);
+		List<Role> roleList = roleService.getList(params);
 
-		List<FtMap> authListMap = new ArrayList<FtMap>();
+		List<FtMap> roleListMap = new ArrayList<FtMap>();
 
 		FtMap map = null;
-		for (Auth auth : authList) {
+		for (Role role : roleList) {
 			map = new FtMap();
 
-			map.put("id", String.valueOf(auth.getAuthSeq()));
-			map.put("text", auth.getAuthNm());
-			map.put("upAuthNm", auth.getUpAuthNm());
-			map.put("upAuthSeq", auth.getUpAuthSeq());
-			map.put("useYn", auth.getUseYn());
-			map.put("authTypeCd", auth.getAuthTypeCd());
-			map.put("authCd", auth.getAuthCd());
+			map.put("id", String.valueOf(role.getRoleSeq()));
+			map.put("text", role.getRoleNm());
+			map.put("upRoleNm", role.getUpRoleNm());
+			map.put("upRoleSeq", role.getUpRoleSeq());
+			map.put("useYn", role.getUseYn());
+			map.put("roleTypeCd", role.getRoleTypeCd());
+			map.put("roleCd", role.getRoleCd());
 
-			map.put("children", auth.getSubAuthCnt() > 0 ? true : false);
+			map.put("children", role.getSubRoleCnt() > 0 ? true : false);
 
-			map.put("type", auth.getAuthTypeCd());
+			map.put("type", role.getRoleTypeCd());
 
 			/*
 			 * if(auth.getAuthSeq() == params.getLong("selectedAuthSeq")) { FtMap map1 = new
 			 * FtMap(); map1.put("selected", true); map.put("state", map1); }
 			 */
 
-			authListMap.add(map);
+			roleListMap.add(map);
 		}
 
-		return authListMap;
+		return roleListMap;
 	}
 
 	@RequestMapping("/admin/auth/menuSelctor")
@@ -88,7 +88,7 @@ public class AuthController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping("/admin/menu/getAuthMenuList")
-	public List<FtMap> getAuthMenuList(HttpServletRequest request) throws Exception {
+	public List<FtMap> getRoleMenuList(HttpServletRequest request) throws Exception {
 		
 		
 
@@ -99,43 +99,43 @@ public class AuthController extends AbstractController {
 		}
 		//List<Menu> menuList = menuService.getList(params);
 
-		List<AuthMenu> authMenuList = authService.getAuthMenuList(params);
+		List<RoleMenu> roleMenuList = roleService.getRoleMenuList(params);
 
 		List<FtMap> menuListMap = new ArrayList<FtMap>();
 
 		FtMap map = null;
 
-		List<Long> noAuthMenuSeqList= new ArrayList<Long>();
+		List<Long> noRoleMenuSeqList= new ArrayList<Long>();
 
-		for (AuthMenu authMenu : authMenuList) {
+		for (RoleMenu roleMenu : roleMenuList) {
 
-			if(authMenu.getNoAuthCount() >0 ) {
-				long upMenuSeq = authMenu.getUpMenuSeq();
-				noAuthMenuSeqList.add(upMenuSeq);
+			if(roleMenu.getNoRoleCount() >0 ) {
+				long upMenuSeq = roleMenu.getUpMenuSeq();
+				noRoleMenuSeqList.add(upMenuSeq);
 			}
 		}
 
-		for (AuthMenu authMenu : authMenuList) {
+		for (RoleMenu roleMenu : roleMenuList) {
 
 			map = new FtMap();
 
-			map.put("id", String.valueOf(authMenu.getMenuSeq()));
-			map.put("text", authMenu.getMenuNm());
-			map.put("menuUrl", authMenu.getMenuUrl());
-			map.put("upMenuSeq", authMenu.getUpMenuSeq());
-			map.put("parent", authMenu.getUpMenuSeq() == -1 ?"#" : authMenu.getUpMenuSeq());
-			map.put("menuTypeCd", authMenu.getMenuTypeCd());
+			map.put("id", String.valueOf(roleMenu.getMenuSeq()));
+			map.put("text", roleMenu.getMenuNm());
+			map.put("menuUrl", roleMenu.getMenuUrl());
+			map.put("upMenuSeq", roleMenu.getUpMenuSeq());
+			map.put("parent", roleMenu.getUpMenuSeq() == -1 ?"#" : roleMenu.getUpMenuSeq());
+			map.put("menuTypeCd", roleMenu.getMenuTypeCd());
 			//map.put("type", authMenu.getMenuTypeCd());
 
-			map.put("type", authMenu.getSubMenuCnt() > 0 ? "noLast" : "last");
+			map.put("type", roleMenu.getSubMenuCnt() > 0 ? "noLast" : "last");
 
 			FtMap map1 = new FtMap();
 
-			if(noAuthMenuSeqList.contains( authMenu.getMenuSeq())  && authMenu.getSelectYn().equals("Y") ){
+			if(noRoleMenuSeqList.contains( roleMenu.getMenuSeq())  && roleMenu.getSelectYn().equals("Y") ){
 				map1.put("selected", false);
-			}else if ( authMenu.getNoAuthCount() > 0  && authMenu.getSelectYn().equals("Y") ){
+			}else if ( roleMenu.getNoRoleCount() > 0  && roleMenu.getSelectYn().equals("Y") ){
 				map1.put("selected", false);
-			}else if ( authMenu.getNoAuthCount() == 0  && authMenu.getSelectYn().equals("Y") ){
+			}else if ( roleMenu.getNoRoleCount() == 0  && roleMenu.getSelectYn().equals("Y") ){
 				map1.put("selected", true);
 			}
 
@@ -150,14 +150,14 @@ public class AuthController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping("/admin/auth/saveAuth")
-	public FtMap saveAuth(HttpServletRequest request) throws Exception {
+	public FtMap saveRole(HttpServletRequest request) throws Exception {
 
 		FtMap params = getFtMap(request);
 		
 		params.put("userNo", SecurityUtil.getUserNo());
 
 		//if(!params.getString("authCd").startsWith(AuthConstant.ROLE_PREFIX)) params.put("authCd", AuthConstant.ROLE_PREFIX+params.getString("authCd"));
-		authService.save(params);
+		roleService.save(params);
 
 		params.put("isSuccess", true);
 		return params;
@@ -170,10 +170,10 @@ public class AuthController extends AbstractController {
 
 		FtMap params = getFtMap(request);
 		params.put("userNo", SecurityUtil.getUserNo());
-		boolean check = authService.hasChildren(params);
+		boolean check = roleService.hasChildren(params);
 
 		if (!check) {
-			authService.delete(params);
+			roleService.delete(params);
 			params.put("isSuccess", true);
 		} else {
 			params.put("isSuccess", false);
@@ -186,11 +186,11 @@ public class AuthController extends AbstractController {
 
 	@ResponseBody
 	@RequestMapping("/admin/auth/saveAuthMenu")
-	public FtMap saveAuthMenu(HttpServletRequest request, @RequestBody FtMap params) throws Exception {
+	public FtMap saveRoleMenu(HttpServletRequest request, @RequestBody FtMap params) throws Exception {
 
 		@SuppressWarnings("unchecked")
 		ArrayList<String> list = (ArrayList<String>) params.get("menu_seqs");
-		authService.saveAuthMenu(params, list);
+		roleService.saveRoleMenu(params, list);
 
 		resourceMenuService.init();
 
